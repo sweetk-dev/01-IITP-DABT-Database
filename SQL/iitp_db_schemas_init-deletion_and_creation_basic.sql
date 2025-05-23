@@ -293,7 +293,7 @@ CREATE TABLE stats_kosis_metadata_code (
     up_itm_id VARCHAR(40),			-- 상위 자료코드 ID
     obj_id_sn SMALLINT,				-- 분류값 순번
     
-    unit_id VARCHAR(4),			-- 단위 ID
+    unit_id VARCHAR(40),			-- 단위 ID
     unit_nm VARCHAR(20),			-- 
    
     stat_latest_chn_dt date,         -- 수집기관 최종 자료갱신일 (예:2024-07-19)
