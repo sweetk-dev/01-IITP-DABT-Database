@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.0.3 last update data : 2025.05.22
+-- ## ver 0.0.3 last update data : 2025.05.23
 -- ## Only for PostgreSQL
 -- ## Except "mv_poi" table
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
@@ -229,7 +229,7 @@ CREATE TABLE public.stats_src_data_info (
 	stat_tbl_name varchar(300) NOT NULL, -- 원데이터 통계표명
 	
 	stat_latest_chn_dt varchar(12) NOT NULL, -- 수집기관 최종 자료갱신일 (예:2024-07-19)
-	stat_data_ref_dt varchar(12) NULL, -- 통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자 (예:2024-07-19)
+	stat_data_ref_dt varchar(12) NULL, -- KOSIS 통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자 (예:2024-07-19)
 	
 	del_yn bpchar(1) DEFAULT 'N'::bpchar NOT NULL, -- 삭제여부 (Y: 삭제)
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
@@ -261,7 +261,7 @@ COMMENT ON COLUMN public.stats_src_data_info.collect_end_dt IS '데이터 수집
 COMMENT ON COLUMN public.stats_src_data_info.stat_tbl_id IS '원데이터 통계 id';
 COMMENT ON COLUMN public.stats_src_data_info.stat_tbl_name IS '원데이터 통계표명';
 COMMENT ON COLUMN public.stats_src_data_info.stat_latest_chn_dt IS '수집기관 최종 자료갱신일 (예:2024-07-19)';
-COMMENT ON COLUMN public.stats_src_data_info.stat_data_ref_dt IS '통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자';
+COMMENT ON COLUMN public.stats_src_data_info.stat_data_ref_dt IS 'KOSIS 통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자';
 COMMENT ON COLUMN public.stats_src_data_info.del_yn IS '삭제여부 (Y: 삭제)';
 COMMENT ON COLUMN public.stats_src_data_info.created_at IS '레코드 생성 시각';
 COMMENT ON COLUMN public.stats_src_data_info.updated_at IS '레코드 수정 시각';
@@ -296,6 +296,8 @@ CREATE TABLE stats_kosis_metadata_code (
     unit_id VARCHAR(4),			-- 단위 ID
     unit_nm VARCHAR(20),			-- 
    
+    stat_latest_chn_dt date,         -- 수집기관 최종 자료갱신일 (예:2024-07-19)
+    
     created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at timestamptz DEFAULT CURRENT_TIMESTAMP,
     created_by VARCHAR(50),
@@ -320,6 +322,8 @@ COMMENT ON COLUMN public.stats_kosis_metadata_code.up_itm_id IS '상위 자료�
 COMMENT ON COLUMN public.stats_kosis_metadata_code.obj_id_sn IS '분류값 순번';
 COMMENT ON COLUMN public.stats_kosis_metadata_code.unit_id IS '단위 ID';
 COMMENT ON COLUMN public.stats_kosis_metadata_code.unit_nm IS '단위명 (한글)';
+
+COMMENT ON COLUMN public.stats_kosis_metadata_code.stat_latest_chn_dt IS '수집기관 최종 자료갱신일 (예:2024-07-19)';
 
 COMMENT ON COLUMN public.stats_kosis_metadata_code.created_at IS '생성 일시';
 COMMENT ON COLUMN public.stats_kosis_metadata_code.created_by IS '생성자';
@@ -360,12 +364,12 @@ CREATE TABLE stats_kosis_origin_data (
     prd_se VARCHAR(2) NOT NULL,                    -- 수록주기
     prd_de VARCHAR(10) NOT NULL,                     -- 수록시점
 	
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  VARCHAR(100)  NOT NULL,                       -- 수치 값
 	
     lst_chn_de VARCHAR(10),                 -- 데이터별 최종수정일 (예:2024-07-19)
   
     stat_latest_chn_dt VARCHAR(10),         -- 수집기관 최종 자료갱신일 (예:2024-07-19)
-    data_ref_dt date NULL, -- 통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자
+    data_ref_dt date NULL, 					-- KOSIS 통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자
     
     created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
     created_by varchar(40) NOT NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조
@@ -417,7 +421,7 @@ COMMENT ON COLUMN public.stats_kosis_origin_data.dt IS '수치 값';
 COMMENT ON COLUMN public.stats_kosis_origin_data.lst_chn_de IS '데이터별 최종수정일 (예:2024-07-19)';
 COMMENT ON COLUMN public.stats_kosis_origin_data.stat_latest_chn_dt IS '수집기관 최종 자료갱신일 (예:2024-07-19)';
 
-COMMENT ON COLUMN public.stats_kosis_origin_data.data_ref_dt IS '통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자 (예:2024-07-19)';
+COMMENT ON COLUMN public.stats_kosis_origin_data.data_ref_dt IS 'KOSIS 통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자 (예:2024-07-19)';
 
 COMMENT ON COLUMN public.stats_kosis_origin_data.created_at IS '레코드 생성 시각';
 COMMENT ON COLUMN public.stats_kosis_origin_data.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조';
@@ -980,7 +984,8 @@ CREATE TABLE public.stats_dis_hlth_disease_cost_sub (
     
     unit_nm VARCHAR(20),                 -- 단위명
 	
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+	dt  VARCHAR(100)  NOT NULL,                       -- 수치 값
+    -- dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
