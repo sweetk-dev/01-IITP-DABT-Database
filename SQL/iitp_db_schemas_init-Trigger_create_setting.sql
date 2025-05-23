@@ -1,11 +1,12 @@
 -- ## iitp DB Schemas - Initial setup - Tirgger Creation and Setting
--- ## ver 0.0.1 last update data : 2025.05.13
+-- ## ver 0.0.2 last update data : 2025.05.22
 -- ## trigger 함수 생성 및 trigger 생성 설정
 
 -- ################################################
 -- ## 이미 존재하는 trigger 함수 및 trigger 삭제
 -- ################################################
-DROP FUNCTION IF EXISTS update_modified_column();
+
+-- ## update_modified_column() 를 사용하는 trigger 먼저 삭제
 
 -- 시스템 테이블
 DROP TRIGGER IF EXISTS trg_update_sys_common_code ON sys_common_code;
@@ -13,6 +14,7 @@ DROP TRIGGER IF EXISTS trg_update_sys_ext_api_info ON sys_ext_api_info;
 
 -- 통계 원본 및 연계 테이블
 DROP TRIGGER IF EXISTS trg_update_stats_kosis_origin_data ON stats_kosis_origin_data;
+DROP TRIGGER IF EXISTS trg_update_stats_kosis_metadata_code ON stats_kosis_metadata_code;
 DROP TRIGGER IF EXISTS trg_update_stats_src_data_info ON stats_src_data_info;
 
 -- 등록 장애 통계
@@ -56,8 +58,11 @@ DROP TRIGGER IF EXISTS trg_update_stats_dis_soc_contact_cntfreq ON stats_dis_soc
 DROP TRIGGER IF EXISTS trg_update_stats_dis_fclty_welfare_usage ON stats_dis_fclty_welfare_usage;
 
 -- 이동형 POI 
-DROP TRIGGER IF EXISTS trg_update_mv_poi ON mv_poi;
+-- DROP TRIGGER IF EXISTS trg_update_mv_poi ON mv_poi;
 
+
+-- ## update_modified_column() trigger 먼저 삭제
+DROP FUNCTION IF EXISTS update_modified_column();
 
 
 -- ################################################
@@ -91,6 +96,11 @@ FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 CREATE TRIGGER trg_update_stats_kosis_origin_data
 BEFORE INSERT OR UPDATE ON stats_kosis_origin_data
 FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+
+CREATE TRIGGER trg_update_stats_kosis_metadata_code
+BEFORE INSERT OR UPDATE ON stats_kosis_metadata_code
+FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+
 
 CREATE TRIGGER trg_update_stats_src_data_info
 BEFORE INSERT OR UPDATE ON stats_src_data_info
@@ -201,9 +211,9 @@ BEFORE INSERT OR UPDATE ON stats_dis_fclty_welfare_usage
 FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 
 -- 이동형 POI
-CREATE TRIGGER trg_update_mv_poi
-BEFORE INSERT OR UPDATE ON mv_poi
-FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+-- CREATE TRIGGER trg_update_mv_poi
+-- BEFORE INSERT OR UPDATE ON mv_poi
+-- FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 
 
 
