@@ -862,7 +862,7 @@ CREATE TABLE public.stats_dis_life_supp_field (
 	CONSTRAINT pkey_st_dis_life_supp_field PRIMARY KEY (id)
 );
 CREATE INDEX idx_st_dis_life_supp_field_year_c1t3 ON public.stats_dis_life_supp_field USING btree (prd_de, c1, c2, c3);
-COMMENT ON TABLE public.stats_dis_life_supp_field  IS '기초-주거 자립 현황-일상생활 도와주는 사람(1순위)';
+COMMENT ON TABLE public.stats_dis_life_supp_field  IS '기초-주거 자립 현황-도움받는 분야';
 
 -- Column comments
 
