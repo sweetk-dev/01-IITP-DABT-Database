@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.0.3 last update data : 2025.05.23
+-- ## ver 0.0.3 last update data : 2025.05.27
 -- ## Only for PostgreSQL
 -- ## Except "mv_poi" table
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
