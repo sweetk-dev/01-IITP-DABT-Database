@@ -158,7 +158,7 @@ INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp
 TRUNCATE TABLE  public.sys_ext_api_info;
 INSERT INTO public.sys_ext_api_info (if_name, ext_sys, ext_url, auth, data_format, last_sync_time, memo, del_yn, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by) 
 			values
-				('KOSIS 국가통계포털', 'KOSIS', 'https://kosis.kr/openapi/Param/statisticsParameterData.do', 'MjBjZGE5MjlkM2U5ZjE3NWZiMWU2OTkwN2Y4YjgwZTA=', '[JOSN,XML]', null, '', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null);
+				('KOSIS 국가통계포털', 'KOSIS', 'https://kosis.kr/statisticsList/statisticsListIndex.do?vwcd=MT_ZTITLE&menuId=M_01_01', 'MjBjZGE5MjlkM2U5ZjE3NWZiMWU2OTkwN2Y4YjgwZTA=', '[JOSN,XML]', null, '', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null);
 
 
 
