@@ -408,7 +408,7 @@ CREATE TABLE public.stats_src_data_info (
 	stat_latest_chn_dt varchar(12) NOT NULL, -- 수집기관 최종 자료갱신일 (예:2024-07-19)
 	stat_data_ref_dt varchar(12) NULL, -- KOSIS 통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자 (예:2024-07-19)
 	
-	avail_cat_cols vachar(40) NULL, -- 사용가능한 Categorys (c1~c3) 예: "["c1","c2"]"
+	avail_cat_cols vachar(40) NULL, -- 사용가능한 Categories (c1~c3) 예: "["c1","c2"]"
 	
 	status char(1) DEFAULT 'A'  NOT NULL, -- 데이터 상태,  "data_status" comm code 참조
 	del_yn bpchar(1) DEFAULT 'N'::bpchar NOT NULL, -- 삭제여부 (Y: 삭제)
@@ -444,7 +444,7 @@ COMMENT ON COLUMN public.stats_src_data_info.stat_tbl_id IS '원데이터 통계
 COMMENT ON COLUMN public.stats_src_data_info.stat_tbl_name IS '원데이터 통계표명';
 COMMENT ON COLUMN public.stats_src_data_info.stat_latest_chn_dt IS '수집기관 최종 자료갱신일 (예:2024-07-19)';
 COMMENT ON COLUMN public.stats_src_data_info.stat_data_ref_dt IS 'KOSIS 통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자';
-COMMENT ON COLUMN public.stats_src_data_info.avail_cat_cols IS '사용가능한 Categorys (c1~c3) 예: "["c1","c2"]"';
+COMMENT ON COLUMN public.stats_src_data_info.avail_cat_cols IS '사용가능한 Categories (c1~c3) 예: "["c1","c2"]"';
 
 
 COMMENT ON COLUMN public.stats_src_data_info.status IS '"data_status" comm code 참조';
