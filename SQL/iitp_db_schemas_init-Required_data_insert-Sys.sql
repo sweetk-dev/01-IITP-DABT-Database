@@ -1,6 +1,6 @@
 
 -- ## iitp DB Schemas - Initial setup - Insert Data for Required System Data
--- ## ver 0.0.8 last update data : 2025.07.03
+-- ## ver 0.0.9 last update data : 2025.07.04
 -- ## Only for PostgreSQL
 -- ## 초기 데이터 삽입 : 공통 코드 및 시스템 필수 데이터 
 
@@ -77,7 +77,7 @@ BEGIN
             CONTINUE;
         END;
 
-        IF current_val > 1 THEN
+        IF current_val > 0 THEN
             RAISE NOTICE '시퀀스 % 현재 값이 %입니다. 초기화합니다.', rec.seq_name, current_val;
             EXECUTE format('SELECT setval(%L, 1, false)', 'public.' || rec.seq_name);
         ELSE
@@ -204,11 +204,11 @@ INSERT INTO public.sys_stats_src_api_info (ext_api_id, status, del_yn, stat_titl
 -- #### public.stats_src_data_info Data
 TRUNCATE TABLE public.stats_src_data_info CASCADE;
 
-INSERT INTO public.stats_src_data_info (ext_api_id, src_data_id, ext_sys, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt, periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt, stat_data_ref_dt, del_yn, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by) 
+INSERT INTO public.stats_src_data_info (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt, periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt, stat_data_ref_dt, del_yn, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by) 
 			VALUES
 				(1, 'KOSIS', 1, 'stats_dis_reg_natl_by_new', '신규등록 장애인현황', 'KOSIS_117', '「장애인현황」', '2024', '년', '2019', '2024', 'DT_11761_N010', '신규등록 장애인현황', '2025-04-18', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
 				(1, 'KOSIS', 2, 'stats_dis_reg_natl_by_age_type_sev_gen', '전국 연령별,장애등급별,성별 등록장애인수', 'KOSIS_117', '「장애인현황」', '2024', '년', '2019', '2024', 'DT_11761_N007', '전국 연령별,장애정도별,성별 등록장애인수', '2025-04-18', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
-				(1, 'KOSIS', 3, 'stats_dis_reg_sido_by_age_type_sev_gen', '시도별,장애유형별,장애정도별,성별 등록장애인수', 'KOSIS_117', '「장애인현황」', '2024', '년', '2019', '2024', 'DT_11761_N008', '시도별,장애유형별,장애정도별,성별 등록장애인수', '2025-04-18', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
+				(1, 'KOSIS', 3, 'stats_dis_reg_sido_by_type_sev_gen', '시도별,장애유형별,장애정도별,성별 등록장애인수', 'KOSIS_117', '「장애인현황」', '2024', '년', '2019', '2024', 'DT_11761_N008', '시도별,장애유형별,장애정도별,성별 등록장애인수', '2025-04-18', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
 				(1, 'KOSIS', 4, 'stats_dis_life_supp_need_lvl', '일상생활 필요 지원 정도', 'KOSIS_117', '「장애인실태조사」', '2020', '3년', '1995', '2020', 'DT_11732S0110', '일상생활 필요 지원 정도', '2022-11-11', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
 				(1, 'KOSIS', 5, 'stats_dis_life_maincarer', '주로 지원해주는 사람의 유형', 'KOSIS_117', '「장애인실태조사」', '2020', '3년', '1995', '2020', 'DT_11732S0112', '주로 지원해주는 사람의 유형', '2022-11-11', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
 				(1, 'KOSIS', 6, 'stats_dis_life_primcarer', '일상생활 도와주는 사람(1순위)', 'KOSIS_438', '「장애인삶패널조사」', '2023', '년', '2018', '2023', 'DT_438001_AE001', '일상생활 도와주는 사람(1순위)', '2025-02-04', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
@@ -216,7 +216,7 @@ INSERT INTO public.stats_src_data_info (ext_api_id, src_data_id, ext_sys, intg_t
 				(1, 'KOSIS', 8, 'stats_dis_hlth_medical_usage', '장애인 의료이용 현황', 'KOSIS_117', '「장애인건강보건통계」', '2022', '년', '2016', '2022', 'DT_117102_A050', '장애인 의료이용 현황', '2024-07-19', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
 				(1, 'KOSIS', 9, 'stats_dis_hlth_disease_cost_sub', '장애인 장애유형별 다빈도질환별 진료비현황: 소분류', 'KOSIS_117', '「장애인건강보건통계」', '2022', '년', '2016', '2022', 'DT_117102_A047', '장애인 장애유형별 다빈도질환별 진료비현황: 소분류', '2024-07-19', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
 				(1, 'KOSIS', 10, 'stats_dis_hlth_sport_exec_type', '장애인 생활체육 실행 유형', 'KOSIS_113', '「장애인생활체육조사」', '2024', '년', '2020', '2024', 'DT_113_STBL_1030517', '장애인 생활체육 실행 유형', '2025-03-19', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
-				(1, 'KOSIS', 11, , 'stats_dis_hlth_exrc_best_aid', '운동 시 가장 도움이 되는 지원 사항', 'KOSIS_113', '「장애인생활체육조사」', '2021', '년', '2019', '2021', 'DT_113_STBL_1029644', '운동 시 가장 도움이 되는 지원 사항', '2023-04-21', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
+				(1, 'KOSIS', 11, 'stats_dis_hlth_exrc_best_aid', '운동 시 가장 도움이 되는 지원 사항', 'KOSIS_113', '「장애인생활체육조사」', '2021', '년', '2019', '2021', 'DT_113_STBL_1029644', '운동 시 가장 도움이 되는 지원 사항', '2023-04-21', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
 				(1, 'KOSIS', 12, 'stats_dis_aid_device_usage', '장애인보조기기 사용여부', 'KOSIS_438', '「장애인삶패널조사」', '2023', '년', '2018', '2023', 'DT_438001_AE023', '장애인보조기기 사용여부', '2025-02-04', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
 				(1, 'KOSIS', 13, 'stats_dis_aid_device_need', '장애인보조기기 필요여부', 'KOSIS_438', '「장애인삶패널조사」', '2023', '년', '2018', '2023', 'DT_438001_AE022', '장애인보조기기 필요여부', '2025-02-04', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
 				(1, 'KOSIS', 14, 'stats_dis_edu_voca_exec', '진로 및 직업교육 실시 여부', 'KOSIS_112', '「특수교육실태조사」', '2023', '3년', '2023', '2023', 'DT_112014_2023_01_135', '진로 및 직업교육 실시 여부', '2024-10-23', '2025-05-16', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,null, 'SYS-MANUAL', '', ''),
