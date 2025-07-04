@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.1.2 last update data : 2025.06.26
+-- ## ver 0.1.3 last update data : 2025.07.04
 -- ## Only for PostgreSQL
 -- ## 기초 데이터용 테이블 생성 스크립트 ( 제외 : "mv_poi" table )
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
@@ -408,7 +408,7 @@ CREATE TABLE public.stats_src_data_info (
 	stat_latest_chn_dt varchar(12) NOT NULL, -- 수집기관 최종 자료갱신일 (예:2024-07-19)
 	stat_data_ref_dt varchar(12) NULL, -- KOSIS 통계 데이터를 iitp 시스템에서 마지막 수집/참조 일자 (예:2024-07-19)
 	
-	avail_cat_cols vachar(40) NULL, -- 사용가능한 Categories (c1~c3) 예: "["c1","c2"]"
+	avail_cat_cols varchar(40) NULL, -- 사용가능한 Categories (c1~c3) 예: "["c1","c2"]"
 	
 	status char(1) DEFAULT 'A'  NOT NULL, -- 데이터 상태,  "data_status" comm code 참조
 	del_yn bpchar(1) DEFAULT 'N'::bpchar NOT NULL, -- 삭제여부 (Y: 삭제)
@@ -492,7 +492,7 @@ CREATE TABLE stats_kosis_metadata_code (
     CONSTRAINT pkey_st_kosis_metadata_code PRIMARY KEY (id)
 );
 
-CREATE UNIQUE INDEX uidx_st_kosis_metadata_code_obj_itm_id ON public.stats_kosis_metadata_code USING btree (src_data_id, tbl_id, obj_id, itm_id );
+CREATE UNIQUE INDEX uidx_st_kosis_metadata_code_obj_itm_id_latest ON public.stats_kosis_metadata_code USING btree (src_data_id, tbl_id, obj_id, itm_id, stat_latest_chn_dt);
 
 COMMENT ON TABLE public.stats_kosis_metadata_code IS '수집해 온 KOSIS 원천 통계 데이터의 분류/항목 코드 정보';
 
