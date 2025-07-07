@@ -41,7 +41,7 @@ CREATE INDEX idx_emp_dis_jobseeker_region_job ON public.emp_dis_jobseeker_status
 CREATE INDEX idx_emp_dis_jobseeker_disability_age ON public.emp_dis_jobseeker_status USING btree (disability_type, severity, age);
 
 -- Table comment
-COMMENT ON TABLE public.emp_dis_jobseeker_status IS '장애인 구직자 현황 테이블';
+COMMENT ON TABLE public.emp_dis_jobseeker_status IS '1. 장애인 구직자 현황 테이블';
 
 -- Column comments
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.id IS '시스템 ID, 고유 식별자 (자동 증가)';
@@ -79,7 +79,7 @@ CREATE TABLE public.emp_dis_training_usage (
 
 CREATE INDEX idx_emp_dis_training_usage_org_category ON public.emp_dis_training_usage (training_org_category);
 
-COMMENT ON TABLE public.emp_dis_training_usage IS '장애인 훈련센터 이용자 현황 테이블';
+COMMENT ON TABLE public.emp_dis_training_usage IS '2. 발달장애인훈련센터 이용자현황 테이블';
 COMMENT ON COLUMN public.emp_dis_training_usage.id IS '시스템 ID, 고유 식별자 (자동 증가)';
 COMMENT ON COLUMN public.emp_dis_training_usage.seq_no IS '연번 (원본 데이터 순번)';
 COMMENT ON COLUMN public.emp_dis_training_usage.training_org_category IS '훈련기관구분';
@@ -108,7 +108,7 @@ CREATE TABLE public.emp_dis_obligation_fulfillment (
 
 CREATE INDEX idx_emp_dis_obligation_fulfillment_year ON public.emp_dis_obligation_fulfillment (year);
 
-COMMENT ON TABLE public.emp_dis_obligation_fulfillment IS '장애인 의무고용 - 사업체 이행 현황 테이블';
+COMMENT ON TABLE public.emp_dis_obligation_fulfillment IS '15. 장애인 의무고용 - 사업체 현황 테이블';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.id IS '시스템 ID';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.year IS '연도';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.company_count IS '사업체수';
@@ -151,7 +151,7 @@ CREATE INDEX idx_emp_dis_consulting_business_type ON public.emp_dis_consulting U
 CREATE INDEX idx_emp_dis_consulting_regional_office ON public.emp_dis_consulting USING btree (regional_office);
 
 -- Table comment
-COMMENT ON TABLE public.emp_dis_consulting IS '장애인 고용컨설팅 테이블';
+COMMENT ON TABLE public.emp_dis_consulting IS '4. 장애인 고용컨설팅 테이블';
 
 -- Column comments
 COMMENT ON COLUMN public.emp_dis_consulting.id IS '시스템 ID, 고유 식별자 (자동 증가)';
@@ -211,7 +211,7 @@ CREATE INDEX idx_emp_dis_job_posting_company_type ON public.emp_dis_job_posting 
 CREATE INDEX idx_emp_dis_job_posting_office ON public.emp_dis_job_posting USING btree (office);
 
 -- Table comment
-COMMENT ON TABLE public.emp_dis_job_posting IS '장애인 구인 정보 테이블';
+COMMENT ON TABLE public.emp_dis_job_posting IS '5. 장애인 구인 정보 테이블';
 
 -- Column comments
 COMMENT ON COLUMN public.emp_dis_job_posting.id IS '시스템 ID, 고유 식별자 (자동 증가)';
@@ -264,7 +264,7 @@ CREATE INDEX idx_emp_dis_burden_workplace_year ON public.emp_dis_burden_workplac
 CREATE INDEX idx_emp_dis_burden_workplace_facility_type ON public.emp_dis_burden_workplace (facility_type);
 CREATE INDEX idx_emp_dis_burden_workplace_worker_count ON public.emp_dis_burden_workplace (worker_count);
 
-COMMENT ON TABLE public.emp_dis_burden_workplace IS '장애인고용 부담금감면 연계고용사업장 정보 테이블';
+COMMENT ON TABLE public.emp_dis_burden_workplace IS '6. 장애인고용 부담금감면 연계고용사업장 정보 테이블';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.id IS '시스템 ID, 고유 식별자 (자동 증가)';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.seq_no IS '연번 (원본 데이터 순번)';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.year IS '연도';
@@ -302,7 +302,7 @@ CREATE TABLE public.emp_dis_emp_incentive (
 CREATE INDEX idx_emp_dis_emp_incentive_region ON public.emp_dis_emp_incentive (region);
 CREATE INDEX idx_emp_dis_emp_incentive_industry ON public.emp_dis_emp_incentive (industry);
 
-COMMENT ON TABLE public.emp_dis_emp_incentive IS '장애인 고용장려금 지급 현황 테이블';
+COMMENT ON TABLE public.emp_dis_emp_incentive IS '13. 신규고용장려금 지역별 지급 현황 테이블';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.id IS '시스템 ID';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.region IS '시도구분';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.industry IS '업종';
@@ -345,7 +345,7 @@ CREATE INDEX idx_emp_dis_regional_status_region ON public.emp_dis_regional_statu
 CREATE INDEX idx_emp_dis_regional_status_severe_rate ON public.emp_dis_regional_status USING btree (severe_rate);
 
 -- Table comment
-COMMENT ON TABLE public.emp_dis_regional_status IS '지역별 장애인 고용 현황 테이블';
+COMMENT ON TABLE public.emp_dis_regional_status IS '7. 지역별 장애인 고용 현황 테이블';
 
 -- Column comments
 COMMENT ON COLUMN public.emp_dis_regional_status.id IS '시스템 ID, 고유 식별자 (자동 증가)';
@@ -389,7 +389,7 @@ CREATE TABLE public.emp_dis_training_course (
 CREATE INDEX idx_emp_dis_training_course_type ON public.emp_dis_training_course (course_type);
 CREATE INDEX idx_emp_dis_training_course_name ON public.emp_dis_training_course (course_name);
 
-COMMENT ON TABLE public.emp_dis_training_course IS '장애인고용 전문인력 교육과정 테이블';
+COMMENT ON TABLE public.emp_dis_training_course IS '8. 고용개발원 교육정보 테이블';
 COMMENT ON COLUMN public.emp_dis_training_course.id IS '시스템 ID';
 COMMENT ON COLUMN public.emp_dis_training_course.course_type IS '과정구분';
 COMMENT ON COLUMN public.emp_dis_training_course.course_name IS '과정명';
@@ -437,7 +437,7 @@ CREATE TABLE public.emp_dis_dev_support_org (
 CREATE INDEX idx_emp_dis_dev_support_org_region ON public.emp_dis_dev_support_org (region);
 CREATE INDEX idx_emp_dis_dev_support_org_org_name ON public.emp_dis_dev_support_org (org_name);
 
-COMMENT ON TABLE public.emp_dis_dev_support_org IS '발달장애인 지원 기관 및 제공서비스 테이블';
+COMMENT ON TABLE public.emp_dis_dev_support_org IS '9. 한국장애인개발원 발달장애인 지원 기관 및 제공서비스 테이블';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.id IS '시스템 ID';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.seq_no IS '연번 (원본 데이터 순번)';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.org_name IS '기관명';
@@ -486,7 +486,7 @@ CREATE TABLE public.emp_dis_entre_lecture (
 CREATE INDEX idx_emp_dis_entre_lecture_year ON public.emp_dis_entre_lecture (year);
 CREATE INDEX idx_emp_dis_entre_lecture_title ON public.emp_dis_entre_lecture (title);
 
-COMMENT ON TABLE public.emp_dis_entre_lecture IS '장애인기업종합지원센터 창업넷 일반강좌 정보 테이블';
+COMMENT ON TABLE public.emp_dis_entre_lecture IS '10. 장애인기업종합지원센터 창업넷 일반강좌 정보 테이블';
 COMMENT ON COLUMN public.emp_dis_entre_lecture.id IS '시스템 ID';
 COMMENT ON COLUMN public.emp_dis_entre_lecture.year IS '교육년도';
 COMMENT ON COLUMN public.emp_dis_entre_lecture.online_type IS '온오프라인';
@@ -532,7 +532,7 @@ CREATE TABLE public.emp_dis_std_workplace (
 CREATE INDEX idx_emp_dis_std_workplace_cert_no ON public.emp_dis_std_workplace (cert_no);
 CREATE INDEX idx_emp_dis_std_workplace_company_name ON public.emp_dis_std_workplace (company_name);
 
-COMMENT ON TABLE public.emp_dis_std_workplace IS '장애인 표준사업장 현황 테이블';
+COMMENT ON TABLE public.emp_dis_std_workplace IS '11. 장애인 표준사업장 현황 테이블';
 COMMENT ON COLUMN public.emp_dis_std_workplace.id IS '시스템 ID';
 COMMENT ON COLUMN public.emp_dis_std_workplace.cert_no IS '인증번호';
 COMMENT ON COLUMN public.emp_dis_std_workplace.company_name IS '사업체명';
@@ -597,7 +597,7 @@ CREATE TABLE public.emp_dis_obligation_by_type (
 CREATE INDEX idx_emp_dis_obligation_by_type_org_type ON public.emp_dis_obligation_by_type (org_type);
 CREATE INDEX idx_emp_dis_obligation_by_type_category ON public.emp_dis_obligation_by_type (category);
 
-COMMENT ON TABLE public.emp_dis_obligation_by_type IS '장애유형별 의무고용 현황 테이블';
+COMMENT ON TABLE public.emp_dis_obligation_by_type IS '12. 장애인 의무고용 사업체 장애유형별 고용현황 테이블';
 COMMENT ON COLUMN public.emp_dis_obligation_by_type.id IS '시스템 ID';
 COMMENT ON COLUMN public.emp_dis_obligation_by_type.org_type IS '사업체유형';
 COMMENT ON COLUMN public.emp_dis_obligation_by_type.category IS '구분';
@@ -658,7 +658,7 @@ CREATE TABLE public.emp_dis_obligation_status (
 CREATE INDEX idx_emp_dis_obligation_org_name ON public.emp_dis_obligation_status (org_name);
 CREATE INDEX idx_emp_dis_obligation_emp_rate ON public.emp_dis_obligation_status (emp_rate);
 
-COMMENT ON TABLE public.emp_dis_obligation_status IS '장애인 고용의무 현황 통계 테이블';
+COMMENT ON TABLE public.emp_dis_obligation_status IS '3. 장애인 고용의무 현황 통계 테이블';
 COMMENT ON COLUMN public.emp_dis_obligation_status.id IS '시스템 ID, 고유 식별자 (자동 증가)';
 COMMENT ON COLUMN public.emp_dis_obligation_status.seq_no IS '연번 (원본 데이터 순번)';
 COMMENT ON COLUMN public.emp_dis_obligation_status.org_name IS '기관명 (예: 중앙행정기관, 헌법기관, 지방자치단체)';
