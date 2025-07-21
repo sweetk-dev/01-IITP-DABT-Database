@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.1.3 last update data : 2025.07.04
+-- ## ver 0.1.4 last update data : 2025.07.21
 -- ## Only for PostgreSQL
 -- ## 기초 데이터용 테이블 생성 스크립트 ( 제외 : "mv_poi" table )
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
@@ -185,7 +185,8 @@ CREATE TABLE public.open_api_client (
 	latest_key_created_at timestamptz, -- 마지막으로 KEY 발급받은 시간 
 	latest_login_at timestamptz, -- latest login time 
 	
-	description VARCHAR(600), -- client 설명
+	affiliation VARCHAR(60), -- client 소속
+	description VARCHAR(600), -- client 설명, key 신청 사유
 	note VARCHAR(600), -- 비고
 	
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
@@ -210,7 +211,8 @@ COMMENT ON COLUMN public.open_api_client.client_name IS 'client name';
 COMMENT ON COLUMN public.open_api_client.status IS '"data_status" comm code 참조';
 COMMENT ON COLUMN public.open_api_client.del_yn IS '삭제여부 (Y: 삭제)';
 
-COMMENT ON COLUMN public.open_api_client.description IS 'client 설명';
+COMMENT ON COLUMN public.open_api_client.affiliation IS 'client 소속';
+COMMENT ON COLUMN public.open_api_client.description IS 'client 설명, key 신청 사유';
 COMMENT ON COLUMN public.open_api_client.note IS '비고';
 
 COMMENT ON COLUMN public.open_api_client.latest_key_created_at IS '마지막으로 KEY 발급받은 시간';
