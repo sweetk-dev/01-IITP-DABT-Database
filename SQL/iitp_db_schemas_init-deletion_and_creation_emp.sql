@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists
--- ## ver 0.0.4 last updated data : 2025.07.11
+-- ## ver 0.0.5 last updated data : 2025.07.24
 -- ## Only for PostgreSQL
 -- ## 고용관련 정적 데이터용 테이블 생성 스크립트
 -- ## 나라 HR 데이터 제공 데이터
@@ -30,7 +30,7 @@ CREATE TABLE public.emp_dis_jobseeker_status (
 
                                                  created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
                                                  updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
-                                                 created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조
+                                                 created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                                  updated_by varchar(40) NULL, -- 데이터 수정자
 
                                                  CONSTRAINT pkey_emp_dis_jobseeker_status PRIMARY KEY (id)
@@ -57,7 +57,7 @@ COMMENT ON COLUMN public.emp_dis_jobseeker_status.severity IS '중증여부 (중
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.org_type IS '기관분류 (예: 공단)';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.created_at IS '레코드 생성 시각';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.updated_at IS '레코드 수정 시각';
-COMMENT ON COLUMN public.emp_dis_jobseeker_status.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조';
+COMMENT ON COLUMN public.emp_dis_jobseeker_status.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.updated_by IS '데이터 수정자';
 
 -- #### 02.발달장애인훈련센터 이용자현황 테이블 ####
@@ -72,7 +72,7 @@ CREATE TABLE public.emp_dis_center_usage (
                                                employed_count int4 NOT NULL, -- 양성과정 취업자수
                                                created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
                                                updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
-                                               created_by varchar(40) NULL, -- 데이터 생성자
+                                               created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                                updated_by varchar(40) NULL  -- 데이터 수정자
 );
 
@@ -85,7 +85,7 @@ COMMENT ON COLUMN public.emp_dis_center_usage.user_count IS '양성과정 이용
 COMMENT ON COLUMN public.emp_dis_center_usage.employed_count IS '양성과정 취업자수';
 COMMENT ON COLUMN public.emp_dis_center_usage.created_at IS '레코드 생성 시각';
 COMMENT ON COLUMN public.emp_dis_center_usage.updated_at IS '레코드 수정 시각';
-COMMENT ON COLUMN public.emp_dis_center_usage.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_center_usage.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_center_usage.updated_by IS '데이터 수정자';
 
 -- #### 15.장애인 의무고용 - 사업체 현황 테이블 ####
@@ -100,7 +100,7 @@ CREATE TABLE public.emp_dis_obligation_fulfillment (
                                                        fulfilled_count int NOT NULL, -- 이행사업체수
                                                        created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
                                                        updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
-                                                       created_by varchar(40), -- 데이터 생성자
+                                                       created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                                        updated_by varchar(40)  -- 데이터 수정자
 );
 
@@ -113,7 +113,7 @@ COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.company_count IS '사업
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.fulfilled_count IS '이행사업체수';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.created_at IS '생성시각';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.updated_at IS '수정시각';
-COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.updated_by IS '데이터 수정자';
 
 -- #### 04.장애인 고용컨설팅 테이블 ####
@@ -137,7 +137,7 @@ CREATE TABLE public.emp_dis_consulting_his (
 
                                            created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
                                            updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
-                                           created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조
+                                           created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                            updated_by varchar(40) NULL, -- 데이터 수정자
 
                                            CONSTRAINT pkey_emp_dis_consulting_his PRIMARY KEY (id)
@@ -162,7 +162,7 @@ COMMENT ON COLUMN public.emp_dis_consulting_his.regional_office IS '관할 지�
 COMMENT ON COLUMN public.emp_dis_consulting_his.office_tel IS '관할 지역본부 및 지사 대표번호 (예: 033-737-6612)';
 COMMENT ON COLUMN public.emp_dis_consulting_his.created_at IS '레코드 생성 시각';
 COMMENT ON COLUMN public.emp_dis_consulting_his.updated_at IS '레코드 수정 시각';
-COMMENT ON COLUMN public.emp_dis_consulting_his.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조';
+COMMENT ON COLUMN public.emp_dis_consulting_his.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_consulting_his.updated_by IS '데이터 수정자';
 
 -- #### 05.장애인 구인 정보 테이블 ####
@@ -195,7 +195,7 @@ CREATE TABLE public.emp_dis_job_posting (
 
                                             created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
                                             updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
-                                            created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조
+                                            created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                             updated_by varchar(40) NULL, -- 데이터 수정자
 
                                             CONSTRAINT pkey_emp_dis_job_posting PRIMARY KEY (id)
@@ -231,7 +231,7 @@ COMMENT ON COLUMN public.emp_dis_job_posting.reg_date IS '등록일 (YYYY-MM-DD 
 COMMENT ON COLUMN public.emp_dis_job_posting.tel IS '연락처';
 COMMENT ON COLUMN public.emp_dis_job_posting.created_at IS '레코드 생성 시각';
 COMMENT ON COLUMN public.emp_dis_job_posting.updated_at IS '레코드 수정 시각';
-COMMENT ON COLUMN public.emp_dis_job_posting.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조';
+COMMENT ON COLUMN public.emp_dis_job_posting.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_job_posting.updated_by IS '데이터 수정자';
 
 -- #### 06.장애인고용 부담금감면 연계고용사업장 정보 테이블 ####
@@ -251,7 +251,7 @@ CREATE TABLE public.emp_dis_burden_workplace (
                                                  severe_count int4 NOT NULL, -- 중증장애인수
                                                  created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
                                                  updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
-                                                 created_by varchar(40) NULL, -- 데이터 생성자
+                                                 created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                                  updated_by varchar(40) NULL  -- 데이터 수정자
 );
 
@@ -269,7 +269,7 @@ COMMENT ON COLUMN public.emp_dis_burden_workplace.disabled_count IS '장애인�
 COMMENT ON COLUMN public.emp_dis_burden_workplace.severe_count IS '중증장애인수';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.created_at IS '레코드 생성 시각';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.updated_at IS '레코드 수정 시각';
-COMMENT ON COLUMN public.emp_dis_burden_workplace.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_burden_workplace.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.updated_by IS '데이터 수정자';
 
 -- #### 13.장애인 고용장려금 지급 현황 테이블 ####
@@ -287,7 +287,7 @@ CREATE TABLE public.emp_dis_emp_incentive (
                                               paid_year_person int NOT NULL, -- 지급연인원
                                               created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
                                               updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
-                                              created_by varchar(40), -- 데이터 생성자
+                                              created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                               updated_by varchar(40)  -- 데이터 수정자
 );
 CREATE INDEX idx_emp_dis_emp_incentive_region_industry ON public.emp_dis_emp_incentive (region, industry);
@@ -302,7 +302,7 @@ COMMENT ON COLUMN public.emp_dis_emp_incentive.paid_person IS '지급순인원';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.paid_year_person IS '지급연인원';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.created_at IS '생성시각';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.updated_at IS '수정시각';
-COMMENT ON COLUMN public.emp_dis_emp_incentive.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_emp_incentive.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.updated_by IS '데이터 수정자';
 
 -- #### 07.지역별 장애인 고용 현황 테이블 ####
@@ -321,7 +321,7 @@ CREATE TABLE public.emp_dis_regional_status (
     severe_2x_rate decimal(5,2) NOT NULL, -- 중증2배수 적용 장애인 고용률 (%)
     created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
     updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
-    created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조
+    created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
     updated_by varchar(40) NULL  -- 데이터 수정자
 );
 CREATE UNIQUE INDEX uidx_emp_dis_regional_status_year_region ON public.emp_dis_regional_status USING btree (year,region);
@@ -339,7 +339,7 @@ COMMENT ON COLUMN public.emp_dis_regional_status.severe_2x_count IS '중증2배�
 COMMENT ON COLUMN public.emp_dis_regional_status.severe_2x_rate IS '중증2배수 적용 장애인 고용률 (%)';
 COMMENT ON COLUMN public.emp_dis_regional_status.created_at IS '레코드 생성 시각';
 COMMENT ON COLUMN public.emp_dis_regional_status.updated_at IS '레코드 수정 시각';
-COMMENT ON COLUMN public.emp_dis_regional_status.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조';
+COMMENT ON COLUMN public.emp_dis_regional_status.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_regional_status.updated_by IS '데이터 수정자';
 
 -- #### 08.고용개발원 교육정보 테이블(장애인고용 전문인력 교육과정) ####
@@ -363,7 +363,7 @@ CREATE TABLE public.emp_dis_staff_train_crs (
                                                 target varchar(200), -- 교육대상
                                                 created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
                                                 updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
-                                                created_by varchar(40), -- 데이터 생성자
+                                                created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                                 updated_by varchar(40)  -- 데이터 수정자
 );
 
@@ -385,7 +385,7 @@ COMMENT ON COLUMN public.emp_dis_staff_train_crs.location IS '교육장소';
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.target IS '교육대상';
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.created_at IS '생성시각';
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.updated_at IS '수정시각';
-COMMENT ON COLUMN public.emp_dis_staff_train_crs.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_staff_train_crs.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.updated_by IS '데이터 수정자';
 
 -- #### 09.발달장애인 지원 기관 및 제공서비스 테이블 ####
@@ -410,7 +410,7 @@ CREATE TABLE public.emp_dis_dev_support_org (
                                                 emergency_care boolean NOT NULL, -- 긴급돌봄 (O/X → true/false)
                                                 created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
                                                 updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
-                                                created_by varchar(40), -- 데이터 생성자
+                                                created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                                 updated_by varchar(40)  -- 데이터 수정자
 );
 
@@ -433,7 +433,7 @@ COMMENT ON COLUMN public.emp_dis_dev_support_org.child_family_sup IS '장애아�
 COMMENT ON COLUMN public.emp_dis_dev_support_org.emergency_care IS '긴급돌봄 (O/X → true/false)';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.created_at IS '생성시각';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.updated_at IS '수정시각';
-COMMENT ON COLUMN public.emp_dis_dev_support_org.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_dev_support_org.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.updated_by IS '데이터 수정자';
 
 -- #### 10.장애인기업종합지원센터 창업넷 일반강좌 정보 테이블 ####
@@ -458,7 +458,7 @@ CREATE TABLE public.emp_dis_startup_lecture (
                                               complete_count int NOT NULL, -- 수료인원
                                               created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
                                               updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
-                                              created_by varchar(40), -- 데이터 생성자
+                                              created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                               updated_by varchar(40)  -- 데이터 수정자
 );
 
@@ -481,7 +481,7 @@ COMMENT ON COLUMN public.emp_dis_startup_lecture.apply_count IS '신청인원';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.complete_count IS '수료인원';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.created_at IS '생성시각';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.updated_at IS '수정시각';
-COMMENT ON COLUMN public.emp_dis_startup_lecture.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_startup_lecture.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.updated_by IS '데이터 수정자';
 
 -- #### 11.장애인 표준사업장 현황 테이블 ####
@@ -503,7 +503,7 @@ CREATE TABLE public.emp_dis_std_workplace (
                                               type varchar(20) NOT NULL, -- 구분
                                               created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
                                               updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
-                                              created_by varchar(40), -- 데이터 생성자
+                                              created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                               updated_by varchar(40)  -- 데이터 수정자
 );
 
@@ -523,7 +523,7 @@ COMMENT ON COLUMN public.emp_dis_std_workplace.business_item IS '업종 및 주�
 COMMENT ON COLUMN public.emp_dis_std_workplace.type IS '구분';
 COMMENT ON COLUMN public.emp_dis_std_workplace.created_at IS '생성시각';
 COMMENT ON COLUMN public.emp_dis_std_workplace.updated_at IS '수정시각';
-COMMENT ON COLUMN public.emp_dis_std_workplace.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_std_workplace.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_std_workplace.updated_by IS '데이터 수정자';
 
 -- #### 12.장애유형별 의무고용 현황 테이블 ####
@@ -567,7 +567,7 @@ CREATE TABLE public.emp_dis_obligation_by_type (
                                                    veteran int NOT NULL, -- 국가유공
                                                    created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
                                                    updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
-                                                   created_by varchar(40), -- 데이터 생성자
+                                                   created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                                    updated_by varchar(40)  -- 데이터 수정자
 );
 
@@ -609,7 +609,7 @@ COMMENT ON COLUMN public.emp_dis_obligation_by_type.epilepsy_mild IS '뇌전증 
 COMMENT ON COLUMN public.emp_dis_obligation_by_type.veteran IS '국가유공';
 COMMENT ON COLUMN public.emp_dis_obligation_by_type.created_at IS '생성시각';
 COMMENT ON COLUMN public.emp_dis_obligation_by_type.updated_at IS '수정시각';
-COMMENT ON COLUMN public.emp_dis_obligation_by_type.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_obligation_by_type.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_obligation_by_type.updated_by IS '데이터 수정자';
 
 -- #### 03.장애인 고용의무 현황 통계 테이블 ####
@@ -626,7 +626,7 @@ CREATE TABLE public.emp_dis_obligation_status (
                                                   emp_rate decimal(5,2) NOT NULL, -- 고용률 (%)
                                                   created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
                                                   updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
-                                                  created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조
+                                                  created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                                   updated_by varchar(40) NULL  -- 데이터 수정자
 );
 
@@ -641,7 +641,7 @@ COMMENT ON COLUMN public.emp_dis_obligation_status.disabled_count IS '장애인 
 COMMENT ON COLUMN public.emp_dis_obligation_status.emp_rate IS '고용률 (%)';
 COMMENT ON COLUMN public.emp_dis_obligation_status.created_at IS '레코드 생성 시각';
 COMMENT ON COLUMN public.emp_dis_obligation_status.updated_at IS '레코드 수정 시각';
-COMMENT ON COLUMN public.emp_dis_obligation_status.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, user id), "sys_work_type" comm code 참조';
+COMMENT ON COLUMN public.emp_dis_obligation_status.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_obligation_status.updated_by IS '데이터 수정자';
 
 -- #### 14.산업별 의무고용 현황 테이블 ####
@@ -659,7 +659,7 @@ CREATE TABLE public.emp_dis_obligation_by_indust (
                                                     emp_rate decimal(5,2) NOT NULL, -- 고용률 (%)
                                                     created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
                                                     updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
-                                                    created_by varchar(40), -- 데이터 생성자
+                                                    created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
                                                     updated_by varchar(40)  -- 데이터 수정자
 );
 
@@ -675,7 +675,7 @@ COMMENT ON COLUMN public.emp_dis_obligation_by_indust.obligation_count IS '의�
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.emp_rate IS '고용률 (%)';
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.created_at IS '생성시각';
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.updated_at IS '수정시각';
-COMMENT ON COLUMN public.emp_dis_obligation_by_indust.created_by IS '데이터 생성자';
+COMMENT ON COLUMN public.emp_dis_obligation_by_indust.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.updated_by IS '데이터 수정자';
 
 
