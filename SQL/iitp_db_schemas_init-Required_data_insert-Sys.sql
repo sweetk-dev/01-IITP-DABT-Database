@@ -1,6 +1,6 @@
 
 -- ## iitp DB Schemas - Initial setup - Insert Data for Required System Data
--- ## ver 0.1.0 last updated data : 2025.07.22
+-- ## ver 0.1.1 last updated data : 2025.07.24
 -- ## Only for PostgreSQL
 -- ## 초기 데이터 삽입 : 공통 코드 및 시스템 필수 데이터 
 
@@ -193,9 +193,9 @@ INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp
 -- #### public.sys_admin_account Data
 
 -- 최초 로그인시 비밀번호 변경하도록 되어 있음!! 초기 비밀번호 - 12345!!!
-TRUNCATE TABLE  public.sys_admin_account;
-INSERT INTO public.sys_admin_account (login_id, "password", "name", roles, status, del_yn, affiliation, description, note, created_at, created_by) 
-			VALUES('sweetkRoot01', '12345!!!', 'sweetk-root-01', 'S-Admin', 'A'::bpchar, 'N'::bpchar, 'sweetk', 'sweetk super admin', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+TRUNCATE TABLE  public.sys_adm_account;
+INSERT INTO public.sys_adm_account (login_id, "password", "name", roles, status, del_yn, affiliation, description, note, created_at, created_by) 
+			VALUES('sweetkRoot01', '$2b$10$JFa.OPm59QwgISNqTqMu/.B3fGcAZIxPccJr40FIHRR9Oug8ouvbK', 'sweetk-root-01', 'S-Admin', 'A'::bpchar, 'N'::bpchar, 'sweetk', 'sweetk super admin', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
 
