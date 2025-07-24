@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.1.4 last update data : 2025.07.21
+-- ## ver 0.1.5 last updated data : 2025.07.22
 -- ## Only for PostgreSQL
 -- ## 기초 데이터용 테이블 생성 스크립트 ( 제외 : "mv_poi" table )
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
@@ -60,9 +60,9 @@ $$;
 DROP TABLE IF EXISTS public.sys_common_code;
 
 CREATE TABLE public.sys_common_code (
-	grp_id varchar(40) NOT NULL, -- 코드 그룹 ID (예: GENDER, REGION)
+	grp_id varchar(44) NOT NULL, -- 코드 그룹 ID (예: GENDER, REGION)
 	grp_nm varchar(80) NOT NULL, -- 코드 그룹 이름 (예: 성별, 지역)
-	code_id varchar(32) NOT NULL, -- 코드 ID (예: M, F, 1000)
+	code_id varchar(36) NOT NULL, -- 코드 ID (예: M, F, 1000)
 	code_nm varchar(64) NOT NULL, -- 코드 이름 (예: 남성, 여성, 컴퓨터)
 	
 	parent_grp_id varchar(40) NULL, -- 상위 그룹 ID (optional)
