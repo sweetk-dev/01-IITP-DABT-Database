@@ -125,7 +125,7 @@ DROP TABLE IF EXISTS public.sys_qna;
 
 CREATE TABLE public.sys_qna (
     qna_id           BIGSERIAL NOT NULL,                            -- 질문 고유 식별자
-    api_cli_id       int4  NOT NULL,                                   -- 작성자 system ID
+    user_id          int4  NOT NULL,                                   -- 작성자 system ID
     qna_type         VARCHAR(32) NOT NULL,                             -- 질문 유형, "qna_type" comm code 참조
     title            VARCHAR(600) NOT NULL,                            -- 질문 제목
     content          VARCHAR(6000) NOT NULL,                           -- 질문 내용
