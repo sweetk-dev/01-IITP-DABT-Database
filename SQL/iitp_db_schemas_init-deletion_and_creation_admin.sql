@@ -149,7 +149,7 @@ CREATE INDEX idx_sys_qna_type_screct ON public.sys_qna USING btree (qna_type, se
 COMMENT ON TABLE public.sys_qna IS '일반 사용자 QnA 테이블 (질문과 답변 포함)';
 
 COMMENT ON COLUMN public.sys_qna.qna_id IS 'QnA 고유 식별자 (Primary Key)';
-COMMENT ON COLUMN public.sys_qna.api_cli_id IS '작성자 system ID ';
+COMMENT ON COLUMN public.sys_qna.user_id IS '작성자 system ID ';
 COMMENT ON COLUMN public.sys_qna.qna_type IS 'QnA 질문 유형, "qna_type" comm code 참조';
 COMMENT ON COLUMN public.sys_qna.title IS '질문 제목';
 COMMENT ON COLUMN public.sys_qna.content IS '질문 본문 내용';
