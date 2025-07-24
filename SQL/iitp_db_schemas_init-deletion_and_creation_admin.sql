@@ -187,7 +187,7 @@ CREATE TABLE public.sys_log_user_access (
     log_id          BIGSERIAL NOT NULL,                            -- 로그 고유 ID
     user_id         int4 NOT NULL,                                  -- 사용자 ID
 	user_type       CHAR(1) NOT NULL CHECK (user_type IN ('U', 'A')), -- 사용자 유형
-    log_type        VARCHAR(8) NOT NULL CHECK (log_type IN ('LOGIN', 'LOGOUT')), -- 수행한 액션 종류 (예: LOGIN, LOGOUT)
+    log_type        VARCHAR(16) NOT NULL CHECK (log_type IN ('LOGIN', 'LOGOUT', 'LOGOUT-T-EXP')), -- 수행한 액션 종류 (예: LOGIN, LOGOUT, LOGOUT-T-EXP)
     act_result      CHAR(1) NOT NULL CHECK (act_result IN ('S', 'F')),  -- 액션 결과 ( S, F)
     err_code       VARCHAR(10),                                      -- 실패 시 에러 코드
 	err_msg        VARCHAR(200),                                             -- 실패 시 에러 메시지
@@ -207,7 +207,7 @@ COMMENT ON COLUMN public.sys_log_user_access.log_id IS '로그 고유 ID';
 COMMENT ON COLUMN public.sys_log_user_access.user_id IS '사용자 ID';
 COMMENT ON COLUMN public.sys_log_user_access.user_type IS '사용자 유형(U:User, A:Admin)';
 
-COMMENT ON COLUMN public.sys_log_user_access.log_type IS '수행한 액션 (예: LOGIN, LOGOUT)';
+COMMENT ON COLUMN public.sys_log_user_access.log_type IS '수행한 액션 (예: LOGIN, LOGOUT,LOGOUT-T-EXP)';
 COMMENT ON COLUMN public.sys_log_user_access.act_result IS '성공 여부( S:성공, F:실패)';
 COMMENT ON COLUMN public.sys_log_user_access.err_code IS '에러 발생 시 코드';
 COMMENT ON COLUMN public.sys_log_user_access.err_msg IS '에러 발생 시 상세 메시지';
