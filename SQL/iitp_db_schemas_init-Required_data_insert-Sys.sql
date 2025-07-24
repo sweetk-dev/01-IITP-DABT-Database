@@ -1,6 +1,6 @@
 
 -- ## iitp DB Schemas - Initial setup - Insert Data for Required System Data
--- ## ver 0.0.9 last update data : 2025.07.04
+-- ## ver 0.1.0 last updated data : 2025.07.22
 -- ## Only for PostgreSQL
 -- ## 초기 데이터 삽입 : 공통 코드 및 시스템 필수 데이터 
 
@@ -97,38 +97,76 @@ $$;
 -- #### public.sys_common_code Data
 
 -- # SYSTEM 용, code_type = S
+-- sys_admin_roles : Admin Roles(권한)
+DELETE FROM public.sys_common_code WHERE grp_id='sys_admin_roles';
+INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
+			values
+				('sys_admin_roles', 'Admin Roles(권한)', 'S-ADMIN', 'Super Admin', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '모든 권한을 가진 최상위 관리자', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sys_admin_roles', 'Admin Roles(권한)', 'ADMIN', 'Admin', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '일반 관리자', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sys_admin_roles', 'Admin Roles(권한)', 'EDITOR', 'Editor', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '콘텐츠 편집 권한만 있는 사용자', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sys_admin_roles', 'Admin Roles(권한)', 'VIEWER', 'Viewer', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '읽기 전용 사용자', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+
+
 -- sys_work_type : 시스템 동작 타입
 DELETE FROM public.sys_common_code WHERE grp_id='sys_work_type';
-INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by) 
+INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
 			values
-				('sys_work_type', '시스템 동작 타입', 'SYS-BACH', '시스템 Bach 처리', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '시스템의 Bach에 의해 자동으로 처리된 경우.', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null),
-				('sys_work_type', '시스템 동작 타입', 'SYS-MANUAL', '시스템 수동 처리', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '관리자시스템 외에서 수동 처리시, 관리시스템에서 처리된 경우 관리자 ID 삽입.', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null);
-					
+				('sys_work_type', '시스템 동작 타입', 'SYS-BACH', '시스템 Bach 처리', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '시스템의 Bach에 의해 자동으로 처리된 경우.', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sys_work_type', '시스템 동작 타입', 'SYS-MANUAL', '시스템 수동 처리', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '관리자시스템 외에서 수동 처리시, 관리시스템에서 처리된 경우 관리자 ID 삽입.', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sys_work_type', '시스템 동작 타입', 'BY-USER', '사용자에 의해서 처리', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '사용자에 의해서 처리된 경우', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+			
 
 -- data_status : 데이터 상태
 DELETE FROM public.sys_common_code WHERE grp_id='data_status';
-INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by) 
+INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
 			values
-				('data_status', '데이터 상태', 'P', '대기 중', null, null, 'S', 1, 1, 'Y'::bpchar, 'N'::bpchar, 'Pending: 내부 승인·검토 전', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null),
-    			('data_status', '데이터 상태', 'R', '준비 완료', null, null, 'S', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'Ready: 승인 완료, 활성화 조건 대기 중', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null),
-    			('data_status', '데이터 상태', 'A', '활성', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'Active: 현재 사용 가능한 상태', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null),
-    			('data_status', '데이터 상태', 'I', '비활성', null, null, 'S', 1, 4, 'Y'::bpchar, 'N'::bpchar, 'Inactive: 일시적으로 비활성화된 상태', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null),
-    			('data_status', '데이터 상태', 'D', '삭제됨', null, null, 'S', 1, 5, 'N'::bpchar, 'Y'::bpchar, 'Deleted: 논리적으로 삭제된 상태', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null);
+				('data_status', '데이터 상태', 'P', '대기 중', null, null, 'S', 1, 1, 'Y'::bpchar, 'N'::bpchar, 'Pending: 내부 승인·검토 전', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('data_status', '데이터 상태', 'R', '준비 완료', null, null, 'S', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'Ready: 승인 완료, 활성화 조건 대기 중', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('data_status', '데이터 상태', 'A', '활성', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'Active: 현재 사용 가능한 상태', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('data_status', '데이터 상태', 'I', '비활성', null, null, 'S', 1, 4, 'Y'::bpchar, 'N'::bpchar, 'Inactive: 일시적으로 비활성화된 상태', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('data_status', '데이터 상태', 'D', '삭제됨', null, null, 'S', 1, 5, 'N'::bpchar, 'Y'::bpchar, 'Deleted: 논리적으로 삭제된 상태', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
 -- data_format : 데이터 형식(format)
 DELETE FROM public.sys_common_code WHERE grp_id='data_format';
-INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by) 
+INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
 			values
-				('data_format', '데이터 형식', 'JSON', 'JSON', null, null, 'S', 1, 1, 'Y'::bpchar, 'N'::bpchar, 'JSON', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null),
-    			('data_format', '데이터 형식', 'XML', 'XML', null, null, 'S', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'XML', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null),
-    			('data_format', '데이터 형식', 'ARRAY', 'ARRAY', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'ARRAY', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null);
+				('data_format', '데이터 형식', 'JSON', 'JSON', null, null, 'S', 1, 1, 'Y'::bpchar, 'N'::bpchar, 'JSON', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('data_format', '데이터 형식', 'XML', 'XML', null, null, 'S', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'XML', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('data_format', '데이터 형식', 'ARRAY', 'ARRAY', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'ARRAY', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
 -- ext_sys_code : 외부 연동 시스템 코드
 DELETE FROM public.sys_common_code WHERE grp_id='ext_sys_code';
-INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by) 
-				VALUES('ext_sys_code', '외부 연동 시스템 코드', 'KOSIS', 'KOSIS 국가통계포털', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '정형-기초 데이터용 통계 데이터 수집을 위한 연동 시스템', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null);
+INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
+				VALUES('ext_sys_code', '외부 연동 시스템 코드', 'KOSIS', 'KOSIS 국가통계포털', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '정형-기초 데이터용 통계 데이터 수집을 위한 연동 시스템', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+
+
+-- faq_type : FAQ 유형
+DELETE FROM public.sys_common_code WHERE grp_id='faq_type';
+INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
+			VALUES
+				('faq_type', 'FAQ 유형', 'GENERAL', '일반적인 사항', null, null, 'S', 1, 1, 'Y'::bpchar, 'N'::bpchar, '사이트 사용등, 일반적인 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'AUTH', '인증키 관련', null, null, 'S', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'Open API 인증키 관련 질문', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'API', 'API 호출', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'Open API 호출 방식, 포맷 등', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'SUPPORT', '기술 지원', null, null, 'S', 1, 4, 'Y'::bpchar, 'N'::bpchar, '기술 지원,오류, 버그 신고 등 기술적 문제 관련', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'POLICY', '이용 정책', null, null, 'S', 1, 5, 'Y'::bpchar, 'N'::bpchar, 'API 사용 범위 및 라이선스 정책', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'ETC', '기타', null, null, 'S', 1, 6, 'Y'::bpchar, 'N'::bpchar, '기타 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+
+
+
+-- qna_type : Q&A 유형
+DELETE FROM public.sys_common_code WHERE grp_id='qna_type';
+INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
+			VALUES
+				('qna_type', 'Q&A 유형', 'GENERAL', '일반적인 사항', null, null, 'S', 1, 1, 'Y'::bpchar, 'N'::bpchar, '사이트 사용등, 일반적인 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'OPENAPI-USAGE', 'Open API 사용법', null, null, 'S', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'Open API 호출 방법 등', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'OPENAPI_ERR', 'Open API 오류/버그', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'Open API 오류 문의, 버그 신고,  오류 코드/ 응답 관련 문의', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'DATA', 'API 데이터 관련문의', null, null, 'S', 1, 4, 'Y'::bpchar, 'N'::bpchar, '추가 데이터 제공 요청 및 데이터 관련 문의', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'ACCOUNT', '계정/API 인증키', null, null, 'S', 1, 5, 'Y'::bpchar, 'N'::bpchar, 'API 인증키, 계정 관련 문의', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'IMPROVE', '기능 개선 제안', null, null, 'S', 1, 6, 'Y'::bpchar, 'N'::bpchar, '기능 개선 제안', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'ETC', '기타', null, null, 'S', 1, 7, 'Y'::bpchar, 'N'::bpchar, '기타 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+
 
 
 -- # 서비스용, code_type = B
@@ -148,6 +186,17 @@ INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp
 
 
 
+-- ################################################
+-- ### Admin Account(user) 정보 - 초기 데이터 삽입
+-- ################################################
+
+-- #### public.sys_admin_account Data
+
+-- 최초 로그인시 비밀번호 변경하도록 되어 있음!! 초기 비밀번호 - 12345!!!
+TRUNCATE TABLE  public.sys_admin_account;
+INSERT INTO public.sys_admin_account (login_id, "password", "name", roles, status, del_yn, affiliation, description, note, created_at, created_by) 
+			VALUES('sweetkRoot01', '12345!!!', 'sweetk-root-01', 'S-Admin', 'A'::bpchar, 'N'::bpchar, 'sweetk', 'sweetk super admin', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+
 
 
 -- ################################################
@@ -161,6 +210,7 @@ TRUNCATE TABLE  public.sys_ext_api_info;
 INSERT INTO public.sys_ext_api_info (if_name, ext_sys, ext_url, auth, data_format, latest_sync_time, memo, del_yn, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by) 
 			values
 				('KOSIS 국가통계포털', 'KOSIS', 'https://kosis.kr/statisticsList/statisticsListIndex.do?vwcd=MT_ZTITLE&menuId=M_01_01', 'MjBjZGE5MjlkM2U5ZjE3NWZiMWU2OTkwN2Y4YjgwZTA=', '[JOSN,XML]', null, '', 'N'::bpchar, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, null, 'SYS-MANUAL', null, null);
+
 
 
 
@@ -237,3 +287,31 @@ UPDATE stats_src_data_info sdi
 	SET stat_api_id = sai.stat_api_id
 FROM sys_stats_src_api_info sai 
 WHERE sdi.stat_tbl_id = sai.stat_tbl_id AND sdi.ext_api_id = sai.ext_api_id
+
+
+
+
+
+
+
+
+-- ################################################
+-- ### 자주 묻는 질문(FAQ) 정보 - 초기 데이터 삽입
+-- ### Admin site에서 FAQ 데이터 관리
+-- ################################################
+
+-- #### public.sys_faq_info Data
+TRUNCATE TABLE public.sys_faq_info CASCADE;
+
+INSERT INTO public.sys_faq_info (faq_type, question, answer, sort_order, use_yn, created_at, created_by) 
+			VALUES
+				('auth', '인증키는 어떻게 발급받나요?', 'Open API 센터 회원가입 후 [인증키 관리] 메뉴에서 발급받을 수 있습니다.', 1, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('auth', '인증키는 몇 개까지 발급할 수 있나요?', '기본적으로 1인당 1개의 인증키가 발급됩니다', 2, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('api', 'API 호출 시 일일 사용량 제한이 있나요?', '기본적으로 제한 없이 사용가능합니다.', 3, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('api', '호출 가능한 응답 포맷은 어떤 것이 있나요?', 'JSON 형식을 지원합니다.', 4, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('support', '오류가 발생했을 때는 어떻게 하나요?', 'API 호출 시 오류 코드와 메시지를 확인하시고, 해결되지 않는 경우 고객센터 또는 Q&A 게시판에 문의하세요.', 5, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('support', '데이터 업데이트 주기는 어떻게 되나요?', '데이터마다 업데이트 주기가 상이하며, 각 API 문서의 "갱신 주기" 항목을 참고하시기 바랍니다.', 6, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('policy', '상업적 이용도 가능한가요?', 'API 데이터는 출처(Open API 센터 명시)를 표기한 후 활용 가능합니다.', 7, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('policy', 'Open API 데이터를 가공해서 제공해도 되나요?', '출처(Open API 센터 명시)를 표기한 후 가공·재활용 가능합니다. 단, 민감 정보는 제외해야 합니다.', 8, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL');
+				
+	
