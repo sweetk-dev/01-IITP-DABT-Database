@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.1.6 last updated data : 2025.07.24
+-- ## ver 0.1.7 last updated data : 2025.07.30
 -- ## Only for PostgreSQL
 -- ## 기초 데이터용 테이블 생성 스크립트 ( 제외 : "mv_poi" table )
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
@@ -186,7 +186,6 @@ CREATE TABLE public.open_api_user (
 	latest_login_at timestamptz, -- latest login time 
 	
 	affiliation VARCHAR(90), -- client 소속
-	description VARCHAR(300), -- client 설명, key 신청 사유
 	note VARCHAR(600), -- 비고
 	
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
@@ -212,7 +211,6 @@ COMMENT ON COLUMN public.open_api_user.status IS '"data_status" comm code 참조
 COMMENT ON COLUMN public.open_api_user.del_yn IS '삭제여부 (Y: 삭제)';
 
 COMMENT ON COLUMN public.open_api_user.affiliation IS 'User 소속';
-COMMENT ON COLUMN public.open_api_user.description IS 'User 설명, key 신청 사유';
 COMMENT ON COLUMN public.open_api_user.note IS '비고';
 
 COMMENT ON COLUMN public.open_api_user.latest_key_created_at IS '마지막으로 KEY 발급받은 시간';
@@ -237,9 +235,11 @@ CREATE TABLE public.open_api_auth_key  (
 	user_id int4 NOT NULL,  -- api user sys id. open_api_user.user_id
 	auth_key VARCHAR(60) NOT NULL,	 -- api auth key
 	active_yn char(1) DEFAULT 'Y'::bpchar NOT NULL , -- 활성화 여부 (Y:활성화)
-	start_dt DATE NOT NULL,	 -- api auth key 유효 시작일
-	end_dt DATE NOT NULL,	 -- api auth key 유효 종료일
+	start_dt DATE,	 -- api auth key 유효 시작일
+	end_dt DATE,	 -- api auth key 유효 종료일
 	del_yn char(1) DEFAULT 'N'::bpchar NOT NULL, -- 삭제여부 (Y: 삭제)
+	key_name VARCHAR(120) NOT NULL, -- api key name 
+	key_desc VARCHAR(600) NOT NULL, -- api key 사용 목적 
 	active_at timestamptz, -- key 활성화된 일시
 	latest_acc_at timestamptz, -- latest access time 
 	
@@ -263,6 +263,10 @@ COMMENT ON COLUMN public.open_api_auth_key.active_yn IS '활성화 여부 (Y:활
 COMMENT ON COLUMN public.open_api_auth_key.start_dt IS ' api auth key 유효 시작일';
 COMMENT ON COLUMN public.open_api_auth_key.start_dt IS ' api auth key 유효 종료일';
 COMMENT ON COLUMN public.open_api_auth_key.del_yn IS '삭제여부 (Y: 삭제)';
+
+COMMENT ON COLUMN public.open_api_auth_key.key_name IS 'api key name';
+COMMENT ON COLUMN public.open_api_auth_key.key_desc IS 'api key 사용 목적';
+
 
 COMMENT ON COLUMN public.open_api_auth_key.active_at IS 'key 활성화된 일시';
 COMMENT ON COLUMN public.open_api_auth_key.latest_acc_at IS 'latest access time ';
