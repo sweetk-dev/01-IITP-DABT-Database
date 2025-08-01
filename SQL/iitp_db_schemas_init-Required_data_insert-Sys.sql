@@ -1,6 +1,6 @@
 
 -- ## iitp DB Schemas - Initial setup - Insert Data for Required System Data
--- ## ver 0.1.2 last updated data : 2025.07.25
+-- ## ver 0.1.3 last updated data : 2025.08.01
 -- ## Only for PostgreSQL
 -- ## 초기 데이터 삽입 : 공통 코드 및 시스템 필수 데이터 
 
@@ -142,16 +142,45 @@ INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp
 				VALUES('ext_sys_code', '외부 연동 시스템 코드', 'KOSIS', 'KOSIS 국가통계포털', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '정형-기초 데이터용 통계 데이터 수집을 위한 연동 시스템', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
+
+
+-- # 서비스용, code_type = B
+
+-- sido_code : 내부용 시도 코드(prefix:9)
+DELETE FROM public.sys_common_code WHERE grp_id='sido_code';
+INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
+			VALUES
+				('sido_code', '내부용 시도 코드(prefix:9)', '9110000', '서울특별시', null, null, 'B', 1, 1, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9260000', '부산광역시', null, null, 'B', 1, 2, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9270000', '대구광역시', null, null, 'B', 1, 3, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9280000', '인천광역시', null, null, 'B', 1, 4, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9290000', '광주광역시', null, null, 'B', 1, 5, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9300000', '대전광역시', null, null, 'B', 1, 6, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9310000', '울산광역시', null, null, 'B', 1, 7, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9360000', '세종특별자치시', null, null, 'B', 1, 8, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9410000', '경기도', null, null, 'B', 1, 9, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9510000', '강원특별자치도', null, null, 'B', 1, 10, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9430000', '충청북도', null, null, 'B', 1, 11, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9440000', '충청남도', null, null, 'B', 1, 12, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9520000', '전북특별자치도', null, null, 'B', 1, 13, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9460000', '전라남도', null, null, 'B', 1, 14, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9470000', '경상북도', null, null, 'B', 1, 15, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9480000', '경상남도', null, null, 'B', 1, 16, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('sido_code', '내부용 시도 코드(prefix:9)', '9500000', '제주특별자치도', null, null, 'B', 1, 17, 'Y'::bpchar, 'N'::bpchar, '9(내부구분자) + 행정.법벙코드 앞 6자리', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+
+
+
+
 -- faq_type : FAQ 유형
 DELETE FROM public.sys_common_code WHERE grp_id='faq_type';
 INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
 			VALUES
-				('faq_type', 'FAQ 유형', 'GENERAL', '일반적인 사항', null, null, 'S', 1, 1, 'Y'::bpchar, 'N'::bpchar, '사이트 사용등, 일반적인 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('faq_type', 'FAQ 유형', 'AUTH', '인증키 관련', null, null, 'S', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'Open API 인증키 관련 질문', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('faq_type', 'FAQ 유형', 'API', 'API 호출', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'Open API 호출 방식, 포맷 등', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('faq_type', 'FAQ 유형', 'SUPPORT', '기술 지원', null, null, 'S', 1, 4, 'Y'::bpchar, 'N'::bpchar, '기술 지원,오류, 버그 신고 등 기술적 문제 관련', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('faq_type', 'FAQ 유형', 'POLICY', '이용 정책', null, null, 'S', 1, 5, 'Y'::bpchar, 'N'::bpchar, 'API 사용 범위 및 라이선스 정책', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('faq_type', 'FAQ 유형', 'ETC', '기타', null, null, 'S', 1, 6, 'Y'::bpchar, 'N'::bpchar, '기타 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+				('faq_type', 'FAQ 유형', 'GENERAL', '일반적인 사항', null, null, 'B', 1, 1, 'Y'::bpchar, 'N'::bpchar, '사이트 사용등, 일반적인 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'AUTH', '인증키 관련', null, null, 'B', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'Open API 인증키 관련 질문', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'API', 'API 호출', null, null, 'B', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'Open API 호출 방식, 포맷 등', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'SUPPORT', '기술 지원', null, null, 'B', 1, 4, 'Y'::bpchar, 'N'::bpchar, '기술 지원,오류, 버그 신고 등 기술적 문제 관련', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'POLICY', '이용 정책', null, null, 'B', 1, 5, 'Y'::bpchar, 'N'::bpchar, 'API 사용 범위 및 라이선스 정책', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('faq_type', 'FAQ 유형', 'ETC', '기타', null, null, 'B', 1, 6, 'Y'::bpchar, 'N'::bpchar, '기타 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
 
@@ -159,17 +188,16 @@ INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp
 DELETE FROM public.sys_common_code WHERE grp_id='qna_type';
 INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
 			VALUES
-				('qna_type', 'Q&A 유형', 'GENERAL', '일반적인 사항', null, null, 'S', 1, 1, 'Y'::bpchar, 'N'::bpchar, '사이트 사용등, 일반적인 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('qna_type', 'Q&A 유형', 'OPENAPI-USAGE', 'Open API 사용법', null, null, 'S', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'Open API 호출 방법 등', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('qna_type', 'Q&A 유형', 'OPENAPI_ERR', 'Open API 오류/버그', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'Open API 오류 문의, 버그 신고,  오류 코드/ 응답 관련 문의', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('qna_type', 'Q&A 유형', 'DATA', 'API 데이터 관련문의', null, null, 'S', 1, 4, 'Y'::bpchar, 'N'::bpchar, '추가 데이터 제공 요청 및 데이터 관련 문의', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('qna_type', 'Q&A 유형', 'ACCOUNT', '계정/API 인증키', null, null, 'S', 1, 5, 'Y'::bpchar, 'N'::bpchar, 'API 인증키, 계정 관련 문의', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('qna_type', 'Q&A 유형', 'IMPROVE', '기능 개선 제안', null, null, 'S', 1, 6, 'Y'::bpchar, 'N'::bpchar, '기능 개선 제안', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('qna_type', 'Q&A 유형', 'ETC', '기타', null, null, 'S', 1, 7, 'Y'::bpchar, 'N'::bpchar, '기타 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+				('qna_type', 'Q&A 유형', 'GENERAL', '일반적인 사항', null, null, 'B', 1, 1, 'Y'::bpchar, 'N'::bpchar, '사이트 사용등, 일반적인 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'OPENAPI-USAGE', 'Open API 사용법', null, null, 'B', 1, 2, 'Y'::bpchar, 'N'::bpchar, 'Open API 호출 방법 등', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'OPENAPI_ERR', 'Open API 오류/버그', null, null, 'B', 1, 3, 'Y'::bpchar, 'N'::bpchar, 'Open API 오류 문의, 버그 신고,  오류 코드/ 응답 관련 문의', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'DATA', 'API 데이터 관련문의', null, null, 'B', 1, 4, 'Y'::bpchar, 'N'::bpchar, '추가 데이터 제공 요청 및 데이터 관련 문의', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'ACCOUNT', '계정/API 인증키', null, null, 'B', 1, 5, 'Y'::bpchar, 'N'::bpchar, 'API 인증키, 계정 관련 문의', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'IMPROVE', '기능 개선 제안', null, null, 'B', 1, 6, 'Y'::bpchar, 'N'::bpchar, '기능 개선 제안', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('qna_type', 'Q&A 유형', 'ETC', '기타', null, null, 'B', 1, 7, 'Y'::bpchar, 'N'::bpchar, '기타 사항', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
 
--- # 서비스용, code_type = B
 -- stats_src_orgId : 통계 데이터 출처 기관 ID
 DELETE FROM public.sys_common_code WHERE grp_id='stats_src_orgId';
 INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, updated_at, deleted_at, created_by, updated_by, deleted_by) 
