@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.1.7 last updated data : 2025.07.30
+-- ## ver 0.1.8 last updated data : 2025.08.01
 -- ## Only for PostgreSQL
 -- ## 기초 데이터용 테이블 생성 스크립트 ( 제외 : "mv_poi" table )
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
@@ -77,7 +77,7 @@ CREATE TABLE public.sys_common_code (
 	memo varchar(255) NULL, -- 메모: 버전정등 기타 기록 정보
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성 시각 (UTC)
 	updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정 시각 (UTC)
-	deleted_at timestamp NULL, -- 삭제 일시 (논리 삭제 시 기록)
+	deleted_at timestamptz NULL, -- 삭제 일시 (논리 삭제 시 기록)
 	created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
 	updated_by varchar(40) NULL, -- 수정자 ID
 	deleted_by varchar(40) NULL, -- 삭제 처리자 ID 또는 시스템
