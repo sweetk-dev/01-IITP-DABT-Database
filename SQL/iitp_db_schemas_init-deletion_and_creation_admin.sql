@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.0.3 last updated data : 2025.07.29
+-- ## ver 0.0.4 last updated data : 2025.08.13
 -- ## Only for PostgreSQL
 -- ## Open API Admin 관리용 Admin 서비스 데이터용 테이블 생성 스크립트 
 -- ## 
@@ -178,6 +178,7 @@ CREATE TABLE public.sys_qna (
     writer_name      varchar(90),                                     -- 작성자 이름 (선택 입력)
     answer_content   VARCHAR(6000),                                   -- 답변 내용
     answered_by      varchar(40),                                     -- 답변자 ID 또는 이름
+	del_yn char(1) DEFAULT 'N'::bpchar NOT NULL, -- 삭제여부 (Y: 삭제)
     answered_at      timestamptz,                                        -- 답변 일시
     created_at       timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,     -- 질문 등록일시
     updated_at       timestamptz DEFAULT CURRENT_TIMESTAMP,              -- 마지막 수정일시
@@ -202,6 +203,7 @@ COMMENT ON COLUMN public.sys_qna.secret_yn IS '비공개 여부 (Y: 비공개, N
 COMMENT ON COLUMN public.sys_qna.writer_name IS '작성자 이름 (옵션)';
 COMMENT ON COLUMN public.sys_qna.answer_content IS '답변 내용';
 COMMENT ON COLUMN public.sys_qna.answered_by IS '답변 작성자 ID 또는 이름';
+COMMENT ON COLUMN public.sys_qna.del_yn IS '삭제여부 (Y: 삭제)';
 COMMENT ON COLUMN public.sys_qna.answered_at IS '답변 등록 일시';
 COMMENT ON COLUMN public.sys_qna.created_at IS '질문 등록 일시';
 COMMENT ON COLUMN public.sys_qna.updated_at IS '질문 수정 일시';
