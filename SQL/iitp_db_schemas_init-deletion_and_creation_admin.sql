@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.0.4 last updated data : 2025.08.13
+-- ## ver 0.0.5 last updated data : 2025.08.18
 -- ## Only for PostgreSQL
 -- ## Open API Admin 관리용 Admin 서비스 데이터용 테이블 생성 스크립트 
 -- ## 
@@ -178,6 +178,8 @@ CREATE TABLE public.sys_qna (
     writer_name      varchar(90),                                     -- 작성자 이름 (선택 입력)
     answer_content   VARCHAR(6000),                                   -- 답변 내용
     answered_by      varchar(40),                                     -- 답변자 ID 또는 이름
+	answered_yn      CHAR(1) DEFAULT 'N',                              -- 답변 공개(완료) 여부 (Y: 공개(완료), N: 비공개(미답변))
+	hit_cnt        INT DEFAULT 0,                 -- 조회수
 	del_yn char(1) DEFAULT 'N'::bpchar NOT NULL, -- 삭제여부 (Y: 삭제)
     answered_at      timestamptz,                                        -- 답변 일시
     created_at       timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,     -- 질문 등록일시
@@ -190,6 +192,7 @@ CREATE TABLE public.sys_qna (
 	CONSTRAINT pkey_sys_qna PRIMARY KEY (qna_id)
 );
 CREATE INDEX idx_sys_qna_type_screct ON public.sys_qna USING btree (qna_type, secret_yn);
+CREATE INDEX idx_sys_qna_type_sort ON public.sys_qna USING btree (hit_cnt, created_at);
 
 
 COMMENT ON TABLE public.sys_qna IS '일반 사용자 QnA 테이블 (질문과 답변 포함)';
@@ -203,6 +206,8 @@ COMMENT ON COLUMN public.sys_qna.secret_yn IS '비공개 여부 (Y: 비공개, N
 COMMENT ON COLUMN public.sys_qna.writer_name IS '작성자 이름 (옵션)';
 COMMENT ON COLUMN public.sys_qna.answer_content IS '답변 내용';
 COMMENT ON COLUMN public.sys_qna.answered_by IS '답변 작성자 ID 또는 이름';
+COMMENT ON COLUMN public.sys_qna.answered_yn IS '답변 공개(완료) 여부 (Y: 공개(완료), N: 비공개(미답변))';
+COMMENT ON COLUMN public.sys_qna.hit_cnt     IS 'QnA 조회수';
 COMMENT ON COLUMN public.sys_qna.del_yn IS '삭제여부 (Y: 삭제)';
 COMMENT ON COLUMN public.sys_qna.answered_at IS '답변 등록 일시';
 COMMENT ON COLUMN public.sys_qna.created_at IS '질문 등록 일시';
