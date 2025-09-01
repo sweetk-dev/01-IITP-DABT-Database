@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.1.8 last updated data : 2025.08.01
+-- ## ver 0.1.9 last updated data : 2025.08.27
 -- ## Only for PostgreSQL
 -- ## 기초 데이터용 테이블 생성 스크립트 ( 제외 : "mv_poi" table )
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
@@ -240,6 +240,7 @@ CREATE TABLE public.open_api_auth_key  (
 	del_yn char(1) DEFAULT 'N'::bpchar NOT NULL, -- 삭제여부 (Y: 삭제)
 	key_name VARCHAR(120) NOT NULL, -- api key name 
 	key_desc VARCHAR(600) NOT NULL, -- api key 사용 목적 
+	key_reject_reason VARCHAR(600),  --  api key 허가 거절 이유
 	active_at timestamptz, -- key 활성화된 일시
 	latest_acc_at timestamptz, -- latest access time 
 	
@@ -266,6 +267,7 @@ COMMENT ON COLUMN public.open_api_auth_key.del_yn IS '삭제여부 (Y: 삭제)';
 
 COMMENT ON COLUMN public.open_api_auth_key.key_name IS 'api key name';
 COMMENT ON COLUMN public.open_api_auth_key.key_desc IS 'api key 사용 목적';
+COMMENT ON COLUMN public.open_api_auth_key.key_reject_reason IS 'api key 허가 거절 이유';
 
 
 COMMENT ON COLUMN public.open_api_auth_key.active_at IS 'key 활성화된 일시';
