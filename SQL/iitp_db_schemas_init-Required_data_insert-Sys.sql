@@ -1,6 +1,6 @@
 
 -- ## iitp DB Schemas - Initial setup - Insert Data for Required System Data
--- ## ver 0.1.3 last updated data : 2025.08.01
+-- ## ver 0.1.5 last updated data : 2025.08.27
 -- ## Only for PostgreSQL
 -- ## 초기 데이터 삽입 : 공통 코드 및 시스템 필수 데이터 
 
@@ -223,7 +223,7 @@ INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp
 -- 최초 로그인시 비밀번호 변경하도록 되어 있음!! 초기 비밀번호 - 12345!!!
 TRUNCATE TABLE  public.sys_adm_account;
 INSERT INTO public.sys_adm_account (login_id, "password", "name", roles, status, del_yn, affiliation, description, note, created_at, created_by) 
-			VALUES('sweetkRoot01@sweetk.co.kr', '$2b$10$JFa.OPm59QwgISNqTqMu/.B3fGcAZIxPccJr40FIHRR9Oug8ouvbK', 'sweetk-root-01', 'S-Admin', 'A'::bpchar, 'N'::bpchar, 'sweetk', 'sweetk super admin', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+			VALUES('sweetkRoot01@sweetk.co.kr', '$2b$10$JFa.OPm59QwgISNqTqMu/.B3fGcAZIxPccJr40FIHRR9Oug8ouvbK', 'sweetk-root-01', 'S-ADMIN', 'A'::bpchar, 'N'::bpchar, 'sweetk', 'sweetk super admin', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
 
@@ -329,17 +329,22 @@ WHERE sdi.stat_tbl_id = sai.stat_tbl_id AND sdi.ext_api_id = sai.ext_api_id
 -- ################################################
 
 -- #### public.sys_faq_info Data
-TRUNCATE TABLE public.sys_faq_info CASCADE;
+TRUNCATE TABLE public.sys_faq CASCADE;
 
-INSERT INTO public.sys_faq_info (faq_type, question, answer, sort_order, use_yn, created_at, created_by) 
+INSERT INTO public.sys_faq (faq_type, question, answer, sort_order, use_yn, created_at, created_by) 
 			VALUES
-				('auth', '인증키는 어떻게 발급받나요?', 'Open API 센터 회원가입 후 [인증키 관리] 메뉴에서 발급받을 수 있습니다.', 1, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('auth', '인증키는 몇 개까지 발급할 수 있나요?', '기본적으로 1인당 1개의 인증키가 발급됩니다', 2, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('api', 'API 호출 시 일일 사용량 제한이 있나요?', '기본적으로 제한 없이 사용가능합니다.', 3, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('api', '호출 가능한 응답 포맷은 어떤 것이 있나요?', 'JSON 형식을 지원합니다.', 4, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('support', '오류가 발생했을 때는 어떻게 하나요?', 'API 호출 시 오류 코드와 메시지를 확인하시고, 해결되지 않는 경우 고객센터 또는 Q&A 게시판에 문의하세요.', 5, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('support', '데이터 업데이트 주기는 어떻게 되나요?', '데이터마다 업데이트 주기가 상이하며, 각 API 문서의 "갱신 주기" 항목을 참고하시기 바랍니다.', 6, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('policy', '상업적 이용도 가능한가요?', 'API 데이터는 출처(Open API 센터 명시)를 표기한 후 활용 가능합니다.', 7, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-				('policy', 'Open API 데이터를 가공해서 제공해도 되나요?', '출처(Open API 센터 명시)를 표기한 후 가공·재활용 가능합니다. 단, 민감 정보는 제외해야 합니다.', 8, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL');
+			    ('GENERAL', '회원가입은 어떻게 하나요?', '사이트 메인 화면에서 [회원가입] 버튼을 클릭하여 절차에 따라 가입할 수 있습니다.', 1, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('GENERAL', '비밀번호를 잊어버렸습니다. 어떻게 해야 하나요?', '[로그인] 화면의 [비밀번호 찾기] 기능을 이용하거나 고객센터로 문의하시기 바랍니다.', 2, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('AUTH', '인증키는 어떻게 발급받나요?', 'Open API 센터 회원가입 후 [인증키 관리] 메뉴에서 발급받을 수 있습니다.', 3, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('AUTH', '인증키는 몇 개까지 발급할 수 있나요?', '기본적으로 1인당 1개의 인증키가 발급됩니다', 4, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('API', 'API 호출 시 일일 사용량 제한이 있나요?', '기본적으로 제한 없이 사용가능합니다.', 5, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('API', '호출 가능한 응답 포맷은 어떤 것이 있나요?', 'JSON 형식을 지원합니다.', 6, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('SUPPORT', '오류가 발생했을 때는 어떻게 하나요?', 'API 호출 시 오류 코드와 메시지를 확인하시고, 해결되지 않는 경우 고객센터 또는 Q&A 게시판에 문의하세요.', 7, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('SUPPORT', '데이터 업데이트 주기는 어떻게 되나요?', '데이터마다 업데이트 주기가 상이하며, 각 API 문서의 "갱신 주기" 항목을 참고하시기 바랍니다.', 8, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('POLICY', '상업적 이용도 가능한가요?', 'API 데이터는 출처(Open API 센터 명시)를 표기한 후 활용 가능합니다.', 9, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('POLICY', 'Open API 데이터를 가공해서 제공해도 되나요?', '출처(Open API 센터 명시)를 표기한 후 가공·재활용 가능합니다. 단, 민감 정보는 제외해야 합니다.', 10, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('ETC', '문의사항이 있는데 어디로 연락하면 되나요?', '고객센터 또는 Q&A 게시판을 이용해 주시기 바랍니다.', 11, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+				('ETC', 'FAQ에 없는 질문은 어떻게 하나요?', 'FAQ에 없는 질문은 Q&A 게시판에 등록해 주시면 신속히 답변 드리겠습니다.', 12, 'Y'::bpchar, CURRENT_TIMESTAMP, 'SYS-MANUAL');
+
 				
 	
