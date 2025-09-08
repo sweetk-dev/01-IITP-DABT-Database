@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - POI Initial setup - Creation and Delete if tables exists 
--- ## ver 0.0.4 last update data : 2025.07.31
+-- ## ver 0.0.5 last update data : 2025.09.08
 -- ## Only for PostgreSQL
 
 
@@ -14,7 +14,29 @@
 -- Drop table
 DROP TABLE IF EXISTS public.mv_poi;
 
-CREATE TABLE public.mv_poi ( poi_id bigserial NOT NULL , language_code varchar(10) NOT NULL , title varchar(200) NOT NULL , summary text NULL , basic_info text NULL , address_code varchar(10) NULL , address_road varchar(200) NULL , address_detail varchar(200) NULL , latitude numeric(10, 8) NULL , longitude numeric(11, 8) NULL , detail_json jsonb NULL , search_filter_json jsonb NULL , publish_date timestamp NULL , update_date timestamp NULL , create_date timestamp DEFAULT CURRENT_TIMESTAMP NULL , is_deleted varchar(1) DEFAULT 'N'::bpchar NOT NULL , is_published varchar(1) DEFAULT 'N'::bpchar NOT NULL , source_organization varchar(100) NULL , source_id varchar(50) NULL , CONSTRAINT poi_pkey PRIMARY KEY (poi_id));
+CREATE TABLE public.mv_poi ( 
+	poi_id bigserial NOT NULL , 
+	language_code varchar(10) NOT NULL , 
+	title varchar(200) NOT NULL , 
+	summary text NULL , 
+	basic_info text NULL , 
+	address_code varchar(10) NULL , 
+	address_road varchar(200) NULL , 
+	address_detail varchar(200) NULL , 
+	sido_code varchar(12) NULL , 
+	latitude numeric(10, 8) NULL , 
+	longitude numeric(11, 8) NULL , 
+	detail_json jsonb NULL , 
+	search_filter_json jsonb NULL , 
+	publish_date timestamp NULL , 
+	update_date timestamp NULL , 
+	create_date timestamp DEFAULT CURRENT_TIMESTAMP NULL , 
+	is_deleted varchar(1) DEFAULT 'N'::bpchar NOT NULL , 
+	is_published varchar(1) DEFAULT 'N'::bpchar NOT NULL , 
+	source_organization varchar(100) NULL , 
+	source_id varchar(50) NULL , 
+	CONSTRAINT poi_pkey PRIMARY KEY (poi_id)
+);
 CREATE INDEX idx_address_code ON public.mv_poi USING btree (address_code);
 CREATE INDEX idx_language_code ON public.mv_poi USING btree (language_code);
 CREATE INDEX idx_location ON public.mv_poi USING btree (latitude, longitude);
