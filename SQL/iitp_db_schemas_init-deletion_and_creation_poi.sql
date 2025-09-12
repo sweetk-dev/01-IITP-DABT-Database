@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - POI Initial setup - Creation and Delete if tables exists 
--- ## ver 0.0.5 last update data : 2025.09.08
+-- ## ver 0.0.6 last update data : 2025.09.12
 -- ## Only for PostgreSQL
 
 
@@ -24,8 +24,8 @@ CREATE TABLE public.mv_poi (
 	address_road varchar(200) NULL , 
 	address_detail varchar(200) NULL , 
 	sido_code varchar(12) NULL , 
-	latitude numeric(10, 8) NULL , 
-	longitude numeric(11, 8) NULL , 
+	latitude double precision NULL , 
+	longitude double precision NULL , 
 	detail_json jsonb NULL , 
 	search_filter_json jsonb NULL , 
 	publish_date timestamp NULL , 
