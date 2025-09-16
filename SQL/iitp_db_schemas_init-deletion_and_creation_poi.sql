@@ -3,6 +3,7 @@
 -- ## Only for PostgreSQL
 
 
+-- #### [주의] mv_poi, poi_*,  emp_dis_* 테이블의 데이터가 변경되면, sys_data_summary_info 테이블 데이터도 update 해야 함.
 
 
 -- ################################################

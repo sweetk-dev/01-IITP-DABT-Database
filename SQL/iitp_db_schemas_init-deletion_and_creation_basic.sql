@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.1.9 last updated data : 2025.08.27
+-- ## ver 0.1.10 last updated data : 2025.09.16
 -- ## Only for PostgreSQL
 -- ## 기초 데이터용 테이블 생성 스크립트 ( 제외 : "mv_poi" table )
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
@@ -287,6 +287,9 @@ COMMENT ON COLUMN public.open_api_auth_key.deleted_by IS '데이터 삭제자';
 -- ################################################
 
 
+
+-- #### [주의] 통계 데이터 수집으로 sys_stats_src_api_info 테이블의 데이터가 변경되면, sys_data_summary_info 테이블 데이터도 update 해야 함. 
+
 -- # public.sys_stats_src_api_info definition
 DROP TABLE IF EXISTS public.sys_stats_src_api_info;
 
@@ -391,6 +394,8 @@ DROP TABLE IF EXISTS public.stats_dis_fclty_welfare_usage;
  
 
 -- Drop table
+
+-- #### [주의] 통계 데이터 수집으로 sys_stats_src_api_info, stats_src_data_info 테이블의 데이터가 변경되면, sys_data_summary_info 테이블 데이터도 update 해야 함. 
 
 DROP TABLE IF EXISTS public.stats_src_data_info;
 
