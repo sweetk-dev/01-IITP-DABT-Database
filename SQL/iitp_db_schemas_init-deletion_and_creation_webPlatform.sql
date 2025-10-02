@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.0.3 last updated data : 2025.09.22
+-- ## ver 0.0.5 last updated data : 2025.10.02
 -- ## Only for PostgreSQL
 -- ## 장애인 자립 지원 허브 플랫폼 용 
 -- ##
@@ -24,13 +24,13 @@ CREATE TABLE public.sys_data_summary_info (
 	target_data_id int4, --  Target Data info sys ID, data_type 에 따라서 id 참조. 예) stats_src_data_info.src_data_id
 	
 	data_type varchar(16) NOT NULL, -- Data Type (basic/poi/emp) 
-    self_rel_type varchar(24),      -- 자립 테마 타입 (physical,emotional, economic,social)
+    self_rlty_type varchar(24),      -- 자립 테마 타입 (phys,emo, econ,soc)
 	category varchar(24),           -- 카테고리 (기초, 신체 자립 현황, 의료 자립현황, 보조기기 사용 현황, 진로 교육 현황, 고용 현황, 사회망 현황, ...)
 	
 	title varchar(300) NOT NULL, -- 데이터명
 	sys_tbl_id varchar(40) NOT NULL, -- iitp 데이터 테이블 ID
 	
-	src_org_name varchar(12) NOT NULL,      -- 데이터 제공처(기관명)
+	src_org_name varchar(50) NOT NULL,      -- 데이터 제공처(기관명)
 	src_latest_chn_dt varchar(12) NOT NULL, -- 수집기관 최종 자료갱신일 (예:2024-07-19)
 	
 	sys_data_ref_dt varchar(12) NULL, 		-- 데이터를 iitp 시스템에서 마지막 수집/참조 일자 (예:2024-07-19)
@@ -55,7 +55,7 @@ CREATE TABLE public.sys_data_summary_info (
 CREATE UNIQUE INDEX uidx_sys_data_sumary_info_sys_tbl_id ON public.sys_data_summary_info USING btree (sys_tbl_id);
 CREATE INDEX  idx_sys_data_sumary_info_title ON public.sys_data_summary_info USING btree (title);
 CREATE INDEX  idx_sys_data_sumary_info_data_type ON public.sys_data_summary_info USING btree (data_type);
-CREATE INDEX  idx_sys_data_sumary_info_self_rel_type ON public.sys_data_summary_info USING btree (self_rel_type);
+CREATE INDEX  idx_sys_data_sumary_info_self_rlty_type ON public.sys_data_summary_info USING btree (self_rlty_type);
 
 
 
@@ -66,7 +66,7 @@ COMMENT ON COLUMN public.sys_data_summary_info.data_id IS 'system id, 고유 식
 COMMENT ON COLUMN public.sys_data_summary_info.target_data_id IS 'Target Data info sys ID, target_data_type 에 따라서 id 참조. 예) stats_src_data_info.src_data_id';
 
 COMMENT ON COLUMN public.sys_data_summary_info.data_type IS 'Target Data Type (basic/poi/emp)';
-COMMENT ON COLUMN public.sys_data_summary_info.self_rel_type IS '자립 테마 타입 (physical,emotional, economic,social)';
+COMMENT ON COLUMN public.sys_data_summary_info.self_rlty_type IS '자립 테마 타입 (phys,emo, econo,soc)';
 COMMENT ON COLUMN public.sys_data_summary_info.category IS '카테고리 (기초, 신체 자립 현황, 의료 자립현황, 보조기기 사용 현황, 진로 교육 현황, 고용 현황, 사회망 현황, ...)';
 
 
@@ -104,8 +104,9 @@ CREATE TABLE selfdiag_data_category (
     id          SERIAL PRIMARY KEY,
     category    VARCHAR(50) NOT NULL,  -- 카테고리: theme, data_type
     name        VARCHAR(100) NOT NULL,  -- 카테고리명: 자립테마별, 데이터 유형별
-    menu_id     VARCHAR(50) NOT NULL,  -- 메뉴 id (theme : physical,emotional, economic,social, data_type : basic, poi, emp)
+    menu_id     VARCHAR(50) NOT NULL,  -- 메뉴 id (theme : phy,emo, econ,soc, data_type : basic, poi, emp)
     menu_name   VARCHAR(100) NOT NULL, -- 메뉴 항목명: 신체적 자립, 정서적 자립 등
+	
     description VARCHAR(600) NOT NULL,  -- 메뉴별 간단한 설명
     created_at  timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at  timestamptz 
@@ -115,8 +116,8 @@ COMMENT ON TABLE public.selfdiag_data_category IS 'IITP 데이터 테이블 분�
 
 -- 컬럼 설명 추가
 COMMENT ON COLUMN selfdiag_data_category.category IS '카테고리: theme, data_type';
-COMMENT ON COLUMN selfdiag_data_category.name IS '카테고리명: 자립테마별, 데이터 유형별';
-COMMENT ON COLUMN selfdiag_data_category.menu_id IS '메뉴 id (theme : physical,emotional, economic,social, data_type : basic, poi, emp)';
+COMMENT ON COLUMN selfdiag_data_category.name IS '카테고리명: 자립테마별, 데이터 유형별, ';
+COMMENT ON COLUMN selfdiag_data_category.menu_id IS '메뉴 id (theme : phy,emo, econ,soc, data_type : basic, poi, emp)';
 COMMENT ON COLUMN selfdiag_data_category.menu_name IS '메뉴 항목명: 신체적 자립, 정서적 자립 등';
 COMMENT ON COLUMN selfdiag_data_category.description IS '메뉴별 상세 설명';
 COMMENT ON COLUMN selfdiag_data_category.created_at IS '데이터 생성일';
@@ -125,13 +126,18 @@ COMMENT ON COLUMN selfdiag_data_category.updated_at IS '데이터 수정일';
 -- 샘플 데이터 INSERT
 INSERT INTO selfdiag_data_category (category, name, menu_id, menu_name, description)
 VALUES
-('theme', '자립테마별', 'physical', '신체적 자립', '신체적 자립 수준 및 건강 상태 등 신체 기능과 관련된 데이터'),
-('theme', '자립테마별', 'emotional', '정서적 자립', '심리적 안정 및 지원 등 정서 안정과 관련된 데이터'),
-('theme', '자립테마별', 'economic', '경제적 자립', '장애인 진로교육 및 고용 현황 등 일자리와 관련된 데이터'),
-('theme', '자립테마별', 'social', '사회적 자립', '사회복지시설 및 지역사회 참여 현황 등 사회적 기능과 관련된 데이터'),
+('theme', '자립테마별', 'phys', '신체적 자립', '신체적 자립 수준 및 건강 상태 등 신체 기능과 관련된 데이터'),
+('theme', '자립테마별', 'emo', '정서적 자립', '심리적 안정 및 지원 등 정서 안정과 관련된 데이터'),
+('theme', '자립테마별', 'econ', '경제적 자립', '장애인 진로교육 및 고용 현황 등 일자리와 관련된 데이터'),
+('theme', '자립테마별', 'soc', '사회적 자립', '사회복지시설 및 지역사회 참여 현황 등 사회적 기능과 관련된 데이터'),
 ('data_type', '데이터 유형별', 'basic', '기초 데이터', '장애인과 관련된 기본 통계 및 기초 자료'),
 ('data_type', '데이터 유형별', 'poi', '이동권 데이터', '교통·보행 등 장애인 이동 및 접근성과 관련된 자료'),
-('data_type', '데이터 유형별', 'emp', '일자리 데이터', '고용 현황, 취업 지원, 직업 활동과 관련된 자료');
+('data_type', '데이터 유형별', 'emp', '일자리 데이터', '고용 현황, 취업 지원, 직업 활동과 관련된 자료'),
+('self_rlty_type', '자립유형', 'basic', '기초', '기본 적인 장애 자립 관련 정보(정책, 기관, 시설)'),
+('self_rlty_type', '자립유형', 'phys', '신체', '신체적 자립 관련 정보 (정책, 기관, 시설)'),
+('self_rlty_type', '자립유형', 'emo', '정서', '정서적 자립 관련된 정보 (정책, 기관, 시설)'),
+('self_rlty_type', '자립유형', 'econ', '경제', '경제적 자립 관련된 정보 (정책, 기관, 시설)'),
+('self_rlty_type', '자립유형', 'soc', '사회', '사회적 자립 관련된 정보 (정책, 기관, 시설)');
 
 
 
@@ -145,10 +151,10 @@ DROP TABLE IF EXISTS public.selfdiag_policy;
 CREATE TABLE selfdiag_policy (
     policy_id       SERIAL PRIMARY KEY,                 -- PK
     category        VARCHAR(90) NOT NULL,                  -- 구분 (예: 생활 안정 지원, 생활요금 감면)
-    name            VARCHAR(300) NOT NULL,                 -- 항목명 (예: 장애인연금, 장애수당)
-    self_type       VARCHAR(50),                           -- 관련 자립 유형 (기초, 경제, 정서, 사회 등)
+    policy_name     VARCHAR(300) NOT NULL,                 -- 항목명 (예: 장애인연금, 장애수당)
+    self_rlty_type  VARCHAR(50),                           -- 관련 자립 유형 (기초, 신체, 경제, 정서, 사회 등)
     region          VARCHAR(100),                          -- 사업 단위 (전국, 시군구 등)
-    gender          VARCHAR(50),                           -- 대상 성별 (남성, 여성, 혼합)
+    gender          VARCHAR(50),                           -- 대상 성별 (남성, 여성, "여성, 남성")
     age_cond        VARCHAR(50),                           -- 연령 조건 (minor=미성년자, adult=성인, all=미성년+성인')
     dis_level       VARCHAR(50),                           -- 장애 정도 (중증, 경증)
     fin_cond        VARCHAR(100),                          -- 재정 조건 (중위소득 50~100% 등)
@@ -164,10 +170,10 @@ COMMENT ON TABLE selfdiag_policy IS '장애인 자립 자가진단 - 정책·서
 
 COMMENT ON COLUMN selfdiag_policy.policy_id IS 'PK: 데이터 고유 ID';
 COMMENT ON COLUMN selfdiag_policy.category IS '지원 구분 (생활 안정 지원, 생활요금 감면 등)';
-COMMENT ON COLUMN selfdiag_policy.name IS '지원 항목명 (장애인연금, 장애수당 등)';
-COMMENT ON COLUMN selfdiag_policy.self_type IS '관련 자립 유형 (기초, 경제, 정서, 사회 등)';
+COMMENT ON COLUMN selfdiag_policy.policy_name IS '지원 항목명 (장애인연금, 장애수당 등)';
+COMMENT ON COLUMN selfdiag_policy.self_rlty_type IS '관련 자립 유형 (기초, 신체, 경제, 정서, 사회 등)';
 COMMENT ON COLUMN selfdiag_policy.region IS '사업 단위 (전국, 시/군/구 등)';
-COMMENT ON COLUMN selfdiag_policy.gender IS '성별 조건 (여성, 남성, 혼합)';
+COMMENT ON COLUMN selfdiag_policy.gender IS '성별 조건 (여성, 남성, "여성, 남성")';
 COMMENT ON COLUMN selfdiag_policy.age_cond IS '연령 조건 (minor=미성년자, adult=성인, all=미성년+성인)';
 COMMENT ON COLUMN selfdiag_policy.dis_level IS '장애 정도 조건 (중증, 경증, 혼합)';
 COMMENT ON COLUMN selfdiag_policy.fin_cond IS '재정 조건 (중위소득 기준 등)';
@@ -188,8 +194,7 @@ CREATE TABLE selfdiag_provider (
     provider_name       VARCHAR(200) NOT NULL,           -- 제공기관명 (지점명까지 포함)
     service_name        VARCHAR(200) NOT NULL,           -- 제공 서비스명
     address             VARCHAR(300) NOT NULL,           -- 주소 (시군구 + 상세주소 포함)
-    phone_no            VARCHAR(50),                    -- 전화번호 (복수 가능시 ','로 구분)
-    fax_no              VARCHAR(50),                    -- 팩스번호 (있을 경우)
+    phone               VARCHAR(50),                    -- 전화번호
     rep_name 			VARCHAR(100),                   -- 대표자명 (선택 입력)
     description         VARCHAR(900),                           -- 비고/기관 상세설명
     created_at           timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성일시
@@ -202,8 +207,7 @@ COMMENT ON COLUMN selfdiag_provider.provider_id IS 'PK, 제공 기관 식별자'
 COMMENT ON COLUMN selfdiag_provider.provider_name IS '제공기관명 (지점명 포함)';
 COMMENT ON COLUMN selfdiag_provider.service_name IS '해당 기관이 제공하는 서비스명';
 COMMENT ON COLUMN selfdiag_provider.address IS '기관 주소 (시군구, 상세주소 포함)';
-COMMENT ON COLUMN selfdiag_provider.phone_no IS '기관 전화번호 (필요 시 복수 입력, 콤마 구분)';
-COMMENT ON COLUMN selfdiag_provider.fax_no IS '기관 팩스번호';
+COMMENT ON COLUMN selfdiag_provider.phone IS '기관 전화번호';
 COMMENT ON COLUMN selfdiag_provider.rep_name IS '대표자명';
 COMMENT ON COLUMN selfdiag_provider.description IS '기관 및 서비스에 대한 상세 설명, 비고';
 COMMENT ON COLUMN selfdiag_provider.created_at IS '데이터 생성일시';
@@ -220,14 +224,14 @@ DROP TABLE IF EXISTS public.selfdiag_facility;
 
 CREATE TABLE selfdiag_facility (
     facility_id       SERIAL PRIMARY KEY,
-    device_name       VARCHAR(300) NOT NULL, -- 설치 기기
-    district          VARCHAR(100),          -- 설치 지역
-    place_name        VARCHAR(300),          -- 설치 장소
-    location_detail   VARCHAR(300),          -- 설치 위치 (건물 내 위치 등)
-    admin_dong        VARCHAR(60),           -- 행정동
+    device           VARCHAR(300), -- 설치 기기
+    install_area     VARCHAR(100),          -- 설치 지역
+    install_site     VARCHAR(300),          -- 설치 장소
+    install_spot     VARCHAR(300),          -- 설치 위치 (건물 내 위치 등)
+    hang_dong        VARCHAR(60),           -- 행정동
     address           VARCHAR(300),          -- 상세 주소
     opening_hours     VARCHAR(300),          -- 이용 시간
-    quantity          INT,                   -- 설치 대수
+    quantity          INT DEFAULT 0,                   -- 설치 대수
     note              VARCHAR(900),                  -- 비고
     created_at         timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at         timestamptz
@@ -236,20 +240,17 @@ CREATE TABLE selfdiag_facility (
 COMMENT ON TABLE selfdiag_provider IS '장애인 자립 자가진단 - 정책 제공 시설(facility) 정보 테이블';
 
 COMMENT ON COLUMN selfdiag_facility.facility_id IS 'PK, 설치 기기 식별자';
-COMMENT ON COLUMN selfdiag_facility.device_name       IS '설치 기기명';
-COMMENT ON COLUMN selfdiag_facility.district          IS '설치 지역(시/구)';
-COMMENT ON COLUMN selfdiag_facility.place_name        IS '설치 장소명';
-COMMENT ON COLUMN selfdiag_facility.location_detail   IS '건물 내 설치 위치 상세';
-COMMENT ON COLUMN selfdiag_facility.admin_dong        IS '행정동';
+COMMENT ON COLUMN selfdiag_facility.device            IS '설치 기기명';
+COMMENT ON COLUMN selfdiag_facility.install_area          IS '설치 지역(시/구)';
+COMMENT ON COLUMN selfdiag_facility.install_site             IS '설치 장소명';
+COMMENT ON COLUMN selfdiag_facility.install_spot   IS '건물 내 설치 위치 상세';
+COMMENT ON COLUMN selfdiag_facility.hang_dong        IS '행정동';
 COMMENT ON COLUMN selfdiag_facility.address           IS '상세 주소';
 COMMENT ON COLUMN selfdiag_facility.opening_hours     IS '이용 시간';
 COMMENT ON COLUMN selfdiag_facility.quantity          IS '설치 대수';
 COMMENT ON COLUMN selfdiag_facility.note              IS '비고';
 COMMENT ON COLUMN selfdiag_facility.created_at IS '데이터 생성일시';
 COMMENT ON COLUMN selfdiag_facility.updated_at IS '데이터 최종 수정일시';
-
-
-
 
 
 
