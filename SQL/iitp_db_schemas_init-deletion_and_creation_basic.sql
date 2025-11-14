@@ -1,5 +1,5 @@
 -- ## iitp DB Schemas - Initial setup - Creation and Delete if tables exists 
--- ## ver 0.1.11 last updated data : 2025.10.17
+-- ## ver 0.1.12 last updated data : 2025.10.31
 -- ## Only for PostgreSQL
 -- ## 기초 데이터용 테이블 생성 스크립트 ( 제외 : "mv_poi" table )
 -- ## Designing a Custom Database Schema for KOSIS OpenAPI Integration (KOSIS OpenAPI 연동 맞춤으로 DB DDL 설계)
@@ -185,7 +185,7 @@ CREATE TABLE public.open_api_user (
 	latest_key_created_at timestamptz, -- 마지막으로 KEY 발급받은 시간 
 	latest_login_at timestamptz, -- latest login time 
 	
-	affiliation VARCHAR(200), -- client 소속
+	affiliation VARCHAR(200), -- user 소속
 	note VARCHAR(600), -- 비고
 	
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
@@ -304,9 +304,9 @@ CREATE TABLE public.sys_stats_src_api_info (
 	stat_tbl_id varchar(40) NOT NULL, -- 원데이터 통계 id
 	
 	use_base_url_yn char(1) NOT NULL, -- 기본 url 필요 여부(Y/N). "Y" 이면 이면 sys_ext_api_info.ext_url 사용
-	api_data_url varchar(600) NOT NULL, -- 연동할 stas data API URL Inof(json {"url":, "format":}), {API_AUTH_KEY}를 실제 Key로 치환, {PRD_CNT}를 몇년치 데이터를 가져올지 치환 
-	api_meta_url varchar(400) ,          -- 연동할 stat meta API URL Inof(json {"url":, "format":}), {API_AUTH_KEY}를 실제 Key로 치환  
-	api_latest_chn_dt_url varchar(400) , -- 연동할 stat latest change date API URL Inof(json {"url":, "format":}), {API_AUTH_KEY}를 실제 Key로 치환  
+	api_data_url varchar(600) NOT NULL, -- 연동할 stas data API URL Info(json {"url":, "format":}), {API_AUTH_KEY}를 실제 Key로 치환, {PRD_CNT}를 몇년치 데이터를 가져올지 치환 
+	api_meta_url varchar(400) ,          -- 연동할 stat meta API URL Info(json {"url":, "format":}), {API_AUTH_KEY}를 실제 Key로 치환  
+	api_latest_chn_dt_url varchar(400) , -- 연동할 stat latest change date API URL Info(json {"url":, "format":}), {API_AUTH_KEY}를 실제 Key로 치환  
 	
 	latest_sync_time timestamptz NULL, -- 최근 데이터 수집 시간
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
@@ -317,7 +317,7 @@ CREATE TABLE public.sys_stats_src_api_info (
 	deleted_by varchar(40) NULL, -- 데이터 삭제자
 	CONSTRAINT pkey_sys_st_src_api_info PRIMARY KEY (stat_api_id)
 );
-CREATE UNIQUE INDEX uidx_sys_st_src_api_info_ext_id_tbl_id ON public.sys_stats_src_api_info USING btree (ext_api_id, stat_tbl_ID);
+CREATE UNIQUE INDEX uidx_sys_st_src_api_info_ext_id_tbl_id ON public.sys_stats_src_api_info USING btree (ext_api_id, stat_tbl_id);
 COMMENT ON TABLE public.sys_stats_src_api_info IS '통계성 데이터 수집 API 정보';
 
 -- Column comments
@@ -439,7 +439,7 @@ CREATE TABLE public.stats_src_data_info (
 	CONSTRAINT pkey_st_src_data_info PRIMARY KEY (src_data_id)
 );
 CREATE UNIQUE INDEX uidx_st_src_data_info_title ON public.stats_src_data_info USING btree (stat_title );
-CREATE UNIQUE INDEX uidx_st_src_data_info_ext_id_tbl_id ON public.stats_src_data_info USING btree (ext_api_id, stat_tbl_ID );
+CREATE UNIQUE INDEX uidx_st_src_data_info_ext_id_tbl_id ON public.stats_src_data_info USING btree (ext_api_id, stat_tbl_id );
 COMMENT ON TABLE public.stats_src_data_info IS '통계성 데이터 수집 소스 데이터 정보';
 
 -- Column comments
@@ -651,10 +651,10 @@ CREATE TABLE public.stats_dis_reg_natl_by_new (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 
-    itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
+    itm_id VARCHAR(24) NOT NULL,           -- 항목 ID, 
     
     unit_nm VARCHAR(20),                 -- 단위명
     
@@ -691,8 +691,6 @@ COMMENT ON COLUMN public.stats_dis_reg_natl_by_new.itm_id IS '항목 ID, meta에
 
 COMMENT ON COLUMN public.stats_dis_reg_natl_by_new.unit_nm IS '단위명';
 
-COMMENT ON COLUMN public.stats_dis_reg_natl_by_new.prd_de IS '수록시점';
-
 COMMENT ON COLUMN public.stats_dis_reg_natl_by_new.dt IS '수치 값';
 
 COMMENT ON COLUMN public.stats_dis_reg_natl_by_new.lst_chn_de IS ' 데이터별 최종 수정일';
@@ -722,7 +720,7 @@ CREATE TABLE public.stats_dis_reg_natl_by_age_type_sev_gen (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -793,7 +791,7 @@ CREATE TABLE public.stats_dis_reg_sido_by_type_sev_gen (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -864,7 +862,7 @@ CREATE TABLE public.stats_dis_life_supp_need_lvl (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -935,7 +933,7 @@ CREATE TABLE public.stats_dis_life_maincarer (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1006,7 +1004,7 @@ CREATE TABLE public.stats_dis_life_primcarer (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1076,7 +1074,7 @@ CREATE TABLE public.stats_dis_life_supp_field (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1435,7 +1433,7 @@ CREATE TABLE public.stats_dis_aid_device_usage (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1505,7 +1503,7 @@ CREATE TABLE public.stats_dis_aid_device_need (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1581,7 +1579,7 @@ CREATE TABLE public.stats_dis_edu_voca_exec (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1652,7 +1650,7 @@ CREATE TABLE public.stats_dis_edu_voca_exec_way (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1727,7 +1725,7 @@ CREATE TABLE public.stats_dis_emp_natl (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1798,7 +1796,7 @@ CREATE TABLE public.stats_dis_emp_natl_public (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1869,7 +1867,7 @@ CREATE TABLE public.stats_dis_emp_natl_private (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -1940,7 +1938,7 @@ CREATE TABLE public.stats_dis_emp_natl_gov_org (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -2011,7 +2009,7 @@ CREATE TABLE public.stats_dis_emp_natl_dis_type_sev (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -2082,7 +2080,7 @@ CREATE TABLE public.stats_dis_emp_natl_dis_type_indust (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -2156,7 +2154,7 @@ CREATE TABLE public.stats_dis_soc_partic_freq (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -2227,7 +2225,7 @@ CREATE TABLE public.stats_dis_soc_contact_cntfreq (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
@@ -2304,7 +2302,7 @@ CREATE TABLE public.stats_dis_fclty_welfare_usage (
 	
 	prd_de int2 NOT NULL, -- 수록시점, 연도 (예: 2024)
 	
-	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1 ~ 3, 값 > 3자일 일경우: 앞3자리는  group id, 검색 후 group id nm으 로표시. c#_obj하위에 group임. c#_obj > c# group > c#, itm_id는 별도 분류
+	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24), -- 분류값 ID1, C#의 group은 c#_obj_nm, meta에서 obj_nm=c#_obj_nm으로 매칭, itm_id는 별도 분류
 	-- c1_obj_nm VARCHAR(300) NOT NULL, c2_obj_nm VARCHAR(300), c3_obj_nm VARCHAR(300), -- -- 분류명1 ~ 3
 	
     itm_id VARCHAR(24) NOT NULL,           -- 항목 ID
