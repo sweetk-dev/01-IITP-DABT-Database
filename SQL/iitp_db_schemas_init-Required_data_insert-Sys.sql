@@ -223,7 +223,9 @@ INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp
 -- 최초 로그인시 비밀번호 변경하도록 되어 있음!! 초기 비밀번호 - 12345!!!
 TRUNCATE TABLE  public.sys_adm_account;
 INSERT INTO public.sys_adm_account (login_id, "password", "name", roles, status, del_yn, affiliation, description, note, created_at, created_by) 
-			VALUES('sweetkRoot01@sweetk.co.kr', '$2b$10$JFa.OPm59QwgISNqTqMu/.B3fGcAZIxPccJr40FIHRR9Oug8ouvbK', 'sweetk-root-01', 'S-ADMIN', 'A'::bpchar, 'N'::bpchar, 'sweetk', 'sweetk super admin', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+			VALUES
+			('sweetkSRoot01@sweetk.co.kr', '$2b$10$JFa.OPm59QwgISNqTqMu/.B3fGcAZIxPccJr40FIHRR9Oug8ouvbK', 'sweetk-super-root-01', 'S-ADMIN', 'A'::bpchar, 'N'::bpchar, 'sweetk', 'sweetk super admin', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+			('sweetkRoot01@sweetk.co.kr', '$2b$10$JFa.OPm59QwgISNqTqMu/.B3fGcAZIxPccJr40FIHRR9Oug8ouvbK', 'sweetk-root-01', 'ADMIN', 'A'::bpchar, 'N'::bpchar, 'sweetk', 'sweetk admin', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
 
