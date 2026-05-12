@@ -36,3 +36,7 @@ temp/
 tmp/
 *.bk
 *.backup
+
+# Local workspace meta
+.workspace/
+WORKSPACE.md
