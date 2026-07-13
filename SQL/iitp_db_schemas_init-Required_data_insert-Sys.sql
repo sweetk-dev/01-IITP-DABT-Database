@@ -139,7 +139,12 @@ INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp
 -- ext_sys_code : 외부 연동 시스템 코드
 DELETE FROM public.sys_common_code WHERE grp_id='ext_sys_code';
 INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp_id, parent_code_id, code_type, code_lvl, sort_order, use_yn, del_yn, code_des, memo, created_at, created_by) 
-				VALUES('ext_sys_code', '외부 연동 시스템 코드', 'KOSIS', 'KOSIS 국가통계포털', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '정형-기초 데이터용 통계 데이터 수집을 위한 연동 시스템', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+				VALUES('ext_sys_code', '외부 연동 시스템 코드', 'KOSIS', 'KOSIS 국가통계포털', null, null, 'S', 1, 0, 'Y'::bpchar, 'N'::bpchar, '정형-기초 데이터용 통계 데이터 수집을 위한 연동 시스템', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('ext_sys_code', '외부 연동 시스템 코드', 'GBIS', '경기버스정보(GBIS)', null, null, 'S', 1, 1, 'Y'::bpchar, 'N'::bpchar, '버스 노선/배차 메타데이터 수집 (tran_bus_route_info)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('ext_sys_code', '외부 연동 시스템 코드', 'KORAIL_CONV', '한국철도공사 편의시설정보', null, null, 'S', 1, 2, 'Y'::bpchar, 'N'::bpchar, '역 단위 교통약자 편의 현황 수집 (poi_station_access_status)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('ext_sys_code', '외부 연동 시스템 코드', 'KRNA_LIFT', '국가철도공단 휠체어리프트', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, '설비 단위 휠체어리프트 상세 파일 적재 (poi_station_wheelchair_lift)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('ext_sys_code', '외부 연동 시스템 코드', 'KOWSI_FACL', '한국사회보장정보원 장애인편의시설', null, null, 'S', 1, 4, 'Y'::bpchar, 'N'::bpchar, '건물 장애인 편의시설 수집 (poi_facility_accessibility)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('ext_sys_code', '외부 연동 시스템 코드', 'TOUR_BF_API', '한국관광공사 무장애여행 API', null, null, 'S', 1, 5, 'Y'::bpchar, 'N'::bpchar, '무장애 관광지 정보 수집 (poi_tour_bf_facility, dis_unst_collect_item)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
 
