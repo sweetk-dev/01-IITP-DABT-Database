@@ -1,47 +1,16 @@
-## Image Downloader (CSV-driven)
+# 01-IITP-DABT-Database
+1.장애인 통합 데이터베이스
 
-Downloads images to a date-based folder using URLs provided in a CSV file.
+장애인 자립 생활 지원 플랫폼 데이터베이스(`iitp_db`)의 **스키마 정의·초기화·데이터 교정 마이그레이션 스크립트** 저장소.
 
-### Features
-- Loads configuration from `.env`
-- Validates CSV extension and headers: `No,Type,Title,Img-link`
-- Threaded downloads (`THREADS`)
-- Windows-safe filenames: `No.Type-Title_ yyyy_mm_dd_hh_mm.<ext>`
-- Saves under `ROOT_DIR/YYYY-MM-DD/`
-- Records failed rows to `<csv_basename>_errorRow.csv` next to the source CSV
-- Prints and logs summary: total, success, failure; shows error file path when present
+## 이미지 다운로더 소스 이관 안내
 
-### Requirements
-- Python 3.9+
-- Windows-compatible paths (tested on PowerShell)
+CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유틸(`analyze_errors.py`)은
+[04-IITP-DABT-DataCollector](https://github.com/sweetk-dev/04-IITP-DABT-DataCollector) 저장소로 **일원화**되었다.
 
-### Setup
-1. Create and activate a virtual environment (recommended).
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-3. Copy `.env.example` to `.env` and set values:
-   - `LOG_LEVEL` (e.g., INFO)
-   - `ROOT_DIR` (absolute path)
-   - `THREADS` (e.g., 8)
-   - `URL_CSV_PATH` (absolute path to your CSV)
-
-### Run
-```bash
-python downloader.py
-```
-
-The log file is written to the date-based output folder: `image_downloader_YYYYMMDD.log`.
-
-### CSV Format
-- File must be `.csv`.
-- Headers must be exactly: `No,Type,Title,Img-link` (case-sensitive).
-- Encoding: UTF-8 (BOM ok).
-
-### Notes
-- If the URL has no file extension, the program tries to infer it from the `Content-Type` header.
-- Invalid filename characters are sanitized. Extremely long titles are truncated for filesystem safety.
+- 본 저장소에 있던 사본은 v1.1.2 에서 제거됨 (구본 — 원자적 저장 개선 이전 버전)
+- 최신 소스는 04 저장소에서 단일 관리: 다중 소스 수집 계층(`collectors/`), 원자적 저장, 후처리 모듈(라벨 보강·중복 검사·학습셋 분할) 포함
+- 관련 실행 방법·CSV 규격은 04 저장소 README 참조
 
 ## SQL
 
