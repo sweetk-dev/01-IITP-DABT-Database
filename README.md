@@ -30,3 +30,10 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 pg_dump -U postgres -d iitp_db -t mv_poi --data-only -f mv_poi_backup.sql
 psql -U postgres -d iitp_db -v ON_ERROR_STOP=1 -f SQL/mv_poi_latlng_fix.sql
 ```
+
+## 라이선스
+
+이 프로젝트는 MIT 라이선스로 배포됩니다. 전문은 [LICENSE](LICENSE) 파일을 참고하십시오.
+
+본 연구는 정부(과학기술정보통신부)의 재원으로 정보통신기획평가원의 지원을 받아 수행된 연구입니다.
+(연구개발과제번호 RS-2024-003976, 데이터 기반 장애인 데이터 탐색·활용 해결기술 개발)
