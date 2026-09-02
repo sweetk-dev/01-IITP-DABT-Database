@@ -1,7 +1,7 @@
 # 01-IITP-DABT-Database
 1.장애인 통합 데이터베이스
 
-![version](https://img.shields.io/badge/version-v1.2.0-blue)
+![version](https://img.shields.io/badge/version-v1.3.0-blue)
 
 장애인 자립 생활 지원 플랫폼 데이터베이스(`iitp_db`)의 **스키마 정의·초기화·데이터 교정 마이그레이션 스크립트** 저장소.
 
@@ -21,8 +21,22 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | 파일 | 용도 |
 |---|---|
 | `iitp_db_schemas_init-*.sql` | 도메인별 스키마 생성 (basic / poi / emp / mobility / unst / admin / webPlatform) |
+| `iitp_db_schemas_init-deletion_and_creation_mobility.sql` | 이동편의 스키마 — 버스 노선·정류장(GBIS), 역 편의 현황·**설비 단위 승강기·화장실·승강장(국가철도공단, v1.3.0)**, 건물 편의시설 |
 | `KOSIS_stats_data_creation.sql` | KOSIS 통계 테이블 |
 | `mv_poi_latlng_fix.sql` | **mv_poi 위경도 뒤바뀜 교정 + CHECK 제약** (2026-07-16, GGTOUR 적재분 51,677건) |
+
+### 이동편의 역 설비 단위 테이블 (v1.3.0)
+
+`poi_station_access_status` 는 역별 개수·유무만 가진다. 국가철도공단 파일데이터를 설비 단위로 적재하는 표 3종을 더했다
+(적재는 08-IITP-DABT-PreProcessing `scripts/load_krna_station_csv.py`).
+
+| 테이블 | 원천 파일(공공데이터포털) | 내용 |
+|---|---|---|
+| `poi_station_elevator_unit` | 수도권1호선_엘리베이터 15041389 · 수도권4호선_엘리베이터 15041392 | 출입구번호·상세위치·정원 |
+| `poi_station_toilet_unit` | 수도권1/4호선_화장실 15041254·15041257 · 장애인화장실 15041222·15041225 | 게이트 안/밖·출구·상세위치·구분 (`disabled_yn`) |
+| `poi_station_platform` | 수도권1/4호선_승강장_정보 15041192·15041194 · 승강장이격거리 15041514·15041517 | 상하행·안전발판·스크린도어 + 열차 이격거리 min/max/avg(cm) |
+
+⚠️ 이 파일은 앞부분에 `DROP TABLE IF EXISTS` 가 있으므로 운영 DB 에는 **신규 테이블 블록만 발췌**해 적용한다.
 
 교정 마이그레이션은 실행 전 백업이 필요하다.
 
