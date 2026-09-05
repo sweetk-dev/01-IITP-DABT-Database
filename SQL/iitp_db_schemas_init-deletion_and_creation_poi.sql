@@ -125,6 +125,7 @@ CREATE TABLE public.poi_public_toilet_info (
     cctv_yn                        CHAR(1),                                 -- 화장실 입구 CCTV 설치 유무 (Y/N)
     diaper_table_yn               CHAR(1),                                 -- 기저귀 교환대 유무 (Y/N)
     diaper_table_location         VARCHAR(300),                            -- 기저귀 교환대 장소
+    unisex_yn                     CHAR(1),                                 -- 남녀공용 화장실 여부 (Y/N, v1.4.0)
     
     remodeled_dt                 VARCHAR(12),                                   -- 리모델링 연월 (YYYY-MM-DD)
     base_dt                    DATE,                                   -- 데이터 기준 일자
@@ -187,6 +188,7 @@ COMMENT ON COLUMN public.poi_public_toilet_info.emg_bell_location IS '비상벨 
 COMMENT ON COLUMN public.poi_public_toilet_info.cctv_yn IS '화장실 입구 CCTV 설치 유무 (Y/N)';
 COMMENT ON COLUMN public.poi_public_toilet_info.diaper_table_yn IS '기저귀 교환대 유무 (Y/N)';
 COMMENT ON COLUMN public.poi_public_toilet_info.diaper_table_location IS '기저귀 교환대 설치 장소';
+COMMENT ON COLUMN public.poi_public_toilet_info.unisex_yn IS '남녀공용 화장실 여부 (Y/N)';
 
 COMMENT ON COLUMN public.poi_public_toilet_info.remodeled_dt IS '리모델링 연월';
 COMMENT ON COLUMN public.poi_public_toilet_info.base_dt IS '데이터 기준 일자';

@@ -347,6 +347,8 @@ CREATE TABLE public.poi_facility_accessibility (
 	entrance_ramp_yn bpchar(1) NULL ,               -- 주출입구 높이차이 제거 Y/N
 	entrance_door_yn bpchar(1) NULL ,               -- 주출입구(문) Y/N
 	approach_road_yn bpchar(1) NULL ,               -- 주출입구 접근로 Y/N
+	guide_facility_yn bpchar(1) NULL ,              -- 유도 및 안내 설비 Y/N (v1.4.0)
+	accessible_room_yn bpchar(1) NULL ,             -- 장애인사용가능객실 Y — 숙박시설 외에는 판정하지 않아 NULL (v1.4.0)
 	eval_info_raw varchar(1000) NULL ,              -- 기구표 원문(콤마 구분 목록)
 	base_dt date NULL ,                             -- 데이터 기준 일자
 	del_yn bpchar(1) DEFAULT 'N' NULL ,

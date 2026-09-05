@@ -1,7 +1,7 @@
 # 01-IITP-DABT-Database
 1.장애인 통합 데이터베이스
 
-![version](https://img.shields.io/badge/version-v1.3.0-blue)
+![version](https://img.shields.io/badge/version-v1.4.0-blue)
 
 장애인 자립 생활 지원 플랫폼 데이터베이스(`iitp_db`)의 **스키마 정의·초기화·데이터 교정 마이그레이션 스크립트** 저장소.
 
@@ -24,6 +24,7 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | `iitp_db_schemas_init-deletion_and_creation_mobility.sql` | 이동편의 스키마 — 버스 노선·정류장(GBIS), 역 편의 현황·**설비 단위 승강기·화장실·승강장(국가철도공단, v1.3.0)**, 건물 편의시설 |
 | `KOSIS_stats_data_creation.sql` | KOSIS 통계 테이블 |
 | `mv_poi_latlng_fix.sql` | **mv_poi 위경도 뒤바뀜 교정 + CHECK 제약** (2026-07-16, GGTOUR 적재분 51,677건) |
+| `accessibility_columns_v140.sql` | **접근성 컬럼 추가** (v1.4.0) — `poi_facility_accessibility.guide_facility_yn`·`accessible_room_yn`, `poi_public_toilet_info.unisex_yn`. NULL 허용·`IF NOT EXISTS` 라 재실행 안전 |
 
 ### 이동편의 역 설비 단위 테이블 (v1.3.0)
 
