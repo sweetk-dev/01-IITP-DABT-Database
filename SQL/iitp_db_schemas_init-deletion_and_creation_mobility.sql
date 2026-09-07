@@ -41,7 +41,8 @@ CREATE TABLE public.tran_bus_route_info (
 	up_last_time varchar(5) NULL ,                  -- 평일 기점 막차
 	down_first_time varchar(5) NULL ,               -- 평일 종점 첫차
 	down_last_time varchar(5) NULL ,                -- 평일 종점 막차
-	low_bus_yn bpchar(1) NULL ,                     -- 저상버스 운영 여부 (현재 미수집, 공식 소스 확보 시 사용)
+	low_bus_yn bpchar(1) NULL ,                     -- 저상버스 운행 여부 Y/N (경기버스정보 저상버스 노선현황, 전일 기준 — 08 GBIS_LOWFLOOR 적재)
+	low_bus_base_dt date NULL ,                     -- low_bus_yn 판정 기준일(전일). 오래된 값은 소비 측이 무시
 	base_dt date NULL ,                             -- 데이터 기준 일자(수집일)
 	del_yn bpchar(1) DEFAULT 'N' NULL ,             -- 삭제 여부 Y/N
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL ,
