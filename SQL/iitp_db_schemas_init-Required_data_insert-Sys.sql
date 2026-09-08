@@ -145,7 +145,8 @@ INSERT INTO public.sys_common_code (grp_id, grp_nm, code_id, code_nm, parent_grp
     			('ext_sys_code', '외부 연동 시스템 코드', 'KRNA_LIFT', '국가철도공단 휠체어리프트', null, null, 'S', 1, 3, 'Y'::bpchar, 'N'::bpchar, '설비 단위 휠체어리프트 상세 파일 적재 (poi_station_wheelchair_lift)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
     			('ext_sys_code', '외부 연동 시스템 코드', 'KOWSI_FACL', '한국사회보장정보원 장애인편의시설', null, null, 'S', 1, 4, 'Y'::bpchar, 'N'::bpchar, '건물 장애인 편의시설 수집 (poi_facility_accessibility)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
     			('ext_sys_code', '외부 연동 시스템 코드', 'TOUR_BF_API', '한국관광공사 무장애여행 API', null, null, 'S', 1, 5, 'Y'::bpchar, 'N'::bpchar, '무장애 관광지 정보 수집 (poi_tour_bf_facility, dis_unst_collect_item)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
-    			('ext_sys_code', '외부 연동 시스템 코드', 'KRNA_STN', '국가철도공단 역사 설비 파일', null, null, 'S', 1, 6, 'Y'::bpchar, 'N'::bpchar, '설비 단위 엘리베이터·화장실·승강장·이격거리 파일 적재 (poi_station_elevator_unit, poi_station_toilet_unit, poi_station_platform)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
+    			('ext_sys_code', '외부 연동 시스템 코드', 'KRNA_STN', '국가철도공단 역사 설비 파일', null, null, 'S', 1, 6, 'Y'::bpchar, 'N'::bpchar, '설비 단위 엘리베이터·화장실·승강장·이격거리 파일 적재 (poi_station_elevator_unit, poi_station_toilet_unit, poi_station_platform)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL'),
+    			('ext_sys_code', '외부 연동 시스템 코드', 'GBIS_LOWFLOOR', '경기버스정보 저상버스 노선현황', null, null, 'S', 1, 7, 'Y'::bpchar, 'N'::bpchar, '전일 기준 저상버스 운행 노선 수집 (tran_bus_route_info.low_bus_yn)', '', CURRENT_TIMESTAMP, 'SYS-MANUAL');
 
 
 
