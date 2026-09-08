@@ -308,6 +308,7 @@ CREATE TABLE public.poi_tour_bf_facility (
 	
 	latitude          DOUBLE PRECISION,                       -- 위도 (WGS84)
     longitude         DOUBLE PRECISION,                       -- 경도 (WGS84)
+	detail_raw        JSONB,                                  -- 편의정보 응답 원문 (v1.6.0) — 재파싱·안내 문구·소스 대조 근거
 	base_dt           DATE,                                   -- 데이터 기준 일자
 	
 	del_yn bpchar(1) DEFAULT 'N'::bpchar NULL, -- 삭제 여부: N(정상), Y(삭제)
@@ -348,6 +349,7 @@ COMMENT ON COLUMN public.mv_poi.address_detail IS '상세 주소';
 
 COMMENT ON COLUMN public.poi_tour_bf_facility.latitude IS 'WGS84 기준 위도';
 COMMENT ON COLUMN public.poi_tour_bf_facility.longitude IS 'WGS84 기준 경도';
+COMMENT ON COLUMN public.poi_tour_bf_facility.detail_raw IS '무장애여행 편의정보 응답 원문(JSON). 플래그 재파싱·안내 문구·소스 대조 근거';
 COMMENT ON COLUMN public.poi_tour_bf_facility.base_dt IS '데이터 기준 일자';
 
 COMMENT ON COLUMN public.poi_tour_bf_facility.del_yn IS '삭제 여부: N(정상), Y(삭제)';
