@@ -1,7 +1,7 @@
 # 01-IITP-DABT-Database
 1.장애인 통합 데이터베이스
 
-![version](https://img.shields.io/badge/version-v1.6.0-blue)
+![version](https://img.shields.io/badge/version-v1.7.0-blue)
 
 장애인 자립 생활 지원 플랫폼 데이터베이스(`iitp_db`)의 **스키마 정의·초기화·데이터 교정 마이그레이션 스크립트** 저장소.
 
@@ -26,6 +26,7 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | `mv_poi_latlng_fix.sql` | **mv_poi 위경도 뒤바뀜 교정 + CHECK 제약** (2026-07-16, GGTOUR 적재분 51,677건) |
 | `accessibility_columns_v140.sql` | **접근성 컬럼 추가** (v1.4.0) — `poi_facility_accessibility.guide_facility_yn`·`accessible_room_yn`, `poi_public_toilet_info.unisex_yn`. NULL 허용·`IF NOT EXISTS` 라 재실행 안전 |
 | `emergency_support_v160.sql` | **긴급대응 지원시설 표 신설 + 편의정보 원문 보존** (v1.6.0) — `poi_emergency_support`(보장구 수리·충전·콜택시, 운영시간·출처 신뢰도 포함) 신설, `poi_tour_bf_facility.detail_raw` 추가, ext_sys_code `GG_ASSIST_REPAIR`. 적재는 08 `GG_ASSIST_REPAIR` 수집기. 재실행 안전 |
+| `emergency_support_v170.sql` | **설치 지점 구분 + 전국 원천 코드** (v1.7.0) — `poi_emergency_support.install_desc` 추가, 자연키를 `(support_type, name, addr_road, install_desc)` 로 확장. 같은 건물에 충전기가 여러 대 설치된 경우(김포시청 제3별관·민원동)를 별개 행으로 보존한다. ext_sys_code `STD_WCHAIR_CHARGER`·`KNAT_REPAIR`·`KNAT_CENTER`·`NHIS_ASSIST_STORE`. 재실행 안전 |
 | `low_floor_bus_v150.sql` | **저상버스 운행 노선 기준일 컬럼** (v1.5.0) — `tran_bus_route_info.low_bus_base_dt` 추가, `low_bus_yn` 주석 갱신, ext_sys_code `GBIS_LOWFLOOR`. 적재는 08 `GBIS_LOWFLOOR` 수집기(노선번호+운수사 복합키). 재실행 안전 |
 
 ### 이동편의 역 설비 단위 테이블 (v1.3.0)
