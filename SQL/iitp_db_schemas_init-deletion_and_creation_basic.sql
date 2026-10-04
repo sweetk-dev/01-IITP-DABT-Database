@@ -2360,4 +2360,57 @@ COMMENT ON COLUMN public.stats_dis_fclty_welfare_usage.updated_by IS '데이터 
 ALTER TABLE public.stats_dis_fclty_welfare_usage ADD CONSTRAINT fk_st_dis_fclty_welfare_usage FOREIGN KEY (src_data_id) REFERENCES public.stats_src_data_info(src_data_id);
 
 
-
+-- ################################################
+-- ## 통합 KOSIS 통계 테이블 — 자연키 UNIQUE 인덱스
+-- ################################################
+-- 위에서 만든 통합 통계 테이블 24종에 같은 형태의 UNIQUE 인덱스를 건다.
+-- stats_intg_unique_v180.sql(기존 DB 용 마이그레이션)이 만드는 인덱스와 이름·정의가 같다.
+-- 새 DB 는 이 파일만으로, 기존 DB 는 마이그레이션으로 같은 결과가 된다.
+--
+-- 키: (src_data_id, prd_de, c1, COALESCE(c2,''), COALESCE(c3,''), itm_id)
+--   · 통합 테이블에는 PK(id) 외 유일성 제약이 없어, 같은 통계가 두 번 이관되면 같은 행이 2벌 들어간다.
+--   · 자료갱신일(src_latest_chn_dt)은 키에 넣지 않는다. 통합 테이블은 통계별 최신 1벌만 보관하므로
+--     같은 (통계, 시점, 분류, 항목)의 행은 갱신일과 무관하게 1행이어야 한다. 갱신일을 키에 넣으면
+--     갱신일만 다른 같은 자료가 2벌로 공존하는 것을 막지 못한다.
+--   · c2·c3 는 NULL 허용이라 COALESCE 로 '' 에 대응시킨다(UNIQUE 는 NULL 을 서로 다른 값으로 취급한다).
+--   · 선두 컬럼이 src_data_id 라 적재 배치의 "DELETE ... WHERE src_data_id = ?" 도 이 인덱스를 쓴다.
+-- 테이블을 추가·삭제하면 아래 배열과 stats_intg_unique_v180.sql 의 배열을 함께 고친다.
+DO $$
+DECLARE
+    t      text;
+    tables text[] := ARRAY[
+        'stats_dis_reg_natl_by_new',
+        'stats_dis_reg_natl_by_age_type_sev_gen',
+        'stats_dis_reg_sido_by_type_sev_gen',
+        'stats_dis_life_supp_need_lvl',
+        'stats_dis_life_maincarer',
+        'stats_dis_life_primcarer',
+        'stats_dis_life_supp_field',
+        'stats_dis_hlth_medical_usage',
+        'stats_dis_hlth_disease_cost_sub',
+        'stats_dis_hlth_sport_exec_type',
+        'stats_dis_hlth_exrc_best_aid',
+        'stats_dis_aid_device_usage',
+        'stats_dis_aid_device_need',
+        'stats_dis_edu_voca_exec',
+        'stats_dis_edu_voca_exec_way',
+        'stats_dis_emp_natl',
+        'stats_dis_emp_natl_public',
+        'stats_dis_emp_natl_private',
+        'stats_dis_emp_natl_gov_org',
+        'stats_dis_emp_natl_dis_type_sev',
+        'stats_dis_emp_natl_dis_type_indust',
+        'stats_dis_soc_partic_freq',
+        'stats_dis_soc_contact_cntfreq',
+        'stats_dis_fclty_welfare_usage'
+    ];
+BEGIN
+    FOREACH t IN ARRAY tables LOOP
+        EXECUTE format(
+            'CREATE UNIQUE INDEX IF NOT EXISTS %I ON public.%I USING btree '
+            '(src_data_id, prd_de, c1, COALESCE(c2, ''''), COALESCE(c3, ''''), itm_id)',
+            'uidx_' || replace(t, 'stats_', 'st_') || '_key', t
+        );
+    END LOOP;
+END
+$$;

@@ -1,3 +1,17 @@
+-- ============================================================================
+-- [참고용 — 실행하지 말 것]
+-- 이 파일은 초기 설계 시점(ver 0.0.3, 2025-05-22)의 KOSIS 테이블 정의를 보존한 것이다.
+-- 현행 스키마는 iitp_db_schemas_init-deletion_and_creation_basic.sql 이 정의한다.
+--
+-- basic init 을 적용한 DB 에 이 파일을 실행하면 안 되는 이유
+--   · 첫 문장이 DROP TABLE IF EXISTS public.stats_kosis_origin_data 다. 수집된 원본 데이터가 지워진다.
+--   · 이어서 만드는 stats_kosis_origin_data 는 현행 정의와 컬럼이 다르다
+--     (src_data_id·stat_latest_chn_dt·data_ref_dt·created_by 없음, itm_id 길이 등).
+--     적재 배치(08-IITP-DABT-PreProcessing)의 INSERT 가 "column does not exist" 로 실패한다.
+--   · 같은 테이블의 CREATE 문이 파일 안에 두 번 있어 끝까지 실행되지도 않는다.
+-- 테이블 구조의 변천을 확인하는 용도로만 읽는다.
+-- ============================================================================
+
 
 -- ## ver 0.0.3 last update data : 2025.05.22
 -- ## Only for PostgreSQL

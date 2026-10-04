@@ -31,12 +31,27 @@ UPDATE mv_poi SET latitude = 36.3374632, longitude = 127.4249826 WHERE poi_id = 
 
 -- [3] 재발 방지 — 적재 경로와 무관하게 범위를 벗어난 값을 삽입 시점에 거부한다.
 --     위경도는 함께 있거나 함께 없어야 한다(한쪽만 결측 = 16786 사례).
-ALTER TABLE public.mv_poi
-  ADD CONSTRAINT ck_mv_poi_latlng_range
-  CHECK (
-    (latitude IS NULL AND longitude IS NULL)
-    OR (latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180)
-  );
+--     ADD CONSTRAINT 에는 IF NOT EXISTS 가 없어, 제약이 이미 있는 DB(이 스크립트를 한 번 실행했거나
+--     poi init 스크립트로 mv_poi 를 만든 DB)에서 그대로 실행하면 "constraint already exists" 로
+--     트랜잭션 전체([1]·[2] 교정 포함)가 롤백된다. pg_constraint 로 존재를 확인한 뒤 없을 때만 추가한다.
+--     conrelid 로 대상 테이블을 한정하는 이유: 제약 이름은 테이블 단위로만 유일하다.
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+      FROM pg_constraint
+     WHERE conname  = 'ck_mv_poi_latlng_range'
+       AND conrelid = 'public.mv_poi'::regclass
+  ) THEN
+    ALTER TABLE public.mv_poi
+      ADD CONSTRAINT ck_mv_poi_latlng_range
+      CHECK (
+        (latitude IS NULL AND longitude IS NULL)
+        OR (latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180)
+      );
+  END IF;
+END
+$$;
 
 COMMENT ON CONSTRAINT ck_mv_poi_latlng_range ON public.mv_poi IS
   '위경도 범위·짝 강제 — GGTOUR 적재분 51,677건 위경도 스왑 사고(2026-07-16) 재발 방지';
