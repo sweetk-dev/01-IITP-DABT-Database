@@ -396,10 +396,19 @@ CREATE TABLE public.poi_emergency_support (
 	created_by varchar(40) NOT NULL ,
 	updated_by varchar(40) NULL ,
 	deleted_by varchar(40) NULL ,
+	-- 설치 지점 설명(v1.7.0). emergency_support_v170.sql 이 ALTER TABLE ... ADD COLUMN 으로 붙이는 컬럼과 같은 정의이며,
+	-- 그 스크립트를 적용한 DB 와 컬럼 순서까지 같아지도록 맨 끝에 둔다.
+	install_desc varchar(300) NULL ,                -- 설치 지점 설명 — 같은 건물 내 복수 설치 구분(자연키 구성요소). 충전기 전용, 수리센터는 NULL
 	CONSTRAINT pkey_poi_emergency_support PRIMARY KEY (support_id)
 );
-CREATE UNIQUE INDEX uidx_poi_emergency_support_key ON public.poi_emergency_support USING btree (support_type, name, coalesce(addr_road, ''));
+-- 자연키는 4열이다(v1.7.0): (support_type, name, addr_road, install_desc).
+--   · 3열(install_desc 없음)이면 같은 건물에 설치 지점이 여러 곳인 충전기가 한 행으로 합쳐진다.
+--   · 08-IITP-DABT-PreProcessing 의 적재 SQL 은 ON CONFLICT (support_type, name, coalesce(addr_road,''), coalesce(install_desc,''))
+--     를 쓰므로, 인덱스 표현식이 이와 정확히 같지 않으면 "no unique or exclusion constraint matching" 으로 적재가 실패한다.
+--   · addr_road·install_desc 는 NULL 허용이라 coalesce(…,'') 로 감싼다(NULL 은 UNIQUE 에서 서로 다른 값으로 취급되기 때문).
+CREATE UNIQUE INDEX uidx_poi_emergency_support_key ON public.poi_emergency_support USING btree (support_type, name, coalesce(addr_road, ''), coalesce(install_desc, ''));
 CREATE INDEX idx_poi_emergency_support_location ON public.poi_emergency_support USING btree (latitude, longitude);
 CREATE INDEX idx_poi_emergency_support_type ON public.poi_emergency_support USING btree (support_type);
 
 COMMENT ON TABLE public.poi_emergency_support IS '긴급대응 지원시설 — 보장구 수리·충전·콜택시 등';
+COMMENT ON COLUMN public.poi_emergency_support.install_desc IS '설치 지점 설명 — 같은 건물 내 복수 설치를 구분한다(자연키 구성요소). 충전기 전용, 수리센터는 NULL';

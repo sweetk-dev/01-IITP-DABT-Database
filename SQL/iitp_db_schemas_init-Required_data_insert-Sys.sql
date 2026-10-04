@@ -325,7 +325,9 @@ INSERT INTO public.stats_src_data_info (ext_api_id, ext_sys, stat_api_id, intg_t
 UPDATE stats_src_data_info sdi 
 	SET stat_api_id = sai.stat_api_id
 FROM sys_stats_src_api_info sai 
-WHERE sdi.stat_tbl_id = sai.stat_tbl_id AND sdi.ext_api_id = sai.ext_api_id
+WHERE sdi.stat_tbl_id = sai.stat_tbl_id AND sdi.ext_api_id = sai.ext_api_id;
+-- 문장 끝 세미콜론이 없으면 이 UPDATE 가 아래 TRUNCATE 문과 한 문장으로 이어져 구문 오류가 나고,
+-- stats_src_data_info.stat_api_id 가 채워지지 않은 채(NULL) 남는다.
 
 
 
