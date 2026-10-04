@@ -36,8 +36,18 @@ CREATE TABLE public.mv_poi (
 	is_published varchar(1) DEFAULT 'N'::bpchar NOT NULL , 
 	source_organization varchar(100) NULL , 
 	source_id varchar(50) NULL ,
-	sido_code varchar(12),
-	CONSTRAINT poi_pkey PRIMARY KEY (poi_id)
+	-- sido_code 는 위(address_detail 다음)에 한 번만 정의한다. 같은 컬럼을 두 번 적으면
+	-- "column specified more than once" 로 CREATE TABLE 이 실패해 mv_poi 와 그 인덱스·주석이 전부 만들어지지 않는다.
+	CONSTRAINT poi_pkey PRIMARY KEY (poi_id),
+	-- 위경도 범위 제약. mv_poi_latlng_fix.sql 이 기존 DB 에 추가하는 제약과 이름·조건이 같다.
+	-- init 만 적용한 DB 와 교정 스크립트까지 적용한 DB 의 mv_poi 정의가 같아지도록 여기에도 둔다.
+	--   · 위도 -90~90, 경도 -180~180 은 WGS84 정의역이다. 위도 자리에 경도(예: 126.9)가 들어오면 거부된다.
+	--   · 한쪽만 NULL 인 행은 BETWEEN 결과가 NULL 이 되어, 값이 있는 쪽이 범위 안이면 통과한다
+	--     (CHECK 는 결과가 FALSE 일 때만 거부). 값이 있는 쪽이 범위 밖이면 거부된다.
+	CONSTRAINT ck_mv_poi_latlng_range CHECK (
+		(latitude IS NULL AND longitude IS NULL)
+		OR (latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180)
+	)
 );
 CREATE INDEX idx_address_code ON public.mv_poi USING btree (address_code);
 CREATE INDEX idx_language_code ON public.mv_poi USING btree (language_code);
@@ -68,7 +78,9 @@ COMMENT ON COLUMN public.mv_poi.is_deleted IS '삭제 여부(Y/N)';
 COMMENT ON COLUMN public.mv_poi.is_published IS '발행 여부(Y/N)';
 COMMENT ON COLUMN public.mv_poi.source_organization IS '출처 기관';
 COMMENT ON COLUMN public.mv_poi.source_id IS '출처 아이디';
-COMMENT ON COLUMN public.mv_poi.source_id IS '내부 시도 코드, "sido_code" comm code 참조';
+COMMENT ON CONSTRAINT ck_mv_poi_latlng_range ON public.mv_poi IS '위경도 범위 강제 — 위도 -90~90, 경도 -180~180 을 벗어난 값을 삽입 시점에 거부';
+-- 대상 컬럼은 sido_code 다. source_id 로 적으면 바로 위 source_id 주석('출처 아이디')이 덮어써진다.
+COMMENT ON COLUMN public.mv_poi.sido_code IS '내부 시도 코드, "sido_code" comm code 참조';
 
 
 
