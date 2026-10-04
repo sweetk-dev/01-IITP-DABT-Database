@@ -1,7 +1,7 @@
 # 01-IITP-DABT-Database
 1.장애인 통합 데이터베이스
 
-![version](https://img.shields.io/badge/version-v1.7.0-blue)
+![version](https://img.shields.io/badge/version-v1.8.1-blue)
 
 장애인 자립 생활 지원 플랫폼 데이터베이스(`iitp_db`)의 **스키마 정의·초기화·데이터 교정 마이그레이션 스크립트** 저장소.
 
@@ -47,6 +47,8 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | 9 | 버전별 마이그레이션 (아래) | |
 
 2~7 은 서로 참조하지 않아 순서를 바꿔도 되지만, 1 은 맨 앞, 8 은 테이블 생성이 모두 끝난 뒤여야 한다.
+
+이 순서만으로 만든 새 DB 의 `sys_data_summary_info` 는 비어 있다(등록 행을 넣는 스크립트가 없다). KOSIS 적재 배치(08-IITP-DABT-PreProcessing)는 통합 테이블마다 이 테이블의 행(`sys_tbl_id` = 통합 테이블명, `status='A'`, `del_yn='N'`)이 있어야 적재를 완료하므로, **KOSIS 적재 전에 대상 통합 테이블의 행을 별도로 등록한다.**
 
 **버전별 마이그레이션** — 파일명의 버전 순서대로 적용한다. 모두 재실행해도 결과가 같다.
 
