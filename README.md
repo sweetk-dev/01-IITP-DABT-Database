@@ -1,7 +1,7 @@
 # 01-IITP-DABT-Database
 1.장애인 통합 데이터베이스
 
-![version](https://img.shields.io/badge/version-v1.8.1-blue)
+![version](https://img.shields.io/badge/version-v1.9.0-blue)
 
 장애인 자립 생활 지원 플랫폼 데이터베이스(`iitp_db`)의 **스키마 정의·초기화·데이터 교정 마이그레이션 스크립트** 저장소.
 
