@@ -29,6 +29,7 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | `emergency_support_v170.sql` | **설치 지점 구분 + 전국 원천 코드** (v1.7.0) — `poi_emergency_support.install_desc` 추가, 자연키를 `(support_type, name, addr_road, install_desc)` 로 확장. 같은 건물에 충전기가 여러 대 설치된 경우(김포시청 제3별관·민원동)를 별개 행으로 보존한다. ext_sys_code `STD_WCHAIR_CHARGER`·`KNAT_REPAIR`·`KNAT_CENTER`·`NHIS_ASSIST_STORE`. 재실행 안전 |
 | `low_floor_bus_v150.sql` | **저상버스 운행 노선 기준일 컬럼** (v1.5.0) — `tran_bus_route_info.low_bus_base_dt` 추가, `low_bus_yn` 주석 갱신, ext_sys_code `GBIS_LOWFLOOR`. 적재는 08 `GBIS_LOWFLOOR` 수집기(노선번호+운수사 복합키). 재실행 안전 |
 | `stats_intg_unique_v180.sql` | **통합 통계 테이블 중복 방지** — KOSIS 통합 테이블 24종(`stats_dis_*`)의 중복 행을 정리하고 자연키 `(src_data_id, prd_de, c1, c2, c3, itm_id)` 에 UNIQUE 인덱스를 건다(NULL 허용인 `c2`·`c3` 는 COALESCE 표현식, 자료갱신일은 키에 넣지 않는다 — 통계별 최신 1벌만 보관). 값이 같고 갱신일만 다른 행은 갱신일이 가장 늦은 1행을 남긴다. 키가 같고 값이 다른 행이나 `c4` 분류를 쓰는 통계가 있으면 아무것도 바꾸지 않고 중단한다. 같은 인덱스가 basic init 에도 들어 있다. 재실행 안전 |
+| `kosis_struct_batch_alert_v190.sql` | **KOSIS 통계표 구조 변경 대응 + 수집 실행 기록·알림 설정** (v1.9.0) — `sys_stats_src_api_info.intg_col_map`(통합 테이블 칸 배치 규칙, jsonb) 추가, 구조가 바뀐 4종(`DT_11761_N007`·`N008`·`N010`, `DT_438001_AC016`)의 조회 주소·규칙 갱신, `sys_batch_run_log`(수집 배치 실행 1회 = 1행)·`sys_ops_setting`(운영 설정 키/값 — 알림 수신 주소·사용 여부) 신설. 08 v1.17.0 과 함께 적용한다(그 이전 배치가 바뀐 주소로 돌면 4종이 다른 모양으로 적재되거나 실패한다). 재실행 안전 |
 
 ### 스크립트 적용 순서
 
@@ -60,6 +61,7 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | 4 | `emergency_support_v160.sql` | 테이블·컬럼은 이미 있음. 공통 코드 `GG_ASSIST_REPAIR` 등록 |
 | 5 | `emergency_support_v170.sql` | 컬럼·인덱스는 이미 있음. 공통 코드 4건 등록 |
 | 6 | `stats_intg_unique_v180.sql` | 인덱스가 이미 있어 변화 없음 |
+| 7 | `kosis_struct_batch_alert_v190.sql` | 칼럼·표는 이미 있음. 4종 조회 주소·규칙은 초기 데이터와 같은 값으로 다시 씀 |
 
 init 스크립트는 최신 버전의 테이블 정의를 담고 있으므로, 새 DB 에서 마이그레이션이 하는 일은 공통 코드(`ext_sys_code`) 등록뿐이다. 8번(초기 데이터)은 `ext_sys_code` 그룹을 지우고 다시 넣으므로 **마이그레이션은 반드시 8번 뒤에** 적용한다(먼저 적용하면 마이그레이션이 등록한 코드가 지워진다).
 
