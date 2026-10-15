@@ -344,6 +344,33 @@ WHERE sdi.stat_tbl_id = sai.stat_tbl_id AND sdi.ext_api_id = sai.ext_api_id;
 -- 문장 끝 세미콜론이 없으면 이 UPDATE 가 아래 TRUNCATE 문과 한 문장으로 이어져 구문 오류가 나고,
 -- stats_src_data_info.stat_api_id 가 채워지지 않은 채(NULL) 남는다.
 
+-- # KOSIS 시군구별,장애정도별,성별 등록장애인수 (DT_11761_N009, v1.14.0)
+-- 성별이 '분류'(C3)로 와서 N007 과 같은 규칙으로 itm_id 칸에 옮겨 넣는다. 위 목록과 따로 둔 것은
+-- stat_api_id 를 자동 번호로 받기 위해서다(마이그레이션 local_stats_welfare_v1140.sql 과 같은 문장).
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '시군구별,장애정도별,성별 등록장애인수', 'DT_11761_N009', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=ALL&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=117&tblId=DT_11761_N009","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=117&tblId=DT_11761_N009","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=117&tblId=DT_11761_N009","format":"xml"}',
+       '{"c3": null, "itm_id": "C3", "item_obj": "D"}'::jsonb,
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_11761_N009');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_reg_sgg_by_sev_gen',
+       '시군구별,장애정도별,성별 등록장애인수', 'KOSIS_117', '「장애인현황」', '2025', '년', '2019', '2025',
+       'DT_11761_N009', '시군구별,장애정도별,성별 등록장애인수', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_11761_N009'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_11761_N009');
+
 
 
 
