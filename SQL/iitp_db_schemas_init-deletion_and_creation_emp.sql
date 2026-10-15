@@ -22,8 +22,8 @@ CREATE TABLE public.emp_dis_jobseeker_status (
 	 age int2 NOT NULL, -- 연령
 	 region varchar(100) NOT NULL, -- 희망지역 (예: 서울 영등포구, 강원 원주시)
 	 job_type varchar(100) NOT NULL, -- 희망직종 (예: 안마사, 아파트·빌라 경비원)
-	 salary_type varchar(10) NOT NULL, -- 급여타입 (월급/시급)
-	 salary_amount int4 NOT NULL, -- 급여금액 (원 단위)
+	 salary_type varchar(10) NULL, -- 급여타입 (월급/시급). 원천 희망임금 '()0'(미기재)이면 NULL (v1.11.0)
+	 salary_amount int4 NULL, -- 급여금액 (원 단위). 원천 희망임금 '()0'(미기재)·'(시급)'(금액 없음)이면 NULL (v1.11.0)
 	 disability_type varchar(50) NOT NULL, -- 장애유형 (예: 시각장애, 지체장애)
 	 severity varchar(10) NOT NULL, -- 중증여부 (중증/경증)
 	 org_type varchar(50) NOT NULL, -- 기관분류 (예: 공단)
@@ -50,8 +50,8 @@ COMMENT ON COLUMN public.emp_dis_jobseeker_status.reg_date IS '구직등록일 (
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.age IS '연령';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.region IS '희망지역 (예: 서울 영등포구, 강원 원주시)';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.job_type IS '희망직종 (예: 안마사, 아파트·빌라 경비원)';
-COMMENT ON COLUMN public.emp_dis_jobseeker_status.salary_type IS '급여타입 (월급/시급)';
-COMMENT ON COLUMN public.emp_dis_jobseeker_status.salary_amount IS '급여금액 (원 단위)';
+COMMENT ON COLUMN public.emp_dis_jobseeker_status.salary_type IS '급여타입 (월급/시급). 원천 희망임금이 ''()0''(미기재)이면 NULL';
+COMMENT ON COLUMN public.emp_dis_jobseeker_status.salary_amount IS '급여금액 (원 단위). 원천 희망임금이 ''()0''(미기재)이거나 ''(시급)''처럼 금액이 없으면 NULL';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.disability_type IS '장애유형 (예: 시각장애, 지체장애)';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.severity IS '중증여부 (중증/경증)';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.org_type IS '기관분류 (예: 공단)';
@@ -178,7 +178,7 @@ CREATE TABLE public.emp_dis_job_posting (
 	apply_date date NOT NULL, -- 구인신청일자 (YYYY-MM-DD 형식)
 	recruit_period varchar(50) NOT NULL, -- 모집기간 (예: 2024-12-31~2025-01-15)
 	company_name varchar(200) NOT NULL, -- 사업장명
-	job_type varchar(100) NOT NULL, -- 모집직종
+	job_type varchar(100) NULL, -- 모집직종. 원천이 비어 있으면 NULL (v1.11.0)
 	emp_type varchar(20) NOT NULL, -- 고용형태 (상용직/계약직)
 	salary_type varchar(10) NOT NULL, -- 임금형태 (월급/시급)
 	salary_amount int4, -- 임금 (원 단위)
@@ -215,7 +215,7 @@ COMMENT ON COLUMN public.emp_dis_job_posting.seq_no IS '연번 (원본 데이터
 COMMENT ON COLUMN public.emp_dis_job_posting.apply_date IS '구인신청일자 (YYYY-MM-DD 형식)';
 COMMENT ON COLUMN public.emp_dis_job_posting.recruit_period IS '모집기간 (예: 2024-12-31~2025-01-15)';
 COMMENT ON COLUMN public.emp_dis_job_posting.company_name IS '사업장명';
-COMMENT ON COLUMN public.emp_dis_job_posting.job_type IS '모집직종';
+COMMENT ON COLUMN public.emp_dis_job_posting.job_type IS '모집직종. 원천이 비어 있으면 NULL';
 COMMENT ON COLUMN public.emp_dis_job_posting.emp_type IS '고용형태 (상용직/계약직)';
 COMMENT ON COLUMN public.emp_dis_job_posting.salary_type IS '임금형태 (월급/시급)';
 COMMENT ON COLUMN public.emp_dis_job_posting.salary_amount IS '임금 (원 단위)';
@@ -408,6 +408,7 @@ CREATE TABLE public.emp_dis_dev_support_org (
 	public_guardian boolean NOT NULL, -- 공공후견 (true/false)
 	child_family_sup boolean NOT NULL, -- 장애아가족양육지원 (true/false)
 	emergency_care boolean NOT NULL, -- 긴급돌봄 (true/false)
+	severe_integrated_care boolean NULL, -- 최중증 통합돌봄 (true/false). 2025-09-30 판부터 원천 제공 (v1.11.0)
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
 	updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
 	created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -431,6 +432,7 @@ COMMENT ON COLUMN public.emp_dis_dev_support_org.rights_relief IS '권리구제 
 COMMENT ON COLUMN public.emp_dis_dev_support_org.public_guardian IS '공공후견 (true/false)';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.child_family_sup IS '장애아가족양육지원 (true/false)';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.emergency_care IS '긴급돌봄 (true/false)';
+COMMENT ON COLUMN public.emp_dis_dev_support_org.severe_integrated_care IS '최중증 통합돌봄 (true/false). 2025-09-30 판부터 원천 제공 — 그 이전 판으로 넣은 행은 NULL';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.created_at IS '생성시각';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.updated_at IS '수정시각';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
@@ -498,7 +500,7 @@ CREATE TABLE public.emp_dis_std_workplace (
 	  business_no varchar(20) NOT NULL, -- 사업자등록번호
 	  address varchar(200) NOT NULL, -- 소재지
 	  cert_date date NOT NULL, -- 인증일자 (YYYY-MM-DD)
-	  tel varchar(20) NOT NULL, -- 전화번호
+	  tel varchar(20) NULL, -- 전화번호. 원천이 비어 있으면 NULL (v1.11.0)
 	  business_item varchar(200) NOT NULL, -- 업종 및 주요생산품
 	  type varchar(20) NOT NULL, -- 구분
 	  created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
@@ -518,7 +520,7 @@ COMMENT ON COLUMN public.emp_dis_std_workplace.ceo IS '대표자';
 COMMENT ON COLUMN public.emp_dis_std_workplace.business_no IS '사업자등록번호';
 COMMENT ON COLUMN public.emp_dis_std_workplace.address IS '소재지';
 COMMENT ON COLUMN public.emp_dis_std_workplace.cert_date IS '인증일자 (YYYY-MM-DD)';
-COMMENT ON COLUMN public.emp_dis_std_workplace.tel IS '전화번호';
+COMMENT ON COLUMN public.emp_dis_std_workplace.tel IS '전화번호. 원천이 비어 있으면 NULL';
 COMMENT ON COLUMN public.emp_dis_std_workplace.business_item IS '업종 및 주요생산품';
 COMMENT ON COLUMN public.emp_dis_std_workplace.type IS '구분';
 COMMENT ON COLUMN public.emp_dis_std_workplace.created_at IS '생성시각';

@@ -31,6 +31,7 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | `stats_intg_unique_v180.sql` | **통합 통계 테이블 중복 방지** — KOSIS 통합 테이블 24종(`stats_dis_*`)의 중복 행을 정리하고 자연키 `(src_data_id, prd_de, c1, c2, c3, itm_id)` 에 UNIQUE 인덱스를 건다(NULL 허용인 `c2`·`c3` 는 COALESCE 표현식, 자료갱신일은 키에 넣지 않는다 — 통계별 최신 1벌만 보관). 값이 같고 갱신일만 다른 행은 갱신일이 가장 늦은 1행을 남긴다. 키가 같고 값이 다른 행이나 `c4` 분류를 쓰는 통계가 있으면 아무것도 바꾸지 않고 중단한다. 같은 인덱스가 basic init 에도 들어 있다. 재실행 안전 |
 | `kosis_struct_batch_alert_v190.sql` | **KOSIS 통계표 구조 변경 대응 + 수집 실행 기록·알림 설정** (v1.9.0) — `sys_stats_src_api_info.intg_col_map`(통합 테이블 칸 배치 규칙, jsonb) 추가, 구조가 바뀐 4종(`DT_11761_N007`·`N008`·`N010`, `DT_438001_AC016`)의 조회 주소·규칙 갱신, `sys_batch_run_log`(수집 배치 실행 1회 = 1행)·`sys_ops_setting`(운영 설정 키/값 — 알림 수신 주소·사용 여부) 신설. 08 v1.17.0 과 함께 적용한다(그 이전 배치가 바뀐 주소로 돌면 4종이 다른 모양으로 적재되거나 실패한다). 재실행 안전 |
 | `culture_sports_facility_v1100.sql` | **문화·체육 시설 표 신설** (v1.10.0) — `poi_culture_sports_facility`(점자도서관·책나래 제공도서관·장애인체육시설·장애인체육회 4종, 종류 칸 `facility_type`, 활성 행 부분 유니크) 신설, ext_sys_code·외부 API 정보 `GG_CULTURE` 등록(인증키는 같은 경기데이터드림 키를 쓰는 `GG_TOILET` 행에서 복사 — 저장소에 두지 않음). 적재는 08 `GG_CULTURE` 수집기. 재실행 안전 |
+| `emp_odcloud_collect_v1110.sql` | **장애인 고용 파일데이터 정기 수집 준비** (v1.11.0) — `emp_dis_dev_support_org.severe_integrated_care`(최중증 통합돌봄, 2025-09-30 판 신설 칸) 추가, 새 판에서 빈 값이 나오는 칸 4개(`emp_dis_jobseeker_status.salary_type`·`salary_amount`, `emp_dis_job_posting.job_type`, `emp_dis_std_workplace.tel`)의 NOT NULL 해제, ext_sys_code·외부 API 정보 `ODCLOUD_EMP` 등록(인증키는 같은 공공데이터포털 키를 쓰는 기존 행에서 복사 — 저장소에 두지 않음), 표별 판 추적 행 14개(`sys_stats_src_api_info`, `api_data_url=''` = 아직 적재한 판 없음) 등록. 적재는 08 `ODCLOUD_EMP` 수집기(v1.19.0). 재실행 안전 |
 
 ### 스크립트 적용 순서
 
@@ -64,6 +65,7 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | 6 | `stats_intg_unique_v180.sql` | 인덱스가 이미 있어 변화 없음 |
 | 7 | `kosis_struct_batch_alert_v190.sql` | 칼럼·표는 이미 있음. 4종 조회 주소·규칙은 초기 데이터와 같은 값으로 다시 씀 |
 | 8 | `culture_sports_facility_v1100.sql` | 표·인덱스는 이미 있음. 공통 코드·외부 API 정보 `GG_CULTURE` 등록(인증키는 비어 있음 — 운영자가 채움) |
+| 9 | `emp_odcloud_collect_v1110.sql` | 칸은 이미 있음(NOT NULL 해제도 이미 반영). 공통 코드·외부 API 정보 `ODCLOUD_EMP`·판 추적 행 14개 등록(인증키는 공공데이터포털 키를 쓰는 행이 없으면 비어 있음 — 운영자가 채움). 판 추적 행이 `sys_data_summary_info` 의 고용 표 행(`sys_tbl_id` = 표 이름)을 함께 갱신하므로, 새 DB 에서는 그 행을 먼저 등록한다 |
 
 init 스크립트는 최신 버전의 테이블 정의를 담고 있으므로, 새 DB 에서 마이그레이션이 하는 일은 공통 코드(`ext_sys_code`) 등록뿐이다. 8번(초기 데이터)은 `ext_sys_code` 그룹을 지우고 다시 넣으므로 **마이그레이션은 반드시 8번 뒤에** 적용한다(먼저 적용하면 마이그레이션이 등록한 코드가 지워진다).
 
