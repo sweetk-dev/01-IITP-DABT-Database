@@ -28,6 +28,7 @@ CREATE TABLE public.emp_dis_jobseeker_status (
 	 severity varchar(10) NOT NULL, -- 중증여부 (중증/경증)
 	 org_type varchar(50) NOT NULL, -- 기관분류 (예: 공단)
 
+	 src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
 	 created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
 	 updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
 	 created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -56,6 +57,8 @@ COMMENT ON COLUMN public.emp_dis_jobseeker_status.disability_type IS '장애유�
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.severity IS '중증여부 (중증/경증)';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.org_type IS '기관분류 (예: 공단)';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.created_at IS '레코드 생성 시각';
+COMMENT ON COLUMN public.emp_dis_jobseeker_status.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
+CREATE INDEX idx_emp_dis_jobseeker_status_src_base_dt ON public.emp_dis_jobseeker_status USING btree (src_base_dt);
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.updated_at IS '레코드 수정 시각';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_jobseeker_status.updated_by IS '데이터 수정자';
@@ -70,6 +73,7 @@ CREATE TABLE public.emp_dis_center_usage (
    train_org varchar(100) NOT NULL, -- 훈련기관구분
    user_count int4 NOT NULL, -- 양성과정 이용자수
    employed_count int4 NOT NULL, -- 양성과정 취업자수
+   src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
    created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
    updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
    created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -84,6 +88,8 @@ COMMENT ON COLUMN public.emp_dis_center_usage.train_org IS '훈련기관구분';
 COMMENT ON COLUMN public.emp_dis_center_usage.user_count IS '양성과정 이용자수';
 COMMENT ON COLUMN public.emp_dis_center_usage.employed_count IS '양성과정 취업자수';
 COMMENT ON COLUMN public.emp_dis_center_usage.created_at IS '레코드 생성 시각';
+COMMENT ON COLUMN public.emp_dis_center_usage.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
+CREATE INDEX idx_emp_dis_center_usage_src_base_dt ON public.emp_dis_center_usage USING btree (src_base_dt);
 COMMENT ON COLUMN public.emp_dis_center_usage.updated_at IS '레코드 수정 시각';
 COMMENT ON COLUMN public.emp_dis_center_usage.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_center_usage.updated_by IS '데이터 수정자';
@@ -98,6 +104,7 @@ CREATE TABLE public.emp_dis_obligation_fulfillment (
    year int NOT NULL, -- 연도
    company_count int NOT NULL, -- 사업체수
    fulfilled_count int NOT NULL, -- 이행사업체수
+   src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
    created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
    updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
    created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -112,6 +119,7 @@ COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.year IS '연도';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.company_count IS '사업체수';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.fulfilled_count IS '이행사업체수';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.created_at IS '생성시각';
+COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.updated_at IS '수정시각';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_obligation_fulfillment.updated_by IS '데이터 수정자';
@@ -135,6 +143,7 @@ CREATE TABLE public.emp_dis_consulting_his (
    regional_office varchar(100) NOT NULL, -- 관할 지역본부 및 지사 (예: 강원지사)
    office_tel varchar(20) NOT NULL, -- 관할 지역본부 및 지사 대표번호 (예: 033-737-6612)
 
+   src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
    created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
    updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
    created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -161,6 +170,8 @@ COMMENT ON COLUMN public.emp_dis_consulting_his.business_type IS '사업체유�
 COMMENT ON COLUMN public.emp_dis_consulting_his.regional_office IS '관할 지역본부 및 지사 (예: 강원지사)';
 COMMENT ON COLUMN public.emp_dis_consulting_his.office_tel IS '관할 지역본부 및 지사 대표번호 (예: 033-737-6612)';
 COMMENT ON COLUMN public.emp_dis_consulting_his.created_at IS '레코드 생성 시각';
+COMMENT ON COLUMN public.emp_dis_consulting_his.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
+CREATE INDEX idx_emp_dis_consulting_his_src_base_dt ON public.emp_dis_consulting_his USING btree (src_base_dt);
 COMMENT ON COLUMN public.emp_dis_consulting_his.updated_at IS '레코드 수정 시각';
 COMMENT ON COLUMN public.emp_dis_consulting_his.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_consulting_his.updated_by IS '데이터 수정자';
@@ -193,6 +204,7 @@ CREATE TABLE public.emp_dis_job_posting (
 	reg_date date NOT NULL, -- 등록일 (YYYY-MM-DD 형식)
 	tel varchar(20) NOT NULL, -- 연락처
 
+	src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
 	updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
 	created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -230,6 +242,8 @@ COMMENT ON COLUMN public.emp_dis_job_posting.office IS '담당기관 (지사명)
 COMMENT ON COLUMN public.emp_dis_job_posting.reg_date IS '등록일 (YYYY-MM-DD 형식)';
 COMMENT ON COLUMN public.emp_dis_job_posting.tel IS '연락처';
 COMMENT ON 																																																																																																																																																																																																																																																																																																																																																																										COLUMN public.emp_dis_job_posting.created_at IS '레코드 생성 시각';
+COMMENT ON COLUMN public.emp_dis_job_posting.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
+CREATE INDEX idx_emp_dis_job_posting_src_base_dt ON public.emp_dis_job_posting USING btree (src_base_dt);
 COMMENT ON COLUMN public.emp_dis_job_posting.updated_at IS '레코드 수정 시각';
 COMMENT ON COLUMN public.emp_dis_job_posting.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_job_posting.updated_by IS '데이터 수정자';
@@ -249,6 +263,7 @@ CREATE TABLE public.emp_dis_burden_workplace (
 	 worker_count int4 NOT NULL, -- 상시근로자수
 	 disabled_count int4 NOT NULL, -- 장애인수
 	 severe_count int4 NOT NULL, -- 중증장애인수
+	 src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
 	 created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
 	 updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
 	 created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -268,6 +283,7 @@ COMMENT ON COLUMN public.emp_dis_burden_workplace.worker_count IS '상시근로�
 COMMENT ON COLUMN public.emp_dis_burden_workplace.disabled_count IS '장애인수';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.severe_count IS '중증장애인수';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.created_at IS '레코드 생성 시각';
+COMMENT ON COLUMN public.emp_dis_burden_workplace.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.updated_at IS '레코드 수정 시각';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_burden_workplace.updated_by IS '데이터 수정자';
@@ -285,6 +301,7 @@ CREATE TABLE public.emp_dis_emp_incentive (
 	  amount bigint NOT NULL, -- 지급액
 	  paid_person int NOT NULL, -- 지급순인원
 	  paid_year_person int NOT NULL, -- 지급연인원
+	  src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
 	  created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
 	  updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
 	  created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -301,6 +318,8 @@ COMMENT ON COLUMN public.emp_dis_emp_incentive.amount IS '지급액';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.paid_person IS '지급순인원';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.paid_year_person IS '지급연인원';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.created_at IS '생성시각';
+COMMENT ON COLUMN public.emp_dis_emp_incentive.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
+CREATE INDEX idx_emp_dis_emp_incentive_src_base_dt ON public.emp_dis_emp_incentive USING btree (src_base_dt);
 COMMENT ON COLUMN public.emp_dis_emp_incentive.updated_at IS '수정시각';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_emp_incentive.updated_by IS '데이터 수정자';
@@ -319,6 +338,7 @@ CREATE TABLE public.emp_dis_regional_status (
     obligation_count int4 NOT NULL, -- 의무고용 인원
     severe_2x_count int4 NOT NULL, -- 중증2배수 적용 장애인 고용인원
     severe_2x_rate decimal(5,2) NOT NULL, -- 중증2배수 적용 장애인 고용률 (%)
+    src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
     created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
     updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
     created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -338,6 +358,7 @@ COMMENT ON COLUMN public.emp_dis_regional_status.obligation_count IS '의무고�
 COMMENT ON COLUMN public.emp_dis_regional_status.severe_2x_count IS '중증2배수 적용 장애인 고용인원';
 COMMENT ON COLUMN public.emp_dis_regional_status.severe_2x_rate IS '중증2배수 적용 장애인 고용률 (%)';
 COMMENT ON COLUMN public.emp_dis_regional_status.created_at IS '레코드 생성 시각';
+COMMENT ON COLUMN public.emp_dis_regional_status.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
 COMMENT ON COLUMN public.emp_dis_regional_status.updated_at IS '레코드 수정 시각';
 COMMENT ON COLUMN public.emp_dis_regional_status.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_regional_status.updated_by IS '데이터 수정자';
@@ -361,6 +382,7 @@ CREATE TABLE public.emp_dis_staff_train_crs (
 	apply_method varchar(200), -- 수강신청방법
 	location varchar(100), -- 교육장소
 	target varchar(200), -- 교육대상
+	src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
 	updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
 	created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -384,6 +406,8 @@ COMMENT ON COLUMN public.emp_dis_staff_train_crs.apply_method IS '수강신청�
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.location IS '교육장소';
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.target IS '교육대상';
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.created_at IS '생성시각';
+COMMENT ON COLUMN public.emp_dis_staff_train_crs.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
+CREATE INDEX idx_emp_dis_staff_train_crs_src_base_dt ON public.emp_dis_staff_train_crs USING btree (src_base_dt);
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.updated_at IS '수정시각';
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_staff_train_crs.updated_by IS '데이터 수정자';
@@ -409,6 +433,7 @@ CREATE TABLE public.emp_dis_dev_support_org (
 	child_family_sup boolean NOT NULL, -- 장애아가족양육지원 (true/false)
 	emergency_care boolean NOT NULL, -- 긴급돌봄 (true/false)
 	severe_integrated_care boolean NULL, -- 최중증 통합돌봄 (true/false). 2025-09-30 판부터 원천 제공 (v1.11.0)
+	src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
 	updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
 	created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -434,6 +459,8 @@ COMMENT ON COLUMN public.emp_dis_dev_support_org.child_family_sup IS '장애아�
 COMMENT ON COLUMN public.emp_dis_dev_support_org.emergency_care IS '긴급돌봄 (true/false)';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.severe_integrated_care IS '최중증 통합돌봄 (true/false). 2025-09-30 판부터 원천 제공 — 그 이전 판으로 넣은 행은 NULL';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.created_at IS '생성시각';
+COMMENT ON COLUMN public.emp_dis_dev_support_org.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
+CREATE INDEX idx_emp_dis_dev_support_org_src_base_dt ON public.emp_dis_dev_support_org USING btree (src_base_dt);
 COMMENT ON COLUMN public.emp_dis_dev_support_org.updated_at IS '수정시각';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_dev_support_org.updated_by IS '데이터 수정자';
@@ -458,6 +485,7 @@ CREATE TABLE public.emp_dis_startup_lecture (
 	  org_name varchar(100) NOT NULL, -- 교육기관
 	  apply_count int NOT NULL, -- 신청인원
 	  complete_count int NOT NULL, -- 수료인원
+	  src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
 	  created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
 	  updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
 	  created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -482,6 +510,7 @@ COMMENT ON COLUMN public.emp_dis_startup_lecture.org_name IS '교육기관';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.apply_count IS '신청인원';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.complete_count IS '수료인원';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.created_at IS '생성시각';
+COMMENT ON COLUMN public.emp_dis_startup_lecture.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.updated_at IS '수정시각';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_startup_lecture.updated_by IS '데이터 수정자';
@@ -503,6 +532,7 @@ CREATE TABLE public.emp_dis_std_workplace (
 	  tel varchar(20) NULL, -- 전화번호. 원천이 비어 있으면 NULL (v1.11.0)
 	  business_item varchar(200) NOT NULL, -- 업종 및 주요생산품
 	  type varchar(20) NOT NULL, -- 구분
+	  src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
 	  created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
 	  updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
 	  created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -524,6 +554,8 @@ COMMENT ON COLUMN public.emp_dis_std_workplace.tel IS '전화번호. 원천이 �
 COMMENT ON COLUMN public.emp_dis_std_workplace.business_item IS '업종 및 주요생산품';
 COMMENT ON COLUMN public.emp_dis_std_workplace.type IS '구분';
 COMMENT ON COLUMN public.emp_dis_std_workplace.created_at IS '생성시각';
+COMMENT ON COLUMN public.emp_dis_std_workplace.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
+CREATE INDEX idx_emp_dis_std_workplace_src_base_dt ON public.emp_dis_std_workplace USING btree (src_base_dt);
 COMMENT ON COLUMN public.emp_dis_std_workplace.updated_at IS '수정시각';
 COMMENT ON COLUMN public.emp_dis_std_workplace.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_std_workplace.updated_by IS '데이터 수정자';
@@ -626,6 +658,7 @@ CREATE TABLE public.emp_dis_obligation_status (
   worker_count int4 NOT NULL, -- 상시 근로자 수 (명)
   disabled_count int4 NOT NULL, -- 장애인 수 (명)
   emp_rate decimal(5,2) NOT NULL, -- 고용률 (%)
+  src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
   created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 레코드 생성 시각
   updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 레코드 수정 시각
   created_by varchar(40) NULL, -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -642,6 +675,8 @@ COMMENT ON COLUMN public.emp_dis_obligation_status.worker_count IS '상시 근�
 COMMENT ON COLUMN public.emp_dis_obligation_status.disabled_count IS '장애인 수 (명)';
 COMMENT ON COLUMN public.emp_dis_obligation_status.emp_rate IS '고용률 (%)';
 COMMENT ON COLUMN public.emp_dis_obligation_status.created_at IS '레코드 생성 시각';
+COMMENT ON COLUMN public.emp_dis_obligation_status.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
+CREATE INDEX idx_emp_dis_obligation_status_src_base_dt ON public.emp_dis_obligation_status USING btree (src_base_dt);
 COMMENT ON COLUMN public.emp_dis_obligation_status.updated_at IS '레코드 수정 시각';
 COMMENT ON COLUMN public.emp_dis_obligation_status.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_obligation_status.updated_by IS '데이터 수정자';
@@ -659,6 +694,7 @@ CREATE TABLE public.emp_dis_obligation_by_indust (
 	worker_count int NOT NULL, -- 근로자수
 	obligation_count int NOT NULL, -- 의무고용인원
 	emp_rate decimal(5,2) NOT NULL, -- 고용률 (%)
+	src_base_dt date NULL, -- 원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일 (v1.12.0)
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL, -- 생성시각
 	updated_at timestamptz DEFAULT CURRENT_TIMESTAMP, -- 수정시각
 	created_by varchar(40), -- 데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조
@@ -676,6 +712,7 @@ COMMENT ON COLUMN public.emp_dis_obligation_by_indust.worker_count IS '근로자
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.obligation_count IS '의무고용인원';
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.emp_rate IS '고용률 (%)';
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.created_at IS '생성시각';
+COMMENT ON COLUMN public.emp_dis_obligation_by_indust.src_base_dt IS '원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일';
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.updated_at IS '수정시각';
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.created_by IS '데이터 생성자 (SYS-BACH, SYS-MANUAL, BY-USER, admin name), "sys_work_type" comm code 참조';
 COMMENT ON COLUMN public.emp_dis_obligation_by_indust.updated_by IS '데이터 수정자';
