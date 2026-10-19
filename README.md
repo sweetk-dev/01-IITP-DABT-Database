@@ -1,7 +1,7 @@
 # 01-IITP-DABT-Database
 1.장애인 통합 데이터베이스
 
-![version](https://img.shields.io/badge/version-v1.9.0-blue)
+![version](https://img.shields.io/badge/version-v1.14.0-blue)
 
 장애인 자립 생활 지원 플랫폼 데이터베이스(`iitp_db`)의 **스키마 정의·초기화·데이터 교정 마이그레이션 스크립트** 저장소.
 
@@ -21,7 +21,7 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | 파일 | 용도 |
 |---|---|
 | `iitp_db_schemas_init-*.sql` | 도메인별 스키마 생성 (basic / poi / emp / mobility / unst / admin / webPlatform) |
-| `iitp_db_schemas_init-deletion_and_creation_mobility.sql` | 이동편의 스키마 — 버스 노선·정류장(GBIS), 역 편의 현황·**설비 단위 승강기·화장실·승강장(국가철도공단, v1.3.0)**, 건물 편의시설 |
+| `iitp_db_schemas_init-deletion_and_creation_mobility.sql` | 이동편의 스키마 — 버스 노선·정류장(GBIS), 역 편의 현황·**설비 단위 승강기·화장실·승강장(국가철도공단, v1.3.0)**, 건물 편의시설, **문화·체육 시설(v1.10.0)**, **장애인복지시설(v1.14.0)** |
 | `KOSIS_stats_data_creation.sql` | **참고용(실행 금지)** — 초기 설계 시점(ver 0.0.3)의 KOSIS 테이블 정의. 현행 KOSIS 테이블은 `iitp_db_schemas_init-deletion_and_creation_basic.sql` 이 만든다. basic 적용 후 이 파일을 실행하면 `stats_kosis_origin_data` 가 구버전 정의로 다시 만들어져 수집 데이터가 지워지고 적재 배치가 실패한다 |
 | `mv_poi_latlng_fix.sql` | **mv_poi 위경도 뒤바뀜 교정 + CHECK 제약** (2026-07-16, GGTOUR 적재분 51,677건). 같은 CHECK 제약은 poi init 의 `mv_poi` 정의에도 들어 있으며, 제약이 이미 있으면 추가를 건너뛰므로 재실행 안전 |
 | `accessibility_columns_v140.sql` | **접근성 컬럼 추가** (v1.4.0) — `poi_facility_accessibility.guide_facility_yn`·`accessible_room_yn`, `poi_public_toilet_info.unisex_yn`. NULL 허용·`IF NOT EXISTS` 라 재실행 안전 |
@@ -30,6 +30,11 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | `low_floor_bus_v150.sql` | **저상버스 운행 노선 기준일 컬럼** (v1.5.0) — `tran_bus_route_info.low_bus_base_dt` 추가, `low_bus_yn` 주석 갱신, ext_sys_code `GBIS_LOWFLOOR`. 적재는 08 `GBIS_LOWFLOOR` 수집기(노선번호+운수사 복합키). 재실행 안전 |
 | `stats_intg_unique_v180.sql` | **통합 통계 테이블 중복 방지** — KOSIS 통합 테이블 24종(`stats_dis_*`)의 중복 행을 정리하고 자연키 `(src_data_id, prd_de, c1, c2, c3, itm_id)` 에 UNIQUE 인덱스를 건다(NULL 허용인 `c2`·`c3` 는 COALESCE 표현식, 자료갱신일은 키에 넣지 않는다 — 통계별 최신 1벌만 보관). 값이 같고 갱신일만 다른 행은 갱신일이 가장 늦은 1행을 남긴다. 키가 같고 값이 다른 행이나 `c4` 분류를 쓰는 통계가 있으면 아무것도 바꾸지 않고 중단한다. 같은 인덱스가 basic init 에도 들어 있다. 재실행 안전 |
 | `kosis_struct_batch_alert_v190.sql` | **KOSIS 통계표 구조 변경 대응 + 수집 실행 기록·알림 설정** (v1.9.0) — `sys_stats_src_api_info.intg_col_map`(통합 테이블 칸 배치 규칙, jsonb) 추가, 구조가 바뀐 4종(`DT_11761_N007`·`N008`·`N010`, `DT_438001_AC016`)의 조회 주소·규칙 갱신, `sys_batch_run_log`(수집 배치 실행 1회 = 1행)·`sys_ops_setting`(운영 설정 키/값 — 알림 수신 주소·사용 여부) 신설. 08 v1.17.0 과 함께 적용한다(그 이전 배치가 바뀐 주소로 돌면 4종이 다른 모양으로 적재되거나 실패한다). 재실행 안전 |
+| `culture_sports_facility_v1100.sql` | **문화·체육 시설 표 신설** (v1.10.0) — `poi_culture_sports_facility`(점자도서관·책나래 제공도서관·장애인체육시설·장애인체육회 4종, 종류 칸 `facility_type`, 활성 행 부분 유니크) 신설, ext_sys_code·외부 API 정보 `GG_CULTURE` 등록(인증키는 같은 경기데이터드림 키를 쓰는 `GG_TOILET` 행에서 복사 — 저장소에 두지 않음). 적재는 08 `GG_CULTURE` 수집기. 재실행 안전 |
+| `emp_odcloud_collect_v1110.sql` | **장애인 고용 파일데이터 정기 수집 준비** (v1.11.0) — `emp_dis_dev_support_org.severe_integrated_care`(최중증 통합돌봄, 2025-09-30 판 신설 칸) 추가, 새 판에서 빈 값이 나오는 칸 4개(`emp_dis_jobseeker_status.salary_type`·`salary_amount`, `emp_dis_job_posting.job_type`, `emp_dis_std_workplace.tel`)의 NOT NULL 해제, ext_sys_code·외부 API 정보 `ODCLOUD_EMP` 등록(인증키는 같은 공공데이터포털 키를 쓰는 기존 행에서 복사 — 저장소에 두지 않음), 표별 판 추적 행 14개(`sys_stats_src_api_info`, `api_data_url=''` = 아직 적재한 판 없음) 등록. 적재는 08 `ODCLOUD_EMP` 수집기(v1.19.0). 재실행 안전 |
+| `emp_src_base_dt_v1120.sql` | **장애인 고용 파일데이터 판 기준일 칸** (v1.12.0) — 수집 대상 14개 `emp_dis_*` 표에 `src_base_dt date`(원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일) 추가, 연도 칸이 없는 9개 표에 `src_base_dt` 인덱스. 08 `ODCLOUD_EMP` v1.20.0 이 모든 행에 채우고, 연도 없는 표는 같은 판의 행만 교체해 지난 판을 남긴다. 기존 행은 채우지 않는다(NULL — 운영 환경별로 따로 채움). `emp_dis_obligation_by_type` 은 대상 아님. 재실행 안전 |
+| `emp_latest_views_v1130.sql` | **장애인 고용 파일데이터 최신 판 뷰** (v1.13.0) — 연도 칸이 없는 9개 `emp_dis_*` 표마다 가장 최근 판(`src_base_dt` 최댓값)의 행만 보여 주는 뷰 `v_<표>_latest`. 분석 도구(Metabase) 질문이 여러 판을 합산하지 않도록 쓴다. 판 기준일이 모두 비어 있으면 표 전체. 원본 표에 칸을 추가하면 다시 실행. 재실행 안전 |
+| `local_stats_welfare_v1140.sql` | **지역 단위 등록장애인 통계·장애인복지시설·공개 데이터 요약표 행** (v1.14.0) — KOSIS 「시군구별,장애정도별,성별 등록장애인수」(`DT_11761_N009`) 통합 테이블 `stats_dis_reg_sgg_by_sev_gen` 과 수집 정보 행, 경기 읍면동별·유형별·정도별 등록장애인 `stats_gg_dis_reg_emd`(시군마다 원천 기준일이 달라 기준일 판을 쌓는다)와 최신 판 뷰 `v_stats_gg_dis_reg_emd_latest`, 경기 장애인복지시설 5종 `poi_welfare_facility`(거주·단기거주·보호작업장·자립생활지원센터·관련 기관, 정원·현원 포함) 신설, 공통 코드·외부 API 정보 `GG_DIS_REG`·`GG_WELFARE`(인증키는 같은 경기데이터드림 키를 쓰는 `GG_CULTURE`/`GG_TOILET` 행에서 복사), 공개 데이터 요약표(`sys_data_summary_info`)에 새 표 3개와 OPEN API 로 공개된 5묶음(문화·체육, 건물 편의시설, 긴급대응 거점, 경기 버스, 철도 역사 편의설비) 행 추가. 적재는 08 `GG_DIS_REG`·`GG_WELFARE` 수집기와 KOSIS 적재 배치. 재실행 안전 |
 
 ### 스크립트 적용 순서
 
@@ -62,6 +67,11 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | 5 | `emergency_support_v170.sql` | 컬럼·인덱스는 이미 있음. 공통 코드 4건 등록 |
 | 6 | `stats_intg_unique_v180.sql` | 인덱스가 이미 있어 변화 없음 |
 | 7 | `kosis_struct_batch_alert_v190.sql` | 칼럼·표는 이미 있음. 4종 조회 주소·규칙은 초기 데이터와 같은 값으로 다시 씀 |
+| 8 | `culture_sports_facility_v1100.sql` | 표·인덱스는 이미 있음. 공통 코드·외부 API 정보 `GG_CULTURE` 등록(인증키는 비어 있음 — 운영자가 채움) |
+| 9 | `emp_odcloud_collect_v1110.sql` | 칸은 이미 있음(NOT NULL 해제도 이미 반영). 공통 코드·외부 API 정보 `ODCLOUD_EMP`·판 추적 행 14개 등록(인증키는 공공데이터포털 키를 쓰는 행이 없으면 비어 있음 — 운영자가 채움). 판 추적 행이 `sys_data_summary_info` 의 고용 표 행(`sys_tbl_id` = 표 이름)을 함께 갱신하므로, 새 DB 에서는 그 행을 먼저 등록한다 |
+| 10 | `emp_src_base_dt_v1120.sql` | 칸·인덱스가 이미 있어 변화 없음 |
+| 11 | `emp_latest_views_v1130.sql` | 뷰가 이미 있어 같은 정의로 다시 만듦 |
+| 12 | `local_stats_welfare_v1140.sql` | 표·뷰·인덱스는 이미 있음. N009 수집 정보 행은 초기 데이터에 있어 건너뜀. 공통 코드·외부 API 정보 `GG_DIS_REG`·`GG_WELFARE` 등록(인증키는 같은 원천 키 행이 없으면 비어 있음 — 운영자가 채움), 요약표 행 8개 등록 |
 
 init 스크립트는 최신 버전의 테이블 정의를 담고 있으므로, 새 DB 에서 마이그레이션이 하는 일은 공통 코드(`ext_sys_code`) 등록뿐이다. 8번(초기 데이터)은 `ext_sys_code` 그룹을 지우고 다시 넣으므로 **마이그레이션은 반드시 8번 뒤에** 적용한다(먼저 적용하면 마이그레이션이 등록한 코드가 지워진다).
 
