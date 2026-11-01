@@ -545,7 +545,7 @@ CREATE TABLE IF NOT EXISTS public.poi_bf_certification (
 	area varchar(60) NULL,                    -- 면적(원천 문자 그대로)
 	usage_type varchar(100) NULL,             -- 용도구분
 	cert_date date NULL,                      -- 인증일자
-	expire_date date NULL,                    -- 인증만료일
+	expire_date date NULL,                    -- 인증만료일(예비인증은 NULL — 원천이 날짜 대신 '본인증 교부전 또는 사용승인 후 1년 이내' 로 적음)
 	cert_body varchar(100) NULL,              -- 인증기관
 	src_base_dt date NOT NULL,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
