@@ -403,3 +403,465 @@ INSERT INTO public.sys_faq (faq_type, question, answer, sort_order, use_yn, crea
 
 				
 	
+
+-- # 정서 자립 현황 KOSIS 통계 20종 (v1.15.0)
+-- stat_api_id 를 자동 번호로 받기 위해 위 목록과 따로 둔다(마이그레이션 emotion_stats_v1150.sql 과 같은 문장).
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '우울수준', 'DT_438001_AC004', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC004","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC004","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC004","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC004');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_depression',
+       '우울수준', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_AC004', '우울수준', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC004'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC004');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '자아존중감', 'DT_438001_AC005', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC005","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC005","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC005","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC005');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_self_esteem',
+       '자아존중감', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_AC005', '자아존중감', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC005'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC005');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '자살 생각, 이유, 충동 행동 시도 경험 및 횟수', 'DT_438001_AC006', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC006","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC006","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC006","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC006');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_suicide_ideation',
+       '자살 생각, 이유, 충동 행동 시도 경험 및 횟수', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_AC006', '자살 생각, 이유, 충동 행동 시도 경험 및 횟수', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC006'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC006');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '스트레스 인지 정도', 'DT_438001_AD0171', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AD0171","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AD0171","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AD0171","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AD0171');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_stress',
+       '스트레스 인지 정도', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2022', '2024',
+       'DT_438001_AD0171', '스트레스 인지 정도', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AD0171'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AD0171');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '회복탄력성', 'DT_438001_AC0061', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC0061","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC0061","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC0061","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC0061');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_resilience',
+       '회복탄력성', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2023', '2024',
+       'DT_438001_AC0061', '회복탄력성', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC0061'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC0061');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '주관적 행복감', 'DT_438001_AC018', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC018","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC018","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC018","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC018');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_happiness',
+       '주관적 행복감', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2024', '2024',
+       'DT_438001_AC018', '주관적 행복감', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC018'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC018');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '현재 삶의 만족도', 'DT_438001_AF035', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=ALL&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AF035","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AF035","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AF035","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AF035');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_life_satis',
+       '현재 삶의 만족도', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_AF035', '현재 삶의 만족도', '2026-01-01', null, '["c1", "c2", "c3"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AF035'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AF035');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '장애수용', 'DT_438001_AC003', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC003","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC003","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC003","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC003');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_dis_accept',
+       '장애수용', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_AC003', '장애수용', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC003'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC003');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '장애와 관련한 경험', 'DT_438001_AC002', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC002","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC002","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC002","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC002');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_dis_experience',
+       '장애와 관련한 경험', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_AC002', '장애와 관련한 경험', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC002'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC002');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '의사결정 주체(1순위)', 'DT_438001_AC007', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC007","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC007","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC007","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC007');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_decision_maker',
+       '의사결정 주체(1순위)', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_AC007', '의사결정 주체(1순위)', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC007'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC007');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '정서적 도움 및 지지', 'DT_438001_AC012', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC012","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC012","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC012","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC012');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_emo_support',
+       '정서적 도움 및 지지', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_AC012', '정서적 도움 및 지지', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC012'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC012');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '사회적 지지', 'DT_438001_AC0162', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC0162","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC0162","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC0162","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC0162');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_social_support',
+       '사회적 지지', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2023', '2024',
+       'DT_438001_AC0162', '사회적 지지', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC0162'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC0162');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '어려움 상담 상대', 'DT_438001_AC013', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_AC013","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_AC013","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_AC013","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_AC013');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_counsel_partner',
+       '어려움 상담 상대', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_AC013', '어려움 상담 상대', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_AC013'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_AC013');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '차별 경험 및 대처방법', 'DT_438001_CE001', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=438&tblId=DT_438001_CE001","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=438&tblId=DT_438001_CE001","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=438&tblId=DT_438001_CE001","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_438001_CE001');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_discrim',
+       '차별 경험 및 대처방법', 'KOSIS_438', '「장애인삶패널조사」', '2024', '년', '2018', '2024',
+       'DT_438001_CE001', '차별 경험 및 대처방법', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_438001_CE001'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_438001_CE001');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '자아존중 및 장애수용', 'DT_383003_P141', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=16383T2009_127+16383T2009_130+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=383&tblId=DT_383003_P141","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=383&tblId=DT_383003_P141","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=383&tblId=DT_383003_P141","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_383003_P141');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_emp_self_esteem',
+       '자아존중 및 장애수용', 'KOSIS_383', '「장애인고용패널조사」', '2023', '년', '2016', '2023',
+       'DT_383003_P141', '자아존중 및 장애수용', '2026-01-01', null, '["c1"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_383003_P141'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_383003_P141');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '장애로 인한 차별 경험 정도 및 사회경제적 지위', 'DT_383003_P161', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=16383T2009_130+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=383&tblId=DT_383003_P161","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=383&tblId=DT_383003_P161","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=383&tblId=DT_383003_P161","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_383003_P161');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_emp_discrim',
+       '장애로 인한 차별 경험 정도 및 사회경제적 지위', 'KOSIS_383', '「장애인고용패널조사」', '2023', '년', '2016', '2023',
+       'DT_383003_P161', '장애로 인한 차별 경험 정도 및 사회경제적 지위', '2026-01-01', null, '["c1"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_383003_P161'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_383003_P161');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '일상생활에서 장애로 인한 차별 경험 및 존중 받는 수준', 'DT_383003_C03085', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=383&tblId=DT_383003_C03085","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=383&tblId=DT_383003_C03085","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=383&tblId=DT_383003_C03085","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_383003_C03085');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_emp_discrim_respect',
+       '일상생활에서 장애로 인한 차별 경험 및 존중 받는 수준', 'KOSIS_383', '「장애인고용패널조사」', '2025', '년', '2025', '2025',
+       'DT_383003_C03085', '일상생활에서 장애로 인한 차별 경험 및 존중 받는 수준', '2026-01-01', null, '["c1"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_383003_C03085'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_383003_C03085');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '사회활동 참여 수준, 주변 사람 교류 정도, 사회적 지지체계', 'DT_383003_C030831', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=383&tblId=DT_383003_C030831","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=383&tblId=DT_383003_C030831","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=383&tblId=DT_383003_C030831","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_383003_C030831');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_emp_social_support',
+       '사회활동 참여 수준, 주변 사람 교류 정도, 사회적 지지체계', 'KOSIS_383', '「장애인고용패널조사」', '2025', '년', '2025', '2025',
+       'DT_383003_C030831', '사회활동 참여 수준, 주변 사람 교류 정도, 사회적 지지체계', '2026-01-01', null, '["c1"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_383003_C030831'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_383003_C030831');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '일상생활 만족도', 'DT_383003_C03084', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+T002+&objL1=ALL&objL2=&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=383&tblId=DT_383003_C03084","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=383&tblId=DT_383003_C03084","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=383&tblId=DT_383003_C03084","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_383003_C03084');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_emp_life_satis',
+       '일상생활 만족도', 'KOSIS_383', '「장애인고용패널조사」', '2025', '년', '2025', '2025',
+       'DT_383003_C03084', '일상생활 만족도', '2026-01-01', null, '["c1"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_383003_C03084'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_383003_C03084');
+
+INSERT INTO public.sys_stats_src_api_info
+    (ext_api_id, status, del_yn, stat_title, stat_tbl_id, use_base_url_yn, api_data_url, api_meta_url,
+     api_latest_chn_dt_url, intg_col_map, created_at, updated_at, created_by)
+SELECT (SELECT ext_api_id FROM public.sys_ext_api_info WHERE ext_sys = 'KOSIS' AND del_yn = 'N' ORDER BY ext_api_id LIMIT 1),
+       'A', 'N', '평소 장애로 인한 차별 경험 정도', 'DT_383005_G0012', 'N',
+       '{ "url":"https://kosis.kr/openapi/Param/statisticsParameterData.do?method=getList&apiKey={API_AUTH_KEY}&itmId=T001+T002+&objL1=ALL&objL2=ALL&objL3=&objL4=&objL5=&objL6=&objL7=&objL8=&format=json&jsonVD=Y&prdSe=Y&startPrdDe={from}&endPrdDe={to}&orgId=383&tblId=DT_383005_G0012","format":"json"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=ITM&orgId=383&tblId=DT_383005_G0012","format":"xml"}',
+       '{"url":"https://kosis.kr/openapi/statisticsData.do?method=getMeta&apiKey={API_AUTH_KEY}&format=xml&type=NCD&orgId=383&tblId=DT_383005_G0012","format":"xml"}',
+       null, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+WHERE NOT EXISTS (SELECT 1 FROM public.sys_stats_src_api_info WHERE stat_tbl_id = 'DT_383005_G0012');
+
+INSERT INTO public.stats_src_data_info
+    (ext_api_id, ext_sys, stat_api_id, intg_tbl_id, stat_title, stat_org_id, stat_survey_name, stat_pub_dt,
+     periodicity, collect_start_dt, collect_end_dt, stat_tbl_id, stat_tbl_name, stat_latest_chn_dt,
+     stat_data_ref_dt, avail_cat_cols, del_yn, created_at, updated_at, created_by)
+SELECT a.ext_api_id, 'KOSIS', a.stat_api_id, 'stats_dis_emo_dev_discrim',
+       '평소 장애로 인한 차별 경험 정도', 'KOSIS_383', '「발달장애인 일과 삶 실태조사」', '2025', '년', '2022', '2025',
+       'DT_383005_G0012', '평소 장애로 인한 차별 경험 정도', '2026-01-01', null, '["c1", "c2"]', 'N',
+       CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'SYS-MANUAL'
+  FROM public.sys_stats_src_api_info a
+ WHERE a.stat_tbl_id = 'DT_383005_G0012'
+   AND NOT EXISTS (SELECT 1 FROM public.stats_src_data_info WHERE stat_tbl_id = 'DT_383005_G0012');

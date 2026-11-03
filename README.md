@@ -1,7 +1,7 @@
 # 01-IITP-DABT-Database
 1.장애인 통합 데이터베이스
 
-![version](https://img.shields.io/badge/version-v1.14.0-blue)
+![version](https://img.shields.io/badge/version-v1.18.0-blue)
 
 장애인 자립 생활 지원 플랫폼 데이터베이스(`iitp_db`)의 **스키마 정의·초기화·데이터 교정 마이그레이션 스크립트** 저장소.
 
@@ -35,6 +35,10 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | `emp_src_base_dt_v1120.sql` | **장애인 고용 파일데이터 판 기준일 칸** (v1.12.0) — 수집 대상 14개 `emp_dis_*` 표에 `src_base_dt date`(원천 판 기준일 — 이 행을 넣은 공공데이터포털 파일데이터 판의 기준일) 추가, 연도 칸이 없는 9개 표에 `src_base_dt` 인덱스. 08 `ODCLOUD_EMP` v1.20.0 이 모든 행에 채우고, 연도 없는 표는 같은 판의 행만 교체해 지난 판을 남긴다. 기존 행은 채우지 않는다(NULL — 운영 환경별로 따로 채움). `emp_dis_obligation_by_type` 은 대상 아님. 재실행 안전 |
 | `emp_latest_views_v1130.sql` | **장애인 고용 파일데이터 최신 판 뷰** (v1.13.0) — 연도 칸이 없는 9개 `emp_dis_*` 표마다 가장 최근 판(`src_base_dt` 최댓값)의 행만 보여 주는 뷰 `v_<표>_latest`. 분석 도구(Metabase) 질문이 여러 판을 합산하지 않도록 쓴다. 판 기준일이 모두 비어 있으면 표 전체. 원본 표에 칸을 추가하면 다시 실행. 재실행 안전 |
 | `local_stats_welfare_v1140.sql` | **지역 단위 등록장애인 통계·장애인복지시설·공개 데이터 요약표 행** (v1.14.0) — KOSIS 「시군구별,장애정도별,성별 등록장애인수」(`DT_11761_N009`) 통합 테이블 `stats_dis_reg_sgg_by_sev_gen` 과 수집 정보 행, 경기 읍면동별·유형별·정도별 등록장애인 `stats_gg_dis_reg_emd`(시군마다 원천 기준일이 달라 기준일 판을 쌓는다)와 최신 판 뷰 `v_stats_gg_dis_reg_emd_latest`, 경기 장애인복지시설 5종 `poi_welfare_facility`(거주·단기거주·보호작업장·자립생활지원센터·관련 기관, 정원·현원 포함) 신설, 공통 코드·외부 API 정보 `GG_DIS_REG`·`GG_WELFARE`(인증키는 같은 경기데이터드림 키를 쓰는 `GG_CULTURE`/`GG_TOILET` 행에서 복사), 공개 데이터 요약표(`sys_data_summary_info`)에 새 표 3개와 OPEN API 로 공개된 5묶음(문화·체육, 건물 편의시설, 긴급대응 거점, 경기 버스, 철도 역사 편의설비) 행 추가. 적재는 08 `GG_DIS_REG`·`GG_WELFARE` 수집기와 KOSIS 적재 배치. 재실행 안전 |
+| `emotion_stats_v1150.sql` | **정서 자립 현황 KOSIS 통계 20종** (v1.15.0) — 06 플랫폼 자립 테마 '정서적 자립'(`self_rlty_type = 'emo'`)에 실을 공개 통계. 장애인삶패널조사(한국장애인개발원, KOSIS 438) 14종(우울수준·자아존중감·자살 생각·스트레스·회복탄력성·주관적 행복감·삶의 만족도·장애수용·장애와 관련한 경험·의사결정 주체·정서적 도움 및 지지·사회적 지지·어려움 상담 상대·차별 경험 및 대처방법)과 장애인고용패널조사·발달장애인 일과 삶 실태조사(한국장애인고용공단, KOSIS 383) 6종의 통합 테이블 `stats_dis_emo_*` 20개, 수집 정보 행, 공개 데이터 요약표 행(분류: 심리·정서 현황 / 지지·관계 현황 / 차별 경험 현황). 적재는 08 KOSIS 적재 배치, 미리보기는 공개 API `/api/v1/basic/emotion/{통계키}`. 재실행 안전 |
+| `rpt_emotion_2023_v1160.sql` | **2023년 장애인실태조사 보고서 장애유형별 정서 지표 4종** (v1.16.0) — KOSIS 표로 제공되지 않는 정서 지표를 보건복지부·한국보건사회연구원 「2023년 장애인 실태조사」 보고서(2024-11-13 공개)의 장애유형별 표에서 옮겨 넣는다: 정신건강 지표(표 6-2-79~83), 생활 영역별 만족도·행복감(6-9-1~10), 장애로 인한 어려움·도움받을 사람(6-9-11~15), 차별 인식·장애인차별금지법 인지(6-9-42~44). 통합 테이블 `stats_dis_emo_rpt_*` 4개(c1 장애유형, c2 문항, c3 응답), 분류값 이름, 요약표 행. 원천 코드 `MANUAL_RPT`(공개 보고서 수기 입력, 수집 배치 대상 아님). 다음 판(2026년 조사)은 새 마이그레이션으로 추가. 재실행 안전 |
+| `odcloud_dis_collect_v1170.sql` | **장애인 공공 파일데이터 22종 정기 수집 표** (v1.17.0) — 공공데이터포털 파일데이터(자동 변환 OpenAPI)로 08 수집 작업 `ODCLOUD_DIS` 가 매월 최신 판을 적재하는 표 16개. 고용 기록·실적 11종(`emp_dis_employment_info` 취업 정보·`emp_dis_supported_emp` 중증장애인 지원고용·`emp_dis_work_support_cost` 근로지원비용·`emp_dis_placement_subsidy` 취업알선지원금·`emp_dis_vehicle_support` 차량지원결정·`emp_dis_loan_support` 사업주 융자·`emp_dis_levy_report` 부담금 신고 사업체·`emp_dis_incentive_company` 장려금 지원 사업체·`emp_dis_noncompliance_list` 고용의무 불이행 명단공표·`emp_dis_counselor_obligation` 직업생활상담원 선임의무사업체·`emp_dis_job_program_edu` 일자리사업 참여자 교육), 시도별 복지 통계 3종(`stats_dis_alone_service_sido`·`stats_dis_allowance_sido`·`stats_dis_pension_sido`), BF 인증 시설(`poi_bf_certification`), 지원기관 목록 7종을 종류(`org_type`)로 나눈 `poi_dis_support_org`(근로지원인 양성교육기관·인식개선 교육 강사지원 수행기관·인식개선 지정 교육기관·장애인일자리사업 수행기관·중증장애인직업재활 수행기관·고용복지플러스센터·장애인평생교육기관, 원천별 고유 칸은 `detail` JSON). 공통 코드·외부 API 정보 `ODCLOUD_DIS`(인증키는 `ODCLOUD_EMP` 행 값 복사)와 데이터셋별 판 추적 행 22개 (지원기관 목록은 `stat_tbl_id` = `poi_dis_support_org:<종류>`). 공개 데이터 요약표 행은 넣지 않는다(06 플랫폼·OPEN API 노출은 별도). 재실행 안전 |
+| `calltaxi_std_collect_v1180.sql` | **교통약자이동지원센터(장애인콜택시) 표준데이터 정기 수집 등록** (v1.18.0) — 08 수집 작업 `STD_CALLTAXI` 가 공공데이터포털 표준데이터 「전국교통약자이동지원센터정보표준데이터」(15028207)를 매월 받아 `poi_emergency_support`(`calltaxi`)에 동기화하도록 공통 코드·외부 API 정보 `STD_CALLTAXI` 등록(인증키는 `ODCLOUD_EMP` 등 같은 포털 키 행 값 복사). 표 변경 없음. 재실행 안전 |
 
 ### 스크립트 적용 순서
 
@@ -72,6 +76,10 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | 10 | `emp_src_base_dt_v1120.sql` | 칸·인덱스가 이미 있어 변화 없음 |
 | 11 | `emp_latest_views_v1130.sql` | 뷰가 이미 있어 같은 정의로 다시 만듦 |
 | 12 | `local_stats_welfare_v1140.sql` | 표·뷰·인덱스는 이미 있음. N009 수집 정보 행은 초기 데이터에 있어 건너뜀. 공통 코드·외부 API 정보 `GG_DIS_REG`·`GG_WELFARE` 등록(인증키는 같은 원천 키 행이 없으면 비어 있음 — 운영자가 채움), 요약표 행 8개 등록 |
+| 13 | `emotion_stats_v1150.sql` | 표·인덱스는 이미 있음. 수집 정보 행은 초기 데이터에 있어 건너뜀, 요약표 행 20개 등록 |
+| 14 | `rpt_emotion_2023_v1160.sql` | 표·인덱스는 이미 있음. 공통 코드·외부 API 정보 `MANUAL_RPT`, 수집 정보·분류값·값·요약표 행 4종 등록 |
+| 15 | `odcloud_dis_collect_v1170.sql` | 표·인덱스는 이미 있음. 공통 코드·외부 API 정보 `ODCLOUD_DIS`·판 추적 행 22개 등록(인증키는 `ODCLOUD_EMP` 등 같은 포털 키 행이 없으면 비어 있음 — 운영자가 채움) |
+| 16 | `calltaxi_std_collect_v1180.sql` | 공통 코드·외부 API 정보 `STD_CALLTAXI` 등록(인증키는 같은 포털 키 행이 없으면 비어 있음 — 운영자가 채움) |
 
 init 스크립트는 최신 버전의 테이블 정의를 담고 있으므로, 새 DB 에서 마이그레이션이 하는 일은 공통 코드(`ext_sys_code`) 등록뿐이다. 8번(초기 데이터)은 `ext_sys_code` 그룹을 지우고 다시 넣으므로 **마이그레이션은 반드시 8번 뒤에** 적용한다(먼저 적용하면 마이그레이션이 등록한 코드가 지워진다).
 
