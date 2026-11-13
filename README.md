@@ -1,7 +1,7 @@
 # 01-IITP-DABT-Database
 1.장애인 통합 데이터베이스
 
-![version](https://img.shields.io/badge/version-v1.18.0-blue)
+![version](https://img.shields.io/badge/version-v1.19.0-blue)
 
 장애인 자립 생활 지원 플랫폼 데이터베이스(`iitp_db`)의 **스키마 정의·초기화·데이터 교정 마이그레이션 스크립트** 저장소.
 
@@ -39,6 +39,7 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | `rpt_emotion_2023_v1160.sql` | **2023년 장애인실태조사 보고서 장애유형별 정서 지표 4종** (v1.16.0) — KOSIS 표로 제공되지 않는 정서 지표를 보건복지부·한국보건사회연구원 「2023년 장애인 실태조사」 보고서(2024-11-13 공개)의 장애유형별 표에서 옮겨 넣는다: 정신건강 지표(표 6-2-79~83), 생활 영역별 만족도·행복감(6-9-1~10), 장애로 인한 어려움·도움받을 사람(6-9-11~15), 차별 인식·장애인차별금지법 인지(6-9-42~44). 통합 테이블 `stats_dis_emo_rpt_*` 4개(c1 장애유형, c2 문항, c3 응답), 분류값 이름, 요약표 행. 원천 코드 `MANUAL_RPT`(공개 보고서 수기 입력, 수집 배치 대상 아님). 다음 판(2026년 조사)은 새 마이그레이션으로 추가. 재실행 안전 |
 | `odcloud_dis_collect_v1170.sql` | **장애인 공공 파일데이터 22종 정기 수집 표** (v1.17.0) — 공공데이터포털 파일데이터(자동 변환 OpenAPI)로 08 수집 작업 `ODCLOUD_DIS` 가 매월 최신 판을 적재하는 표 16개. 고용 기록·실적 11종(`emp_dis_employment_info` 취업 정보·`emp_dis_supported_emp` 중증장애인 지원고용·`emp_dis_work_support_cost` 근로지원비용·`emp_dis_placement_subsidy` 취업알선지원금·`emp_dis_vehicle_support` 차량지원결정·`emp_dis_loan_support` 사업주 융자·`emp_dis_levy_report` 부담금 신고 사업체·`emp_dis_incentive_company` 장려금 지원 사업체·`emp_dis_noncompliance_list` 고용의무 불이행 명단공표·`emp_dis_counselor_obligation` 직업생활상담원 선임의무사업체·`emp_dis_job_program_edu` 일자리사업 참여자 교육), 시도별 복지 통계 3종(`stats_dis_alone_service_sido`·`stats_dis_allowance_sido`·`stats_dis_pension_sido`), BF 인증 시설(`poi_bf_certification`), 지원기관 목록 7종을 종류(`org_type`)로 나눈 `poi_dis_support_org`(근로지원인 양성교육기관·인식개선 교육 강사지원 수행기관·인식개선 지정 교육기관·장애인일자리사업 수행기관·중증장애인직업재활 수행기관·고용복지플러스센터·장애인평생교육기관, 원천별 고유 칸은 `detail` JSON). 공통 코드·외부 API 정보 `ODCLOUD_DIS`(인증키는 `ODCLOUD_EMP` 행 값 복사)와 데이터셋별 판 추적 행 22개 (지원기관 목록은 `stat_tbl_id` = `poi_dis_support_org:<종류>`). 공개 데이터 요약표 행은 넣지 않는다(06 플랫폼·OPEN API 노출은 별도). 재실행 안전 |
 | `calltaxi_std_collect_v1180.sql` | **교통약자이동지원센터(장애인콜택시) 표준데이터 정기 수집 등록** (v1.18.0) — 08 수집 작업 `STD_CALLTAXI` 가 공공데이터포털 표준데이터 「전국교통약자이동지원센터정보표준데이터」(15028207)를 매월 받아 `poi_emergency_support`(`calltaxi`)에 동기화하도록 공통 코드·외부 API 정보 `STD_CALLTAXI` 등록(인증키는 `ODCLOUD_EMP` 등 같은 포털 키 행 값 복사). 표 변경 없음. 재실행 안전 |
+| `kosis_dt_symbol_v1190.sql` | **통계 수치 칸 원천 기호 보존** (v1.19.0) — 숫자형 `dt` 를 가진 `stats_*` 통합 테이블 전부(운영 기준 48개)에 `dt_symbol varchar(10)`(원천 수치가 숫자가 아닐 때의 원래 표기, 예: `'-'`)을 추가하고 `dt` NOT NULL 을 푼다. CHECK `ck_<테이블>_dt_value` — `dt` 와 `dt_symbol` 중 정확히 하나만 값이 있다(숫자 행: `dt`=숫자·`dt_symbol`=NULL / 기호 행: `dt`=NULL·`dt_symbol`=원래 표기). 지금까지 '-'·빈 값이 0 으로 들어가 "0%" 와 "해당 없음" 이 섞이던 것을 구분하기 위한 칸이다. 데이터는 바꾸지 않는다 — 08 v1.26.0 적재기 반영 뒤 KOSIS 배치를 한 번 돌리면 원본에서 다시 옮겨진다. 문자형 `dt` 인 `stats_dis_hlth_disease_cost_sub`(다빈도 상병 순위 — 값이 질병코드·질병명)는 대상이 아니다. 08 v1.26.0 보다 먼저 적용한다. 재실행 안전 |
 
 ### 스크립트 적용 순서
 
@@ -80,8 +81,9 @@ CSV 기반 이미지 다운로더(`downloader.py`)와 실패 로그 분석 유�
 | 14 | `rpt_emotion_2023_v1160.sql` | 표·인덱스는 이미 있음. 공통 코드·외부 API 정보 `MANUAL_RPT`, 수집 정보·분류값·값·요약표 행 4종 등록 |
 | 15 | `odcloud_dis_collect_v1170.sql` | 표·인덱스는 이미 있음. 공통 코드·외부 API 정보 `ODCLOUD_DIS`·판 추적 행 22개 등록(인증키는 `ODCLOUD_EMP` 등 같은 포털 키 행이 없으면 비어 있음 — 운영자가 채움) |
 | 16 | `calltaxi_std_collect_v1180.sql` | 공통 코드·외부 API 정보 `STD_CALLTAXI` 등록(인증키는 같은 포털 키 행이 없으면 비어 있음 — 운영자가 채움) |
+| 17 | `kosis_dt_symbol_v1190.sql` | 칸·NULL 허용은 이미 있음(init 반영). CHECK 제약과 `dt`·`dt_symbol` 설명을 넣는다 |
 
-init 스크립트는 최신 버전의 테이블 정의를 담고 있으므로, 새 DB 에서 마이그레이션이 하는 일은 공통 코드(`ext_sys_code`) 등록뿐이다. 8번(초기 데이터)은 `ext_sys_code` 그룹을 지우고 다시 넣으므로 **마이그레이션은 반드시 8번 뒤에** 적용한다(먼저 적용하면 마이그레이션이 등록한 코드가 지워진다).
+init 스크립트는 최신 버전의 테이블 정의를 담고 있으므로, 새 DB 에서 마이그레이션이 하는 일은 공통 코드(`ext_sys_code`) 등록과 일부 제약·설명(17번) 추가뿐이다. 8번(초기 데이터)은 `ext_sys_code` 그룹을 지우고 다시 넣으므로 **마이그레이션은 반드시 8번 뒤에** 적용한다(먼저 적용하면 마이그레이션이 등록한 코드가 지워진다).
 
 **운영 중인 DB** 에는 init·초기 데이터 스크립트를 실행하지 않고, 아직 적용하지 않은 마이그레이션만 버전 순서대로 적용한다. 데이터를 고치는 마이그레이션(`mv_poi_latlng_fix.sql`, `stats_intg_unique_v180.sql`)은 실행 전 대상 테이블을 백업한다.
 
