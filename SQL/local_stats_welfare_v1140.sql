@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_reg_sgg_by_sev_gen (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),   -- c1 시군구, c2 장애정도, c3 비움
 	itm_id VARCHAR(24) NOT NULL,        -- 성별(T001 계·T002 남·T003 여)
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,

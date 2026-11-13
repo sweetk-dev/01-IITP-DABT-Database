@@ -46,7 +46,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_depression (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -68,7 +69,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_self_esteem (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -90,7 +92,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_suicide_ideation (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -112,7 +115,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_stress (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -134,7 +138,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_resilience (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -156,7 +161,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_happiness (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -178,7 +184,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_life_satis (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -200,7 +207,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_dis_accept (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -222,7 +230,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_dis_experience (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -244,7 +253,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_decision_maker (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -266,7 +276,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_emo_support (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -288,7 +299,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_social_support (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -310,7 +322,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_counsel_partner (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -332,7 +345,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_discrim (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -354,7 +368,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_emp_self_esteem (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -376,7 +391,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_emp_discrim (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -398,7 +414,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_emp_discrim_respect (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -420,7 +437,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_emp_social_support (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -442,7 +460,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_emp_life_satis (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -464,7 +483,8 @@ CREATE TABLE IF NOT EXISTS public.stats_dis_emo_dev_discrim (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,

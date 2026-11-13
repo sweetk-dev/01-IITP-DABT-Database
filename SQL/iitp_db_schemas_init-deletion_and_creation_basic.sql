@@ -729,7 +729,8 @@ CREATE TABLE public.stats_dis_reg_natl_by_new (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -798,7 +799,8 @@ CREATE TABLE public.stats_dis_reg_natl_by_age_type_sev_gen (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -869,7 +871,8 @@ CREATE TABLE public.stats_dis_reg_sido_by_type_sev_gen (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -940,7 +943,8 @@ CREATE TABLE public.stats_dis_life_supp_need_lvl (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1011,7 +1015,8 @@ CREATE TABLE public.stats_dis_life_maincarer (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1082,7 +1087,8 @@ CREATE TABLE public.stats_dis_life_primcarer (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1152,7 +1158,8 @@ CREATE TABLE public.stats_dis_life_supp_field (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1226,7 +1233,8 @@ CREATE TABLE public.stats_dis_hlth_medical_usage (
     
     unit_nm VARCHAR(20),                 -- 단위명
 	
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1367,7 +1375,8 @@ CREATE TABLE public.stats_dis_hlth_sport_exec_type (
     
     unit_nm VARCHAR(20),                 -- 단위명
 	
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1437,7 +1446,8 @@ CREATE TABLE public.stats_dis_hlth_exrc_best_aid (
     
     unit_nm VARCHAR(20),                 -- 단위명
 	
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1511,7 +1521,8 @@ CREATE TABLE public.stats_dis_aid_device_usage (
     
     unit_nm VARCHAR(20),                 -- 단위명
 	
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1581,7 +1592,8 @@ CREATE TABLE public.stats_dis_aid_device_need (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1657,7 +1669,8 @@ CREATE TABLE public.stats_dis_edu_voca_exec (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1728,7 +1741,8 @@ CREATE TABLE public.stats_dis_edu_voca_exec_way (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1803,7 +1817,8 @@ CREATE TABLE public.stats_dis_emp_natl (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1874,7 +1889,8 @@ CREATE TABLE public.stats_dis_emp_natl_public (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -1945,7 +1961,8 @@ CREATE TABLE public.stats_dis_emp_natl_private (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -2016,7 +2033,8 @@ CREATE TABLE public.stats_dis_emp_natl_gov_org (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -2087,7 +2105,8 @@ CREATE TABLE public.stats_dis_emp_natl_dis_type_sev (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -2158,7 +2177,8 @@ CREATE TABLE public.stats_dis_emp_natl_dis_type_indust (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -2232,7 +2252,8 @@ CREATE TABLE public.stats_dis_soc_partic_freq (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -2303,7 +2324,8 @@ CREATE TABLE public.stats_dis_soc_contact_cntfreq (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -2380,7 +2402,8 @@ CREATE TABLE public.stats_dis_fclty_welfare_usage (
     
     unit_nm VARCHAR(20),                 -- 단위명
     
-    dt  NUMERIC(15,3)  NOT NULL,                       -- 수치 값
+    dt  NUMERIC(15,3),                         -- 수치 값
+    dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	
     lst_chn_de date,                 -- 데이터별 최종수정일
 	src_latest_chn_dt date,         -- 수집기관 최종 자료갱신일
@@ -2507,7 +2530,8 @@ CREATE TABLE public.stats_dis_reg_sgg_by_sev_gen (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),   -- c1 시군구, c2 장애정도, c3 비움
 	itm_id VARCHAR(24) NOT NULL,        -- 성별(T001 계·T002 남·T003 여)
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2596,7 +2620,8 @@ CREATE TABLE public.stats_dis_emo_depression (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2618,7 +2643,8 @@ CREATE TABLE public.stats_dis_emo_self_esteem (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2640,7 +2666,8 @@ CREATE TABLE public.stats_dis_emo_suicide_ideation (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2662,7 +2689,8 @@ CREATE TABLE public.stats_dis_emo_stress (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2684,7 +2712,8 @@ CREATE TABLE public.stats_dis_emo_resilience (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2706,7 +2735,8 @@ CREATE TABLE public.stats_dis_emo_happiness (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2728,7 +2758,8 @@ CREATE TABLE public.stats_dis_emo_life_satis (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2750,7 +2781,8 @@ CREATE TABLE public.stats_dis_emo_dis_accept (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2772,7 +2804,8 @@ CREATE TABLE public.stats_dis_emo_dis_experience (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2794,7 +2827,8 @@ CREATE TABLE public.stats_dis_emo_decision_maker (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2816,7 +2850,8 @@ CREATE TABLE public.stats_dis_emo_emo_support (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2838,7 +2873,8 @@ CREATE TABLE public.stats_dis_emo_social_support (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2860,7 +2896,8 @@ CREATE TABLE public.stats_dis_emo_counsel_partner (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2882,7 +2919,8 @@ CREATE TABLE public.stats_dis_emo_discrim (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2904,7 +2942,8 @@ CREATE TABLE public.stats_dis_emo_emp_self_esteem (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2926,7 +2965,8 @@ CREATE TABLE public.stats_dis_emo_emp_discrim (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2948,7 +2988,8 @@ CREATE TABLE public.stats_dis_emo_emp_discrim_respect (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2970,7 +3011,8 @@ CREATE TABLE public.stats_dis_emo_emp_social_support (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -2992,7 +3034,8 @@ CREATE TABLE public.stats_dis_emo_emp_life_satis (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -3014,7 +3057,8 @@ CREATE TABLE public.stats_dis_emo_dev_discrim (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -3047,7 +3091,8 @@ CREATE TABLE public.stats_dis_emo_rpt_mental (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -3069,7 +3114,8 @@ CREATE TABLE public.stats_dis_emo_rpt_life_satis (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -3091,7 +3137,8 @@ CREATE TABLE public.stats_dis_emo_rpt_support (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -3113,7 +3160,8 @@ CREATE TABLE public.stats_dis_emo_rpt_discrim (
 	c1 VARCHAR(24) NOT NULL, c2 VARCHAR(24), c3 VARCHAR(24),
 	itm_id VARCHAR(24) NOT NULL,
 	unit_nm VARCHAR(20),
-	dt NUMERIC(15,3) NOT NULL,
+	dt NUMERIC(15,3),
+	dt_symbol VARCHAR(10),          -- 원천 수치가 숫자가 아닐 때의 원래 표기(예: '-'), 이때 dt 는 NULL (v1.19.0)
 	lst_chn_de date,
 	src_latest_chn_dt date,
 	created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
